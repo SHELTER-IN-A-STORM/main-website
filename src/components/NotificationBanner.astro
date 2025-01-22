@@ -31,6 +31,7 @@ const variantIconStyles = {
 {enabled && (
     <div 
         class={`
+            hidden md:block
             w-full 
             ${variant === 'warning' ? 'bg-yellow-50' : variant === 'success' ? 'bg-green-50' : 'bg-brand'}
             ${variant === 'warning' ? 'text-yellow-800' : variant === 'success' ? 'text-green-800' : 'text-white'}
