@@ -3,6 +3,10 @@
   "include": [".astro/types.d.ts", "**/*"],
   "exclude": ["dist"],
   "compilerOptions": {
-    "types": ["astro/client", "astro/env"]
+    "types": ["astro/client", "astro/env"],
+    "jsx": "react-jsx",
+    "jsxImportSource": "react",
+    "skipLibCheck": true,
+    "moduleResolution": "node"
   }
 }
