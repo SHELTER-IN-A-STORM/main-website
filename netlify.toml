@@ -5,6 +5,11 @@
 [build.environment]
   NODE_VERSION = "18"
 
+# Handle trailing slashes
+[[plugins]]
+package = "netlify-plugin-trailing-slash"
+
+# Redirect rules
 [[redirects]]
   from = "/*"
   to = "/index.html"
@@ -26,3 +31,13 @@
   minify = true
 [build.processing.images]
   compress = true 
+
+# Force trailing slashes off
+[[headers]]
+  for = "/*"
+    [headers.values]
+    X-Frame-Options = "DENY"
+    X-XSS-Protection = "1; mode=block"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Strict-Transport-Security = "max-age=31536000; includeSubDomains" 
