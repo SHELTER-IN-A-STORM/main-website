@@ -19,9 +19,9 @@ export const siteConfig = {
         default: "Shelter in a Storm",
         template: "%s | Shelter in a Storm - Lake Ozark"
     },
-    author: "Lake Ozark Christian Church",
+    author: "Helping Miller & Camden County",
     developer: {
-        name: "PixelPulse Creations, LLC",
+        name: "Benji.Services",
         url: "https://benji.services/",
         reportUrl: "/report"
     },
