@@ -3,6 +3,9 @@ export const maintenanceConfig = {
     allowedPaths: [
         '/maintenance',
         '/admin',
-        '/404'
+        '/404',
+        '/_astro/*',
+        '/assets/*',
+        '/favicon*'
     ]
 }; 
