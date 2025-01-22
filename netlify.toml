@@ -5,11 +5,14 @@
 [build.environment]
   NODE_VERSION = "18"
 
-# Handle trailing slashes
-[[plugins]]
-package = "netlify-plugin-trailing-slash"
+# Remove trailing slashes
+[[redirects]]
+  from = "/*/"
+  to = "/:splat"
+  status = 301
+  force = true
 
-# Redirect rules
+# Main redirect
 [[redirects]]
   from = "/*"
   to = "/index.html"
