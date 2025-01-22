@@ -36,11 +36,23 @@ import Button from '../components/Button.astro';
                     {siteConfig.shelter.hero.cta.map(button => (
                         <Button
                             href={button.href}
-                            class={`w-full sm:w-auto px-8 py-4 rounded-lg font-medium transition-colors ${
-                                button.primary ? 'bg-brand hover:bg-brand-dark text-white' : 'text-white hover:text-white/80'
-                            }`}
+                            variant={button.primary ? 'primary' : 'secondary'}
+                            class="group"
                         >
-                            {button.text}
+                            <span>{button.text}</span>
+                            <svg 
+                                class="w-5 h-5 ml-2 transform group-hover:translate-x-1 transition-transform" 
+                                fill="none" 
+                                stroke="currentColor" 
+                                viewBox="0 0 24 24"
+                            >
+                                <path 
+                                    stroke-linecap="round" 
+                                    stroke-linejoin="round" 
+                                    stroke-width="2" 
+                                    d="M17 8l4 4m0 0l-4 4m4-4H3"
+                                />
+                            </svg>
                         </Button>
                     ))}
                 </div>
