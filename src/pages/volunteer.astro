@@ -1,0 +1,347 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { siteConfig } from '../config/site';
+import { trackEvent } from '../utils/analytics';
+---
+
+<Layout title="Volunteer">
+    <section class="relative min-h-screen flex items-center justify-center">
+        <div class="absolute inset-0">
+            <img 
+                src={siteConfig.metadata.openGraph.image}
+                alt="Volunteer with Shelter in a Storm"
+                class="w-full h-full object-cover"
+            />
+            <div class="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/60"></div>
+        </div>
+
+        <div class="relative container mx-auto px-6 z-10">
+            <div class="max-w-4xl mx-auto text-center text-white space-y-8">
+                <h1 
+                    class="text-5xl md:text-7xl font-bold mb-6 animate-fade-in"
+                    style="text-wrap: balance;"
+                >
+                    Make a Difference
+                </h1>
+                <p 
+                    class="text-xl md:text-2xl text-gray-200 mb-12 animate-slide-up-delay-1 max-w-2xl mx-auto"
+                    style="text-wrap: balance;"
+                >
+                    Join our team of dedicated volunteers helping our Lake Ozark community
+                </p>
+            </div>
+        </div>
+
+        <div class="absolute bottom-12 left-1/2 transform -translate-x-1/2 z-10">
+            <a 
+                href="#content" 
+                class="text-white/80 hover:text-white transition-colors duration-300 animate-float"
+                aria-label="Scroll to content"
+            >
+                <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/>
+                </svg>
+            </a>
+        </div>
+    </section>
+
+    <div id="content" class="py-24">
+        <div class="container mx-auto px-6">
+            <!-- Opportunities Section -->
+            <section class="max-w-4xl mx-auto mb-24">
+                <div class="text-center mb-16">
+                    <div class="inline-flex items-center gap-2 text-brand font-medium mb-4">
+                        <span class="w-12 h-[2px] bg-brand"></span>
+                        <span>Ways to Help</span>
+                    </div>
+                    <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Volunteer Opportunities</h2>
+                    <p class="text-xl text-gray-600">
+                        There are many ways to get involved and help make a difference in our community.
+                    </p>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-8">
+                    {[
+                        {
+                            title: "Food Pantry Support",
+                            description: "Help organize, stock, and maintain our 24/7 emergency food pantry.",
+                            icon: "M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
+                        },
+                        {
+                            title: "Community Outreach",
+                            description: "Help spread awareness and connect with those in need in our community.",
+                            icon: "M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
+                        },
+                        {
+                            title: "Administrative Support",
+                            description: "Assist with office tasks, data entry, and communication with partners.",
+                            icon: "M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                        },
+                        {
+                            title: "Special Events",
+                            description: "Help organize and run fundraising events and community gatherings.",
+                            icon: "M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                        }
+                    ].map(opportunity => (
+                        <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+                            <div class="p-3 bg-brand/10 w-fit rounded-lg mb-4">
+                                <svg class="w-6 h-6 text-brand" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d={opportunity.icon}/>
+                                </svg>
+                            </div>
+                            <h3 class="text-lg font-semibold text-gray-900 mb-2">{opportunity.title}</h3>
+                            <p class="text-gray-600">{opportunity.description}</p>
+                        </div>
+                    ))}
+                </div>
+            </section>
+
+            <!-- Requirements Section -->
+            <section class="max-w-4xl mx-auto mb-24">
+                <div class="text-center mb-16">
+                    <div class="inline-flex items-center gap-2 text-brand font-medium mb-4">
+                        <span class="w-12 h-[2px] bg-brand"></span>
+                        <span>Getting Started</span>
+                    </div>
+                    <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Volunteer Requirements</h2>
+                    <p class="text-xl text-gray-600">
+                        Here's what you need to know before getting started.
+                    </p>
+                </div>
+
+                <div class="bg-gray-50 rounded-2xl p-8 md:p-12">
+                    <div class="grid md:grid-cols-2 gap-8">
+                        <div class="space-y-6">
+                            <h3 class="text-xl font-semibold text-gray-900">Basic Requirements</h3>
+                            <ul class="space-y-4">
+                                <li class="flex items-start gap-3">
+                                    <svg class="w-6 h-6 text-brand flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                    </svg>
+                                    <span class="text-gray-600">Must be 18 years or older</span>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <svg class="w-6 h-6 text-brand flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                    </svg>
+                                    <span class="text-gray-600">Commit to at least 4 hours per month</span>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <svg class="w-6 h-6 text-brand flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                    </svg>
+                                    <span class="text-gray-600">Complete volunteer orientation</span>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="space-y-6">
+                            <h3 class="text-xl font-semibold text-gray-900">What We Provide</h3>
+                            <ul class="space-y-4">
+                                <li class="flex items-start gap-3">
+                                    <svg class="w-6 h-6 text-brand flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                    </svg>
+                                    <span class="text-gray-600">Full training and orientation</span>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <svg class="w-6 h-6 text-brand flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                    </svg>
+                                    <span class="text-gray-600">Flexible scheduling options</span>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <svg class="w-6 h-6 text-brand flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                    </svg>
+                                    <span class="text-gray-600">Supportive team environment</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Sign Up Form -->
+            <section class="max-w-4xl mx-auto">
+                <div class="text-center mb-16">
+                    <div class="inline-flex items-center gap-2 text-brand font-medium mb-4">
+                        <span class="w-12 h-[2px] bg-brand"></span>
+                        <span>Join Us</span>
+                    </div>
+                    <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Ready to Get Started?</h2>
+                    <p class="text-xl text-gray-600">
+                        Fill out the form below and we'll get in touch with next steps.
+                    </p>
+                </div>
+
+                <form 
+                    action="https://formspree.io/f/xanqwbqb"
+                    method="POST"
+                    class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 md:p-12 max-w-2xl mx-auto"
+                    id="volunteer-form"
+                >
+                    <div class="space-y-6">
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2" for="first-name">
+                                    First Name
+                                </label>
+                                <input
+                                    type="text"
+                                    id="first-name"
+                                    name="First Name"
+                                    required
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand focus:border-brand"
+                                />
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2" for="last-name">
+                                    Last Name
+                                </label>
+                                <input
+                                    type="text"
+                                    id="last-name"
+                                    name="Last Name"
+                                    required
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand focus:border-brand"
+                                />
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2" for="email">
+                                Email Address
+                            </label>
+                            <input
+                                type="email"
+                                id="email"
+                                name="_replyto"
+                                required
+                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand focus:border-brand"
+                            />
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2" for="phone">
+                                Phone Number
+                            </label>
+                            <input
+                                type="tel"
+                                id="phone"
+                                name="phone"
+                                required
+                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand focus:border-brand"
+                            />
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2" for="interests">
+                                Areas of Interest
+                            </label>
+                            <select
+                                id="interests"
+                                name="interests"
+                                required
+                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand focus:border-brand"
+                            >
+                                <option value="">Select an option</option>
+                                <option value="food-pantry">Food Pantry Support</option>
+                                <option value="community-outreach">Community Outreach</option>
+                                <option value="administrative">Administrative Support</option>
+                                <option value="special-events">Special Events</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2" for="message">
+                                Why would you like to volunteer?
+                            </label>
+                            <textarea
+                                id="message"
+                                name="message"
+                                rows="4"
+                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand focus:border-brand"
+                            ></textarea>
+                        </div>
+
+                        <!-- Status messages -->
+                        <div id="form-status" class="hidden">
+                            <div id="success" class="hidden text-green-600 text-center py-4">
+                                Thanks for your submission! We'll get back to you shortly.
+                            </div>
+                            <div id="error" class="hidden text-red-600 text-center py-4">
+                                Oops! There was a problem submitting your form. Please try again.
+                            </div>
+                        </div>
+
+                        <button
+                            type="submit"
+                            class="w-full px-6 py-3 bg-brand hover:bg-brand-dark text-white font-medium rounded-lg transition-colors"
+                            onclick="trackEvent('Volunteer Page', 'Click', 'Submit Form')"
+                        >
+                            Submit Application
+                        </button>
+                    </div>
+                </form>
+            </section>
+        </div>
+    </div>
+</Layout>
+
+<script>
+    var form = document.getElementById("volunteer-form");
+    
+    async function handleSubmit(event) {
+        event.preventDefault();
+        var status = document.getElementById("form-status");
+        var success = document.getElementById("success");
+        var error = document.getElementById("error");
+
+        try {
+            var response = await fetch(event.target.action, {
+                method: form.method,
+                body: new FormData(event.target),
+                headers: {
+                    'Accept': 'application/json'
+                }
+            });
+            
+            if (response.ok) {
+                // Success
+                form.reset();
+                status.classList.remove("hidden");
+                success.classList.remove("hidden");
+                error.classList.add("hidden");
+                trackEvent('Volunteer Page', 'Form', 'Submission Success');
+                
+                // Hide success message after 5 seconds
+                setTimeout(() => {
+                    status.classList.add("hidden");
+                    success.classList.add("hidden");
+                }, 5000);
+            } else {
+                // Error
+                response.json().then(data => {
+                    if (Object.hasOwn(data, 'errors')) {
+                        status.classList.remove("hidden");
+                        error.classList.remove("hidden");
+                        success.classList.add("hidden");
+                        error.innerHTML = data["errors"].map(error => error["message"]).join(", ");
+                    } else {
+                        throw new Error("Oops! There was a problem submitting your form");
+                    }
+                });
+            }
+        } catch (error) {
+            status.classList.remove("hidden");
+            error.classList.remove("hidden");
+            success.classList.add("hidden");
+            error.innerHTML = "Oops! There was a problem submitting your form";
+            trackEvent('Volunteer Page', 'Form', 'Submission Error');
+        }
+    }
+    
+    if (form) {
+        form.addEventListener("submit", handleSubmit);
+    }
+</script> 

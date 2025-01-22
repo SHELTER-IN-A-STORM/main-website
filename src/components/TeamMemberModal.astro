@@ -1,0 +1,109 @@
+---
+interface Props {
+    id: string;
+}
+
+const { id } = Astro.props;
+---
+
+<div 
+    id={id}
+    class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4"
+    role="dialog"
+    aria-modal="true"
+>
+    <div class="bg-white rounded-2xl shadow-xl max-w-4xl w-full animate-scale-up">
+        <div class="p-6 md:p-8">
+            <div class="flex justify-end">
+                <button 
+                    type="button"
+                    onclick={`closeTeamModal('${id}')`}
+                    class="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                    aria-label="Close modal"
+                >
+                    <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                </button>
+            </div>
+
+            <div class="grid md:grid-cols-[300px,1fr] gap-8">
+                <div class="space-y-6">
+                    <div class="aspect-square w-full overflow-hidden rounded-xl shadow-lg">
+                        <img 
+                            id={`${id}-image`}
+                            src=""
+                            alt=""
+                            class="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                        />
+                    </div>
+                    <div class="space-y-2">
+                        <div class="inline-flex items-center gap-2 text-brand font-medium">
+                            <span class="w-12 h-[2px] bg-brand"></span>
+                            <span id={`${id}-role`} class="text-lg"></span>
+                        </div>
+                        <h2 id={`${id}-title`} class="text-3xl md:text-4xl font-bold text-gray-900"></h2>
+                    </div>
+                </div>
+
+                <div class="prose prose-lg prose-gray max-w-none">
+                    <div class="bg-gray-50 p-6 rounded-xl">
+                        <h3 class="text-xl font-semibold text-gray-900 mb-4">About</h3>
+                        <p id={`${id}-bio`} class="text-gray-600 leading-relaxed"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script is:inline>
+    function openTeamModal(id, member) {
+        const modal = document.getElementById(id);
+        if (modal) {
+            modal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+            
+            // Update modal content
+            document.getElementById(`${id}-title`).textContent = member.name;
+            document.getElementById(`${id}-image`).src = member.image;
+            document.getElementById(`${id}-image`).alt = member.name;
+            document.getElementById(`${id}-role`).textContent = member.role;
+            document.getElementById(`${id}-bio`).textContent = member.bio;
+        }
+    }
+
+    function closeTeamModal(id) {
+        const modal = document.getElementById(id);
+        if (modal) {
+            modal.classList.add('hidden');
+            document.body.style.overflow = '';
+        }
+    }
+
+    // Close modal on escape key
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            document.querySelectorAll('[role="dialog"]').forEach(modal => {
+                closeTeamModal(modal.id);
+            });
+        }
+    });
+</script>
+
+<style>
+    .animate-scale-up {
+        animation: scaleUp 0.3s ease-out;
+    }
+
+    @keyframes scaleUp {
+        from {
+            transform: scale(0.95);
+            opacity: 0;
+        }
+        to {
+            transform: scale(1);
+            opacity: 1;
+        }
+    }
+</style>

@@ -1,0 +1,179 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { siteConfig } from '../../config/site';
+import { trackEvent } from '../../utils/analytics';
+import PartnerScroll from '../../components/PartnerScroll.astro';
+import FullScreenAlert from '../../components/alerts/FullScreenAlert.astro';
+---
+
+<Layout title="Thank You for Your Donation">
+    <!-- Hero Section -->
+    <section class="relative min-h-screen flex items-center justify-center">
+        <div class="absolute inset-0">
+            <img 
+                src={siteConfig.metadata.openGraph.image}
+                alt="Thank you for your donation"
+                class="w-full h-full object-cover"
+            />
+            <div class="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/60"></div>
+        </div>
+
+        <div class="relative container mx-auto px-6 z-10">
+            <div class="max-w-4xl mx-auto text-center text-white space-y-8">
+                <h1 
+                    class="text-5xl md:text-7xl font-bold mb-6 animate-fade-in"
+                    style="text-wrap: balance;"
+                >
+                    Thank You for Your Support
+                </h1>
+                <p 
+                    class="text-xl md:text-2xl text-gray-200 mb-12 animate-slide-up-delay-1 max-w-2xl mx-auto"
+                    style="text-wrap: balance;"
+                >
+                    Your generosity helps us serve our community
+                </p>
+            </div>
+        </div>
+
+        <div class="absolute bottom-12 left-1/2 transform -translate-x-1/2 z-10">
+            <a 
+                href="#content" 
+                class="text-white/80 hover:text-white transition-colors duration-300 animate-float"
+                aria-label="Scroll to content"
+            >
+                <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/>
+                </svg>
+            </a>
+        </div>
+    </section>
+
+    <div id="content" class="min-h-screen bg-gradient-to-b from-gray-50 to-white">
+        <div class="container mx-auto px-6 py-48"> {/* Increased padding from py-32 to py-48 */}
+            <div class="max-w-4xl mx-auto text-center">
+                {/* Hero Section */}
+                <div class="relative mb-16">
+                    <div class="absolute inset-0 flex items-center justify-center">
+                        <div class="w-48 h-48 bg-brand/5 rounded-full blur-3xl"></div>
+                    </div>
+                    <div class="relative">
+                        <div class="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-brand to-brand-dark rounded-2xl shadow-xl shadow-brand/20 mb-8 transform -rotate-6">
+                            <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path 
+                                    stroke-linecap="round" 
+                                    stroke-linejoin="round" 
+                                    stroke-width="2" 
+                                    d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
+                                />
+                            </svg>
+                        </div>
+                        
+                        <div class="space-y-6">
+                            <div class="inline-flex items-center gap-3 text-brand font-medium">
+                                <span class="w-12 h-[2px] bg-gradient-to-r from-brand to-brand-dark rounded-full"></span>
+                                <span class="uppercase tracking-wider text-sm">Thank You</span>
+                                <span class="w-12 h-[2px] bg-gradient-to-r from-brand-dark to-brand rounded-full"></span>
+                            </div>
+                            <h1 class="text-5xl md:text-6xl font-bold text-gray-900 leading-tight">
+                                Your Support Makes<br/>a Real Difference
+                            </h1>
+                            <p class="text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
+                                Your generous donation empowers us to continue providing vital emergency assistance and support to families in need throughout our Lake Ozark community.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Impact Stats */}
+                <div class="grid md:grid-cols-3 gap-8 mt-16">
+                    {[
+                        { 
+                            number: '24/7', 
+                            label: 'Emergency Support',
+                            description: 'Always available when help is needed most'
+                        },
+                        { 
+                            number: '100%', 
+                            label: 'Goes to Programs',
+                            description: 'Every dollar directly supports our mission'
+                        },
+                        { 
+                            number: '2', 
+                            label: 'Counties Served',
+                            description: 'Making an impact across our region'
+                        },
+                    ].map(stat => (
+                        <div class="group bg-white p-8 rounded-2xl shadow-lg shadow-gray-100/50 border border-gray-100 hover:shadow-xl hover:shadow-brand/5 transition-all duration-300 hover:-translate-y-1">
+                            <div class="text-5xl font-bold bg-gradient-to-r from-brand to-brand-dark bg-clip-text text-transparent mb-3">{stat.number}</div>
+                            <div class="text-gray-900 font-medium text-lg mb-2">{stat.label}</div>
+                            <div class="text-gray-500 text-sm">{stat.description}</div>
+                        </div>
+                    ))}
+                </div>
+
+                {/* CTAs */}
+                <div class="flex flex-col sm:flex-row gap-4 justify-center mt-16">
+                    <a 
+                        href="/volunteer" 
+                        class="inline-flex items-center justify-center px-8 py-4 bg-gradient-to-r from-brand to-brand-dark text-white rounded-xl shadow-lg shadow-brand/20 hover:shadow-xl hover:shadow-brand/30 transition-all duration-300 hover:-translate-y-0.5 font-medium"
+                        onclick="trackEvent('Thank You Page', 'Click', 'Volunteer CTA')"
+                    >
+                        Become a Volunteer
+                        <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                        </svg>
+                    </a>
+                    <a 
+                        href="/" 
+                        class="inline-flex items-center justify-center px-8 py-4 bg-white text-brand border-2 border-brand/20 rounded-xl hover:bg-brand/5 hover:border-brand transition-colors font-medium"
+                    >
+                        Return Home
+                    </a>
+                </div>
+
+                {/* Receipt Info */}
+                <div class="mt-16 p-6 bg-gray-50 rounded-2xl border border-gray-100 text-sm text-gray-600 max-w-2xl mx-auto">
+                    <div class="flex items-center justify-center gap-2 mb-4 text-brand">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                        <span class="font-medium">Donation Receipt Sent</span>
+                    </div>
+                    <p>
+                        We've sent a donation receipt to your email. For tax purposes, our EIN is {siteConfig.shelter.ein || '[EIN Number]'}.
+                    </p>
+                    <p class="mt-3">
+                        Questions? Contact us at{' '}
+                        <a href={`mailto:${siteConfig.contact.email}`} class="text-brand hover:text-brand-dark font-medium">
+                            {siteConfig.contact.email}
+                        </a>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        {/* Partners Section */}
+        <section class="py-24 bg-gray-50">
+            <div class="text-center mb-12">
+                <div class="inline-flex items-center gap-3 text-brand font-medium mb-6">
+                    <span class="w-12 h-[2px] bg-gradient-to-r from-brand to-brand-dark rounded-full"></span>
+                    <span class="uppercase tracking-wider text-sm">Our Partners</span>
+                    <span class="w-12 h-[2px] bg-gradient-to-r from-brand-dark to-brand rounded-full"></span>
+                </div>
+                <h2 class="text-4xl font-bold text-gray-900">Working Together to Help Our Community</h2>
+            </div>
+            <PartnerScroll />
+        </section>
+    </div>
+</Layout>
+
+<style>
+    .animate-float {
+        animation: float 3s ease-in-out infinite;
+    }
+
+    @keyframes float {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-10px); }
+    }
+</style>

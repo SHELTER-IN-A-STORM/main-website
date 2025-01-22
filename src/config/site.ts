@@ -42,7 +42,7 @@ export const siteConfig = {
     contact: {
         phone: "573-365-3366",
         emergency: "573-365-3366",
-        email: "name@ben.com",
+        email: "compliance@shelterinastorm.org",
         hours: "24/7 for emergency food assistance"
     },
     shelter: {
@@ -64,7 +64,40 @@ export const siteConfig = {
         },
         mission: {
             title: "Our Mission",
-            description: "Our mission is to share the love of Jesus Christ by providing emergency basic needs for our neighbors in Miller and Camden counties which is all made possible through loving donations."
+            description: "Our mission is to share the love of Jesus Christ by providing emergency basic needs for our neighbors in Miller and Camden counties which is all made possible through loving donations.",
+            values: [
+                {
+                    title: "Community First",
+                    description: "We prioritize the needs of our local community by providing immediate assistance and support.",
+                    icon: "M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                },
+                {
+                    title: "24/7 Availability",
+                    description: "Our emergency food pantry is accessible around the clock, ensuring help is always available when needed.",
+                    icon: "M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                },
+                {
+                    title: "No Paperwork Required",
+                    description: "Access our food pantry without any documentation or registration - just come as you are when you need help.",
+                    icon: "M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                },
+                {
+                    title: "Faith in Action",
+                    description: "Guided by Christian values, we demonstrate love through practical assistance and support.",
+                    icon: "M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
+                },
+                {
+                    title: "Local Focus",
+                    description: "Dedicated to serving Miller and Camden counties with targeted support for our neighbors.",
+                    icon: "M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+                },
+                {
+                    title: "Sustainable Impact",
+                    description: "Creating lasting positive change through emergency assistance and community partnerships.",
+                    icon: "M13 10V3L4 14h7v7l9-11h-7z"
+                },
+                // Add more values
+            ]
         },
         services: [
             {
@@ -129,6 +162,16 @@ export const siteConfig = {
                 logo: "https://hopehouseofmillercounty.com/wp-content/uploads/2022/12/Hope-House-Logo-e1511208623755.png",
                 url: "https://hopehouseofmillercounty.com"
             }
-        ]
+        ],
+        team: [
+            {
+                name: "Audrey Tanner",
+                role: "Executive Director",
+                image: "https://cdn.shelterinastorm.org/team/coming-soon.jpg",
+                bio: "A bio for this team member is not yet available. Check back soon!"
+            },
+            // Add more team members
+        ],
+        ein: "43-1193150"
     }
 } 

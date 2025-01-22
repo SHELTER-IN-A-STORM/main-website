@@ -66,59 +66,67 @@ const pastEvents = allEvents.filter(event => event.data.status === 'past')
         <!-- Upcoming Events -->
         <section class="mb-16">
           <h2 class="text-2xl font-semibold mb-6">Upcoming Events</h2>
-          <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {upcomingEvents.map(event => (
-              <a href={`/events/${event.slug}`} class="group">
-                <div class="bg-white rounded-lg shadow-md overflow-hidden">
-                  <img 
-                    src={event.data.image} 
-                    alt={event.data.title}
-                    class="w-full h-48 object-cover"
-                  />
-                  <div class="p-6">
-                    <div class="text-brand font-medium mb-2">
-                      {format(event.data.date, 'MMMM d, yyyy')}
+          {upcomingEvents.length > 0 ? (
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {upcomingEvents.map(event => (
+                <a href={`/events/${event.slug}`} class="group">
+                  <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                    <img 
+                      src={event.data.image} 
+                      alt={event.data.title}
+                      class="w-full h-48 object-cover"
+                    />
+                    <div class="p-6">
+                      <div class="text-brand font-medium mb-2">
+                        {format(event.data.date, 'MMMM d, yyyy')}
+                      </div>
+                      <h3 class="text-xl font-semibold mb-2 group-hover:text-brand">
+                        {event.data.title}
+                      </h3>
+                      <p class="text-gray-600">
+                        {event.data.description}
+                      </p>
                     </div>
-                    <h3 class="text-xl font-semibold mb-2 group-hover:text-brand">
-                      {event.data.title}
-                    </h3>
-                    <p class="text-gray-600">
-                      {event.data.description}
-                    </p>
                   </div>
-                </div>
-              </a>
-            ))}
-          </div>
+                </a>
+              ))}
+            </div>
+          ) : (
+            <p class="text-gray-600 text-center py-8">No upcoming events scheduled at this time.</p>
+          )}
         </section>
 
         <!-- Past Events -->
         <section>
           <h2 class="text-2xl font-semibold mb-6">Past Events</h2>
-          <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {pastEvents.map(event => (
-              <a href={`/events/${event.slug}`} class="group">
-                <div class="bg-white rounded-lg shadow-md overflow-hidden opacity-75 hover:opacity-100">
-                  <img 
-                    src={event.data.image} 
-                    alt={event.data.title}
-                    class="w-full h-48 object-cover"
-                  />
-                  <div class="p-6">
-                    <div class="text-brand font-medium mb-2">
-                      {format(event.data.date, 'MMMM d, yyyy')}
+          {pastEvents.length > 0 ? (
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {pastEvents.map(event => (
+                <a href={`/events/${event.slug}`} class="group">
+                  <div class="bg-white rounded-lg shadow-md overflow-hidden opacity-75 hover:opacity-100">
+                    <img 
+                      src={event.data.image} 
+                      alt={event.data.title}
+                      class="w-full h-48 object-cover"
+                    />
+                    <div class="p-6">
+                      <div class="text-brand font-medium mb-2">
+                        {format(event.data.date, 'MMMM d, yyyy')}
+                      </div>
+                      <h3 class="text-xl font-semibold mb-2 group-hover:text-brand">
+                        {event.data.title}
+                      </h3>
+                      <p class="text-gray-600">
+                        {event.data.description}
+                      </p>
                     </div>
-                    <h3 class="text-xl font-semibold mb-2 group-hover:text-brand">
-                      {event.data.title}
-                    </h3>
-                    <p class="text-gray-600">
-                      {event.data.description}
-                    </p>
                   </div>
-                </div>
-              </a>
-            ))}
-          </div>
+                </a>
+              ))}
+            </div>
+          ) : (
+            <p class="text-gray-600 text-center py-8">No past events to display.</p>
+          )}
         </section>
     </div>
 </Layout> 

@@ -1,24 +1,25 @@
 ---
 import { siteConfig } from '../config/site';
+import { trackEvent } from '../utils/analytics';
 ---
 
 <!-- Footer Separator -->
-<div class="w-full h-24 bg-gradient-to-b from-gray-50 to-gray-100">
-    <div class="container mx-auto px-6">
+<div class="w-full h-16 bg-gradient-to-b from-gray-50 to-gray-100">
+    <div class="container mx-auto px-4">
         <div class="w-full h-[1px] bg-gradient-to-r from-transparent via-brand/20 to-transparent"></div>
     </div>
 </div>
 
 <footer class="bg-gray-100">
-    <div class="container mx-auto px-6 py-20">
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-x-16 gap-y-14 max-w-5xl mx-auto">
+    <div class="container mx-auto px-4 py-12">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-x-12 gap-y-10 max-w-5xl mx-auto">
             <!-- Brand Info -->
-            <div class="space-y-8 md:col-span-1">
+            <div class="space-y-6 md:col-span-1">
                 <div class="flex items-center gap-3">
                     <img 
                         src="https://cdn.shelterinastorm.org/images/SHELTER_IN_A_STORM_LOGO.png" 
                         alt="Shelter in a Storm Logo" 
-                        class="h-20 w-auto"
+                        class="h-16 w-auto"
                     />
                     <div class="flex flex-col">
                         <span class="text-lg font-bold text-gray-900 leading-tight">
@@ -26,7 +27,7 @@ import { siteConfig } from '../config/site';
                         </span>
                         <span class="text-xs text-gray-500 font-medium">
                             Miller & Camden County
-                                                </span>
+                        </span>
                     </div>
                 </div>
                 <p class="text-sm text-gray-600 leading-relaxed">
@@ -34,7 +35,7 @@ import { siteConfig } from '../config/site';
                 </p>
             </div>
             <!-- Quick Links -->
-            <div class="space-y-8 md:col-span-1">
+            <div class="space-y-6 md:col-span-1">
                 <h3 class="text-lg font-semibold text-gray-900">Our Services</h3>
                 <ul class="space-y-4">
                     {siteConfig.shelter.services.map(service => (
@@ -54,14 +55,14 @@ import { siteConfig } from '../config/site';
             </div>
 
             <!-- Help Request -->
-            <div class="space-y-8 md:col-span-1">
+            <div class="space-y-6 md:col-span-1">
                 <h3 class="text-lg font-semibold text-gray-900">Emergency Help</h3>
                 <p class="text-gray-600 leading-relaxed">
                     Need emergency assistance? Fill out our form and we'll respond as quickly as possible.
                 </p>
                 <a 
                     href="/assistance-form"
-                    class="inline-flex items-center justify-center px-6 py-3 bg-brand hover:bg-brand-dark text-white rounded-lg transition-colors group font-medium"
+                    class="inline-flex items-center justify-center px-5 py-2.5 bg-brand hover:bg-brand-dark text-white rounded-lg transition-colors group font-medium"
                 >
                     <span class="font-medium">Submit Assistance Request</span>
                     <svg class="w-5 h-5 ml-2 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -72,41 +73,62 @@ import { siteConfig } from '../config/site';
         </div>
 
         <!-- Bottom Bar -->
-        <div class="mt-20 pt-8 border-t border-gray-200 max-w-5xl mx-auto text-center">
-            <div class="flex flex-col items-center gap-6">
-                <p class="text-gray-600 text-sm">
-                    © 2025 Shelter in a Storm. All rights reserved.
-                </p>
-                <div class="flex items-center flex-wrap justify-center gap-x-6 gap-y-2 text-sm">
+        <div class="mt-12 pt-6 border-t border-gray-200 max-w-5xl mx-auto">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Legal Links -->
+                <div class="flex items-center justify-center md:justify-start space-x-6">
                     <a 
-                        class="text-gray-600 hover:text-brand transition-colors"
                         href="/legal/privacy"
+                        onclick="trackEvent('Footer', 'Click', 'Privacy Policy')"
+                        class="text-sm text-gray-500 hover:text-brand transition-colors relative group whitespace-nowrap"
                     >
                         Privacy Policy
+                        <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-brand transition-all group-hover:w-full"></span>
                     </a>
                     <a 
-                        class="text-gray-600 hover:text-brand transition-colors"
                         href="/legal/terms"
+                        onclick="trackEvent('Footer', 'Click', 'Terms of Use')"
+                        class="text-sm text-gray-500 hover:text-brand transition-colors relative group whitespace-nowrap"
                     >
                         Terms of Use
+                        <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-brand transition-all group-hover:w-full"></span>
                     </a>
                     <a 
-                        class="text-gray-600 hover:text-brand transition-colors"
                         href="/legal/accessibility"
+                        onclick="trackEvent('Footer', 'Click', 'Accessibility')"
+                        class="text-sm text-gray-500 hover:text-brand transition-colors relative group whitespace-nowrap"
                     >
                         Accessibility
+                        <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-brand transition-all group-hover:w-full"></span>
                     </a>
-                    <span class="text-gray-400">|</span>
+                    <button 
+                        onclick="window.showCookieConsent(); trackEvent('Footer', 'Click', 'Cookie Settings')"
+                        class="text-sm text-gray-500 hover:text-brand transition-colors relative group whitespace-nowrap"
+                    >
+                        Cookie Settings
+                        <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-brand transition-all group-hover:w-full"></span>
+                    </button>
+                </div>
+
+                <!-- Copyright & Credits -->
+                <div class="flex flex-col items-center md:items-end gap-2">
+                    <p class="text-sm text-gray-400">
+                        © {new Date().getFullYear()} Shelter in a Storm. All rights reserved.
+                    </p>
                     <a 
                         href={siteConfig.developer.url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        class="text-gray-600 hover:text-brand transition-colors"
+                        onclick="trackEvent('Footer', 'Click', 'Developer Link')"
+                        class="inline-flex items-center gap-2 text-sm text-gray-400 hover:text-brand transition-colors group"
                     >
-                        Built by {siteConfig.developer.name}
+                        <span>Built by {siteConfig.developer.name}</span>
+                        <svg class="w-4 h-4 transform group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+                        </svg>
                     </a>
                 </div>
             </div>
         </div>
     </div>
-</footer> 
+</footer>
