@@ -1,0 +1,155 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { siteConfig } from '../../config/site';
+---
+
+<Layout title="Terms of Use">
+    <!-- Hero Section -->
+    <section class="relative min-h-[40vh] flex items-center justify-center">
+        <div class="absolute inset-0">
+            <img 
+                src={siteConfig.metadata.openGraph.image}
+                alt="Terms of Use"
+                class="w-full h-full object-cover"
+            />
+            <div class="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/60"></div>
+        </div>
+
+        <div class="container mx-auto px-6 relative z-10">
+            <div class="max-w-3xl mx-auto text-center text-white space-y-4">
+                <h1 
+                    class="text-4xl md:text-5xl font-bold animate-fade-in"
+                    style="text-wrap: balance;"
+                >
+                    Terms of Use
+                </h1>
+                <p 
+                    class="text-lg md:text-xl text-gray-200 animate-slide-up-delay-1"
+                    style="text-wrap: balance;"
+                >
+                    Last Updated: {new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <section class="py-16 md:py-24">
+        <div class="container mx-auto px-4">
+            <div class="max-w-3xl mx-auto prose prose-lg prose-gray">
+                <div class="space-y-12">
+                    <!-- Introduction -->
+                    <div>
+                        <p>
+                            Welcome to Shelter in a Storm. By accessing and using our website, you agree to comply with and be bound by these Terms of Use. Please read these terms carefully before using our services.
+                        </p>
+                    </div>
+
+                    <!-- Acceptance of Terms -->
+                    <div>
+                        <h2>1. Acceptance of Terms</h2>
+                        <p>
+                            By accessing or using our website, you acknowledge that you have read, understood, and agree to be bound by these Terms of Use, our Privacy Policy, and any other policies referenced herein.
+                        </p>
+                    </div>
+
+                    <!-- Use of Services -->
+                    <div>
+                        <h2>2. Use of Services</h2>
+                        <p>
+                            Our services are intended to provide support and assistance to those in need. You agree to use our services only for their intended purposes and in compliance with all applicable laws and regulations.
+                        </p>
+                        <h3>2.1 Prohibited Activities</h3>
+                        <p>You agree not to:</p>
+                        <ul>
+                            <li>Use our services for any unlawful purpose</li>
+                            <li>Harass, abuse, or harm others</li>
+                            <li>Submit false or misleading information</li>
+                            <li>Attempt to gain unauthorized access to our systems</li>
+                            <li>Interfere with the proper functioning of the website</li>
+                        </ul>
+                    </div>
+
+                    <!-- User Information -->
+                    <div>
+                        <h2>3. User Information</h2>
+                        <p>
+                            When using our services, you agree to provide accurate, current, and complete information. We handle your information in accordance with our Privacy Policy.
+                        </p>
+                    </div>
+
+                    <!-- Intellectual Property -->
+                    <div>
+                        <h2>4. Intellectual Property</h2>
+                        <p>
+                            The Shelter in a Storm name, logo, branding, and original content are the property of Shelter in a Storm and are protected by copyright and other intellectual property laws. Some images and other content on this website are used under license from third parties. For detailed attribution and licensing information, please visit our <a href="/legal/license" class="text-brand hover:text-brand-dark">License</a> page.
+                        </p>
+                    </div>
+
+                    <!-- Disclaimer -->
+                    <div>
+                        <h2>5. Disclaimer</h2>
+                        <p>
+                            Our services are provided "as is" without any warranties, expressed or implied. We do not guarantee the accuracy, completeness, or reliability of any content or services provided on our website.
+                        </p>
+                    </div>
+
+                    <!-- Limitation of Liability -->
+                    <div>
+                        <h2>6. Limitation of Liability</h2>
+                        <p>
+                            To the fullest extent permitted by law, Shelter in a Storm shall not be liable for any indirect, incidental, special, consequential, or punitive damages arising from or related to your use of our services.
+                        </p>
+                    </div>
+
+                    <!-- Changes to Terms -->
+                    <div>
+                        <h2>7. Changes to Terms</h2>
+                        <p>
+                            We reserve the right to modify these Terms of Use at any time. We will notify users of any material changes by posting the updated terms on our website. Your continued use of our services after such changes constitutes acceptance of the modified terms.
+                        </p>
+                    </div>
+
+                    <!-- Governing Law -->
+                    <div>
+                        <h2>8. Governing Law</h2>
+                        <p>
+                            These Terms of Use shall be governed by and construed in accordance with the laws of the State of Missouri, without regard to its conflict of law provisions.
+                        </p>
+                    </div>
+
+                    <!-- Contact Information -->
+                    <div>
+                        <h2>9. Contact Information</h2>
+                        <p>
+                            If you have any questions about these Terms of Use, please contact us at:
+                        </p>
+                        <div class="mt-4">
+                            <a 
+                                href="mailto:compliance@shelterinastorm.org"
+                                class="text-brand hover:text-brand-dark transition-colors"
+                            >
+                                compliance@shelterinastorm.org
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Severability -->
+                    <div>
+                        <h2>10. Severability</h2>
+                        <p>
+                            If any provision of these Terms of Use is found to be invalid or unenforceable, the remaining provisions shall remain in full force and effect.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Last Updated -->
+                <div class="mt-16 pt-8 border-t border-gray-200">
+                    <p class="text-sm text-gray-600">
+                        These Terms of Use were last updated on {new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+</Layout> 
