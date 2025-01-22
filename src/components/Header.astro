@@ -4,12 +4,38 @@ import NotificationBanner from './NotificationBanner.astro';
 import EventAlert from './alerts/EventAlert.astro';
 import FullScreenAlert from './alerts/FullScreenAlert.astro';
 
+const { pathname } = Astro.url;
+const isHomePage = pathname === '/';
+
 const navigation = [
-    { name: 'Home', href: '/' },
-    { name: 'About', href: '/about' },
-    { name: 'Services', href: '/services' },
-    { name: 'Get Help', href: '/get-help' },
-    { name: 'Donate', href: '/donate' },
+    { 
+        name: 'Home', 
+        href: isHomePage ? '#hero' : '/',
+        isAnchor: true,
+        section: 'hero'
+    },
+    { 
+        name: 'About', 
+        href: isHomePage ? '#mission' : '/#mission',
+        isAnchor: true,
+        section: 'mission'
+    },
+    { 
+        name: 'Services', 
+        href: isHomePage ? '#services' : '/#services',
+        isAnchor: true,
+        section: 'services'
+    },
+    { 
+        name: 'Get Help', 
+        href: '/get-help',
+        isAnchor: false 
+    },
+    { 
+        name: 'Donate', 
+        href: '/donate',
+        isAnchor: false 
+    },
 ];
 
 // You can control banners through siteConfig or a CMS
@@ -40,7 +66,8 @@ const notifications = [
                             SHELTER IN A STORM
                         </span>
                         <span class="text-xs text-gray-500 font-medium">
-                            Miller & Camden County                        </span>
+                            Miller & Camden County
+                        </span>
                     </div>
                 </a>
 
@@ -54,6 +81,10 @@ const notifications = [
                                     ? 'text-white bg-brand hover:bg-brand-dark' 
                                     : 'text-gray-700 hover:bg-gray-50'
                                 }`}
+                            {...(item.isAnchor && isHomePage ? {
+                                'data-scroll': true,
+                                'onclick': 'scrollToSection(event, this)'
+                            } : {})}
                         >
                             {item.name}
                         </a>
@@ -103,14 +134,16 @@ const notifications = [
                                     ? 'text-white bg-brand hover:bg-brand-dark' 
                                     : 'text-gray-700 hover:bg-gray-50'
                                 }`}
+                            {...(item.isAnchor && isHomePage ? {
+                                'data-scroll': true,
+                                'onclick': 'scrollToSection(event, this)'
+                            } : {})}
                         >
                             {item.name}
                         </a>
                     ))}
                 </div>
-                
             </div>
-            
         </div>
     </div>
     {notifications.map(notification => (
@@ -127,6 +160,7 @@ const notifications = [
 </header>
 
 <script>
+    // Handle mobile menu
     const mobileMenuButton = document.getElementById('mobile-menu-button');
     const mobileMenu = document.getElementById('mobile-menu');
     const menuOpenIcon = document.getElementById('menu-open-icon');
@@ -142,6 +176,44 @@ const notifications = [
             menuCloseIcon.classList.toggle('hidden');
         });
     }
+
+    // Updated smooth scroll function with better offset handling
+    function scrollToSection(event: Event, element: HTMLAnchorElement) {
+        if (!element.dataset.scroll) return;
+        
+        event.preventDefault();
+        const href = element.getAttribute('href');
+        if (!href) return;
+        
+        const targetId = href.slice(1);
+        const targetElement = document.getElementById(targetId);
+        
+        if (targetElement) {
+            const headerHeight = document.querySelector('header')?.offsetHeight || 80;
+            const elementPosition = targetElement.getBoundingClientRect().top;
+            const offsetPosition = elementPosition + window.pageYOffset - headerHeight;
+
+            window.scrollTo({
+                top: offsetPosition,
+                behavior: 'smooth'
+            });
+
+            // Close mobile menu if open
+            if (mobileMenu && !mobileMenu.classList.contains('hidden')) {
+                mobileMenu.classList.add('hidden');
+                menuOpenIcon?.classList.remove('hidden');
+                menuCloseIcon?.classList.add('hidden');
+                mobileMenuButton?.setAttribute('aria-expanded', 'false');
+            }
+        }
+    }
+
+    // Make scrollToSection available globally
+    window.scrollToSection = scrollToSection;
+
+    // Add scroll padding to account for fixed header
+    document.documentElement.style.scrollPaddingTop = 
+        (document.querySelector('header')?.offsetHeight || 80) + 'px';
 </script>
 
 <script>
@@ -156,22 +228,9 @@ declare global {
             actionUrl: string;
             isExternalLink?: boolean;
         }) => void;
+        scrollToSection: (event: Event, element: HTMLAnchorElement) => void;
     }
 }
-</script>
-
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-    window.showEventAlert({
-        title: "Annual Chili Cook-Off",
-        description: "Join us for our biggest fundraising event! Compete or just enjoy great food and community.",
-        image: "https://i0.wp.com/fultonny.org/wp-content/uploads/2024/10/chilicookoff.jpg?fit=500%2C369&ssl=1",
-        badge: "Upcoming Event", 
-        actionText: "Register Now",
-        actionUrl: "/get-help",
-        isExternalLink: true
-    });
-});
 </script>
 
 <!-- Alert Components -->
