@@ -1,0 +1,65 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Button from '../components/Button.astro';
+import { siteConfig } from '../config/site';
+
+export const prerender = false; // Important: Disable prerendering for this page
+---
+
+<Layout title="Site Maintenance">
+    <section class="min-h-screen flex items-center justify-center relative overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-b from-gray-50 to-gray-100"></div>
+        
+        <div class="container mx-auto px-6 relative">
+            <div class="max-w-2xl mx-auto text-center space-y-8 animate-fade-in">
+                <div class="space-y-4">
+                    <div class="inline-flex items-center gap-2 text-brand font-medium animate-slide-up">
+                        <span class="w-12 h-[2px] bg-brand"></span>
+                        <span>Maintenance Mode</span>
+                        <span class="w-12 h-[2px] bg-brand"></span>
+                    </div>
+                    <h1 class="text-4xl md:text-5xl font-bold text-gray-900 animate-slide-up-delay-1">
+                        We'll Be Back Soon!
+                    </h1>
+                    <p class="text-lg text-gray-600 max-w-xl mx-auto animate-slide-up-delay-2">
+                        We're currently performing some maintenance on our website to improve your experience. We'll be back online shortly. Thank you for your patience.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+</Layout>
+
+<style>
+    .animate-fade-in {
+        animation: fadeIn 0.8s ease-out;
+    }
+
+    .animate-slide-up {
+        animation: slideUp 0.8s ease-out;
+    }
+
+    .animate-slide-up-delay-1 {
+        animation: slideUp 0.8s ease-out 0.2s both;
+    }
+
+    .animate-slide-up-delay-2 {
+        animation: slideUp 0.8s ease-out 0.4s both;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+
+    @keyframes slideUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+</style>
