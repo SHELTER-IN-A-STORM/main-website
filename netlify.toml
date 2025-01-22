@@ -32,4 +32,9 @@
   bundle = true
   minify = true
 [build.processing.images]
-  compress = true 
+  compress = true
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    Access-Control-Allow-Origin = "*" 
