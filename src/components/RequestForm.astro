@@ -1,0 +1,384 @@
+---
+// Import any necessary dependencies
+import { siteConfig } from '../config/site';
+---
+
+<div class="grid md:grid-cols-2 gap-12 items-start">
+    <!-- Form -->
+    <form 
+        id="multi-step-form" 
+        class="space-y-6"
+        action="https://formspree.io/f/xanqwbqb"
+        method="POST"
+    >
+        <!-- Progress Steps -->
+        <div class="flex justify-between mb-8">
+            {['Personal Info', 'Contact Details', 'Assistance Type', 'Additional Info'].map((step, index) => (
+                <div class="flex flex-col items-center">
+                    <div class={`w-10 h-10 rounded-full flex items-center justify-center border-2 transition-colors duration-300 
+                        ${index === 0 ? 'bg-brand border-brand text-white' : 'border-gray-300 text-gray-400'}`}
+                    >
+                        {index + 1}
+                    </div>
+                    <span class="text-sm mt-2 text-gray-600">{step}</span>
+                </div>
+            ))}
+        </div>
+
+        <!-- Step 1: Personal Info -->
+        <div class="form-step" data-step="1">
+            <div class="grid md:grid-cols-2 gap-6">
+                <div class="space-y-2">
+                    <label for="firstName" class="text-sm font-medium text-gray-900">
+                        First Name <span class="text-brand">*</span>
+                    </label>
+                    <input 
+                        type="text" 
+                        id="firstName" 
+                        name="firstName" 
+                        class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-brand focus:ring-2 focus:ring-brand/20 outline-none transition-colors"
+                        required
+                    />
+                </div>
+                <div class="space-y-2">
+                    <label for="lastName" class="text-sm font-medium text-gray-900">
+                        Last Name <span class="text-brand">*</span>
+                    </label>
+                    <input 
+                        type="text" 
+                        id="lastName" 
+                        name="lastName" 
+                        class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-brand focus:ring-2 focus:ring-brand/20 outline-none transition-colors"
+                        required
+                    />
+                </div>
+            </div>
+            <div class="mt-8 flex justify-end">
+                <button 
+                    type="button"
+                    class="px-8 py-3 bg-brand hover:bg-brand-dark text-white rounded-lg transition-colors duration-300 font-medium shadow-lg shadow-brand/20"
+                    onclick="event.preventDefault(); nextStep(1);"
+                >
+                    Next Step
+                </button>
+            </div>
+        </div>
+
+        <!-- Step 2: Contact Details -->
+        <div class="form-step hidden" data-step="2">
+            <div class="space-y-6">
+                <div class="space-y-2">
+                    <label for="phone" class="text-sm font-medium text-gray-900">Phone Number</label>
+                    <input 
+                        type="tel" 
+                        id="phone" 
+                        name="phone" 
+                        class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-brand focus:ring-2 focus:ring-brand/20 outline-none transition-colors"
+                    />
+                    <p class="text-sm text-gray-500 mt-1">Optional, but helpful for urgent communication</p>
+                </div>
+                <div class="space-y-2">
+                    <label for="email" class="text-sm font-medium text-gray-900">
+                        Email Address <span class="text-brand">*</span>
+                    </label>
+                    <input 
+                        type="email" 
+                        id="email" 
+                        name="email" 
+                        class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-brand focus:ring-2 focus:ring-brand/20 outline-none transition-colors"
+                        required
+                    />
+                </div>
+                <!-- Address Fields -->
+                <div class="space-y-4">
+                    <h4 class="text-sm font-medium text-gray-700">Mailing Address (Optional)</h4>
+                    <div class="space-y-2">
+                        <label for="street" class="text-sm font-medium text-gray-900">Street Address</label>
+                        <input 
+                            type="text" 
+                            id="street" 
+                            name="street" 
+                            class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-brand focus:ring-2 focus:ring-brand/20 outline-none transition-colors"
+                        />
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="space-y-2">
+                            <label for="city" class="text-sm font-medium text-gray-900">City</label>
+                            <input 
+                                type="text" 
+                                id="city" 
+                                name="city" 
+                                class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-brand focus:ring-2 focus:ring-brand/20 outline-none transition-colors"
+                            />
+                        </div>
+                        <div class="space-y-2">
+                            <label for="state" class="text-sm font-medium text-gray-900">State</label>
+                            <input 
+                                type="text" 
+                                id="state" 
+                                name="state" 
+                                class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-brand focus:ring-2 focus:ring-brand/20 outline-none transition-colors"
+                            />
+                        </div>
+                    </div>
+                    <div class="space-y-2">
+                        <label for="zipcode" class="text-sm font-medium text-gray-900">ZIP Code</label>
+                        <input 
+                            type="text" 
+                            id="zipcode" 
+                            name="zipcode" 
+                            class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-brand focus:ring-2 focus:ring-brand/20 outline-none transition-colors"
+                        />
+                    </div>
+                </div>
+            </div>
+            <div class="mt-8 flex justify-between">
+                <button 
+                    type="button"
+                    class="px-8 py-3 bg-gray-100 hover:bg-gray-200 text-gray-900 rounded-lg transition-colors duration-300 font-medium"
+                    onclick="event.preventDefault(); prevStep(2);"
+                >
+                    Previous
+                </button>
+                <button 
+                    type="button"
+                    class="px-8 py-3 bg-brand hover:bg-brand-dark text-white rounded-lg transition-colors duration-300 font-medium shadow-lg shadow-brand/20"
+                    onclick="event.preventDefault(); nextStep(2);"
+                >
+                    Next Step
+                </button>
+            </div>
+        </div>
+
+        <!-- Step 3: Assistance Type -->
+        <div class="form-step hidden" data-step="3">
+            <div class="space-y-2">
+                <label for="assistance" class="text-sm font-medium text-gray-900">
+                    Type of Assistance Needed <span class="text-brand">*</span>
+                </label>
+                <select 
+                    id="assistance" 
+                    name="assistance" 
+                    class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-brand focus:ring-2 focus:ring-brand/20 outline-none transition-colors"
+                    required
+                >
+                    <option value="">Please select...</option>
+                    <option value="food">Food Assistance</option>
+                    <option value="shelter">Emergency Shelter</option>
+                    <option value="utilities">Utility Assistance</option>
+                    <option value="other">Other Support</option>
+                </select>
+            </div>
+            <div class="mt-8 flex justify-between">
+                <button 
+                    type="button"
+                    class="px-8 py-3 bg-gray-100 hover:bg-gray-200 text-gray-900 rounded-lg transition-colors duration-300 font-medium"
+                    onclick="event.preventDefault(); prevStep(3);"
+                >
+                    Previous
+                </button>
+                <button 
+                    type="button"
+                    class="px-8 py-3 bg-brand hover:bg-brand-dark text-white rounded-lg transition-colors duration-300 font-medium shadow-lg shadow-brand/20"
+                    onclick="event.preventDefault(); nextStep(3);"
+                >
+                    Next Step
+                </button>
+            </div>
+        </div>
+
+        <!-- Step 4: Additional Info -->
+        <div class="form-step hidden" data-step="4">
+            <div class="space-y-2">
+                <label for="message" class="text-sm font-medium text-gray-900">Additional Details</label>
+                <textarea 
+                    id="message" 
+                    name="message" 
+                    rows="4" 
+                    class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-brand focus:ring-2 focus:ring-brand/20 outline-none transition-colors"
+                    required
+                ></textarea>
+            </div>
+            <div class="mt-8 flex justify-between">
+                <button 
+                    type="button"
+                    class="px-8 py-3 bg-gray-100 hover:bg-gray-200 text-gray-900 rounded-lg transition-colors duration-300 font-medium"
+                    onclick="event.preventDefault(); prevStep(4);"
+                >
+                    Previous
+                </button>
+                <button 
+                    type="submit"
+                    class="px-8 py-4 bg-brand hover:bg-brand-dark text-white rounded-lg transition-colors duration-300 font-medium shadow-lg shadow-brand/20"
+                >
+                    Submit Form
+                </button>
+            </div>
+        </div>
+    </form>
+
+    <!-- Info Cards -->
+    <div class="space-y-6">
+        <!-- Food Pantry Card -->
+        <div class="bg-white rounded-3xl p-8 shadow-lg border border-gray-100">
+            <div class="flex items-start gap-4">
+                <div class="p-3 bg-brand/10 rounded-xl">
+                    <svg class="w-6 h-6 text-brand" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h18v18H3zM12 8v8m-4-4h8"/>
+                    </svg>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold text-gray-900 mb-2">24/7 Food Pantry</h3>
+                    <p class="text-gray-600 leading-relaxed">
+                        Our food pantry is accessible 24 hours a day, located on the west side of the church. 
+                        No appointment needed.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Office Hours Card -->
+        <div class="bg-white rounded-3xl p-8 shadow-lg border border-gray-100">
+            <div class="flex items-start gap-4">
+                <div class="p-3 bg-brand/10 rounded-xl">
+                    <svg class="w-6 h-6 text-brand" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold text-gray-900 mb-2">Response Time</h3>
+                    <p class="text-gray-600 leading-relaxed">
+                        We aim to respond to all requests within 2-3 business days.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script is:inline>
+    document.addEventListener('DOMContentLoaded', () => {
+        let currentStep = 1;
+        const totalSteps = 4;
+
+        // Check for existing submission
+        function checkSubmissionStatus() {
+            if (document.cookie.split(';').some((item) => item.trim().startsWith('formSubmitted='))) {
+                const form = document.getElementById('multi-step-form');
+                const message = document.createElement('div');
+                message.className = 'p-4 bg-yellow-50 text-yellow-800 rounded-lg mb-6';
+                message.innerHTML = `
+                    <p class="font-medium">You have recently submitted a request.</p>
+                    <p class="text-sm mt-1">Please wait 2-3 days before submitting another request. If you need immediate assistance, 
+                    our food pantry is available 24/7.</p>
+                `;
+                form.insertBefore(message, form.firstChild);
+                
+                // Disable all form inputs and buttons
+                form.querySelectorAll('input, select, textarea, button').forEach(el => {
+                    el.disabled = true;
+                });
+            }
+        }
+
+        checkSubmissionStatus();
+
+        function updateProgress() {
+            // Prevent scroll jumping
+            const formTop = document.getElementById('multi-step-form').getBoundingClientRect().top;
+            const scrollPos = window.scrollY;
+
+            document.querySelectorAll('.form-step').forEach(step => {
+                step.classList.add('hidden');
+            });
+            document.querySelector(`[data-step="${currentStep}"]`).classList.remove('hidden');
+
+            // Update progress indicators
+            document.querySelectorAll('.flex.justify-between > div').forEach((indicator, index) => {
+                const circle = indicator.querySelector('div');
+                if (index + 1 < currentStep) {
+                    circle.classList.add('bg-brand', 'border-brand', 'text-white');
+                } else if (index + 1 === currentStep) {
+                    circle.classList.add('bg-brand', 'border-brand', 'text-white');
+                } else {
+                    circle.classList.remove('bg-brand', 'border-brand', 'text-white');
+                }
+            });
+
+            // Maintain scroll position
+            window.scrollTo(0, scrollPos);
+        }
+
+        window.nextStep = function(step) {
+            if (validateStep(step) && step < totalSteps) {
+                currentStep = step + 1;
+                updateProgress();
+            }
+        }
+
+        window.prevStep = function(step) {
+            if (step > 1) {
+                currentStep = step - 1;
+                updateProgress();
+            }
+        }
+
+        function validateStep(step) {
+            const currentStepEl = document.querySelector(`[data-step="${step}"]`);
+            const inputs = currentStepEl.querySelectorAll('input, select, textarea');
+            let isValid = true;
+
+            inputs.forEach(input => {
+                if (input.required && !input.value) {
+                    isValid = false;
+                    input.classList.add('border-red-500');
+                } else {
+                    input.classList.remove('border-red-500');
+                }
+            });
+
+            return isValid;
+        }
+
+        const form = document.getElementById('multi-step-form');
+        if (form) {
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                // Check if submission cookie exists
+                if (document.cookie.split(';').some((item) => item.trim().startsWith('formSubmitted='))) {
+                    alert('You have already submitted a request. Please wait 2-3 days before submitting another request.');
+                    return;
+                }
+
+                if (validateStep(currentStep)) {
+                    // Submit form to Formspree
+                    const formData = new FormData(this);
+                    fetch(this.action, {
+                        method: this.method,
+                        body: formData,
+                        headers: {
+                            'Accept': 'application/json'
+                        }
+                    })
+                    .then(response => {
+                        if (response.ok) {
+                            // Set cookie to expire in 2 days
+                            const d = new Date();
+                            d.setTime(d.getTime() + (2 * 24 * 60 * 60 * 1000));
+                            document.cookie = `formSubmitted=true;expires=${d.toUTCString()};path=/`;
+                            // Show success message
+                            window.location.href = '/thank-you';
+                        } else {
+                            // Show error message
+                            alert('Oops! There was a problem submitting your form. Please try again.');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert('Oops! There was a problem submitting your form. Please try again.');
+                    });
+                }
+            }, false);
+        }
+    });
+</script> 

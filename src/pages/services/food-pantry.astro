@@ -1,0 +1,187 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { siteConfig } from '../../config/site';
+import Button from '../../components/Button.astro';
+import RequestForm from '../../components/RequestForm.astro';
+
+const pantry = siteConfig.shelter.pantry;
+---
+
+<Layout title="Food Pantry | Shelter in a Storm">
+    <main>
+        <!-- Hero Section -->
+        <section class="relative min-h-[100dvh] w-full flex items-center justify-center">
+            <div class="absolute inset-0">
+                <img 
+                    src="https://images.unsplash.com/photo-1593113646773-028c64a8f1b8?q=80&w=1470&fit=crop"
+                    alt="Food Pantry"
+                    class="w-full h-full object-cover object-center"
+                />
+                <div class="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-black/70"></div>
+            </div>
+
+            <div class="relative w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 z-10">
+                <div class="max-w-4xl mx-auto text-center text-white space-y-8">
+                    <h1 
+                        class="text-4xl sm:text-5xl md:text-7xl font-bold mb-6 animate-fade-in px-4"
+                        style="text-wrap: balance;"
+                    >
+                        24/7 Food Pantry Access
+                    </h1>
+                    <p 
+                        class="text-lg sm:text-xl md:text-2xl text-gray-200 mb-12 animate-slide-up-delay-1 px-4"
+                        style="text-wrap: balance;"
+                    >
+                        Take what you need, leave some for others. No paperwork required.
+                    </p>
+                    <div class="flex flex-col sm:flex-row flex-wrap gap-4 justify-center animate-slide-up-delay-2 px-4">
+                        <Button
+                            href="#location"
+                            class="w-full sm:w-auto px-8 py-4 rounded-lg font-medium transition-colors bg-brand hover:bg-brand-dark text-white"
+                        >
+                            Find Our Location
+                        </Button>
+                        <Button
+                            href="#help"
+                            class="w-full sm:w-auto px-8 py-4 rounded-lg font-medium transition-colors bg-white/10 hover:bg-white/20 text-white"
+                        >
+                            Need More Help?
+                        </Button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Scroll Indicator -->
+            <div class="absolute bottom-12 left-1/2 transform -translate-x-1/2">
+                <a 
+                    href="#location" 
+                    class="text-white/80 hover:text-white transition-colors duration-300 animate-float"
+                    aria-label="Scroll to learn more"
+                >
+                    <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path 
+                            stroke-linecap="round" 
+                            stroke-linejoin="round" 
+                            stroke-width="2" 
+                            d="M19 14l-7 7m0 0l-7-7m7 7V3"
+                        />
+                    </svg>
+                </a>
+            </div>
+        </section>
+
+        <!-- Location & Info Section -->
+        <section id="location" class="relative py-20 bg-gradient-to-b from-white to-gray-50">
+            <div class="container mx-auto px-4">
+                <div class="max-w-7xl mx-auto grid md:grid-cols-2 gap-12 items-center">
+                    <div class="space-y-6">
+                        <div class="inline-flex items-center gap-2 text-brand font-medium">
+                            <span class="w-12 h-[2px] bg-brand"></span>
+                            <span>Our Food Pantry</span>
+                        </div>
+                        <h2 class="text-3xl md:text-4xl font-bold text-gray-900 leading-tight">
+                            Food Assistance Available 24/7
+                        </h2>
+                        <div class="prose prose-lg text-gray-600">
+                            <p>
+                                Located under our portico, our food pantry operates on a simple principle: 
+                                "Take what you need, leave some for others." We believe that no one should 
+                                go hungry, which is why we've made our pantry accessible 24 hours a day, 
+                                7 days a week.
+                            </p>
+                        </div>
+
+                        <div class="mt-8 grid sm:grid-cols-2 gap-6">
+                            <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+                                <h3 class="text-lg font-semibold text-gray-900">Location & Hours</h3>
+                                <div class="mt-4 space-y-4">
+                                    <div class="flex items-start gap-3">
+                                        <svg class="w-6 h-6 text-brand mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                        </svg>
+                                        <div>
+                                            <p class="font-medium text-gray-900">Address</p>
+                                            <p class="text-gray-600">{pantry.location.address}</p>
+                                            <p class="text-gray-600">{pantry.location.city}, {pantry.location.state} {pantry.location.zip}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+                                <h3 class="text-lg font-semibold text-gray-900">Available Items</h3>
+                                <ul class="mt-4 space-y-2 text-gray-600">
+                                    <li class="flex items-center gap-2">
+                                        <svg class="w-5 h-5 text-brand" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                        </svg>
+                                        Non-perishable food items
+                                    </li>
+                                    <li class="flex items-center gap-2">
+                                        <svg class="w-5 h-5 text-brand" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                        </svg>
+                                        Basic hygiene supplies
+                                    </li>
+                                    <li class="flex items-center gap-2">
+                                        <svg class="w-5 h-5 text-brand" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                        </svg>
+                                        Emergency food boxes
+                                    </li>
+                                    <li class="flex items-center gap-2">
+                                        <svg class="w-5 h-5 text-brand" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                        </svg>
+                                        Personal care items
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Map Column -->
+                    <div class="relative">
+                        <div class="relative bg-white rounded-3xl overflow-hidden shadow-lg border border-gray-100">
+                            <div class="absolute inset-0 bg-gradient-to-br from-brand/5 to-transparent opacity-50 pointer-events-none"></div>
+                            <iframe
+                                width="100%"
+                                height="500"
+                                style="border:0"
+                                loading="lazy"
+                                allowfullscreen
+                                referrerpolicy="no-referrer-when-downgrade"
+                                title="Lake Ozark Christian Church Food Pantry Location"
+                                aria-label="Map showing the location of our food pantry"
+                                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3135.497843479267!2d-92.64396702409653!3d38.19833697188163!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x87c4c5de89ac8075%3A0xd6b3ef02b5ac85cf!2sLake%20Ozark%20Christian%20Church!5e0!3m2!1sen!2sus!4v1737500655692!5m2!1sen!2sus"
+                            >
+                                                    </iframe>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Need More Help Section -->
+        <section id="help" class="py-24 bg-gray-50">
+            <div class="container mx-auto px-4">
+                <div class="max-w-7xl mx-auto">
+                    <div class="text-center space-y-6 mb-16">
+                        <div class="inline-flex items-center gap-2 text-brand font-medium">
+                            <span class="w-12 h-[2px] bg-brand"></span>
+                            <span>Need Additional Assistance?</span>
+                        </div>
+                        <h2 class="text-3xl md:text-4xl font-bold text-gray-900">
+                            Request Additional Help
+                        </h2>
+                        <p class="text-xl text-gray-600 max-w-2xl mx-auto">
+                            If you need assistance beyond food, please fill out our request form below and we'll get back to you as soon as possible.
+                        </p>
+                    </div>
+
+                    <RequestForm />
+                </div>
+            </div>
+        </section>
+    </main>
+</Layout> 

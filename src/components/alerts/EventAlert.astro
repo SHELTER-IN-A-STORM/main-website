@@ -1,0 +1,286 @@
+---
+interface Props {
+    id?: string;
+}
+
+const { id = 'event-alert' } = Astro.props;
+---
+
+<!-- Desktop Version -->
+<div 
+    id={id}
+    class="fixed bottom-4 right-4 max-w-sm w-full transform translate-x-[150%] transition-transform duration-300 z-40 hidden md:block"
+>
+    <div class="bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100">
+        <!-- Image Banner -->
+        <div id={`${id}-image`} class="relative h-40">
+            <img src="" alt="" class="w-full h-full object-cover">
+            <div class="absolute top-4 left-4">
+                <span 
+                    id={`${id}-badge`}
+                    class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-brand/90 text-white backdrop-blur-sm"
+                >
+                    Upcoming Event
+                </span>
+            </div>
+            <button 
+                onclick={`document.getElementById('${id}').style.transform = 'translateX(150%)'`}
+                class="absolute top-4 right-4 p-1.5 rounded-full bg-white/90 hover:bg-white transition-colors backdrop-blur-sm"
+            >
+                <svg class="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+            </button>
+        </div>
+
+        <!-- Content -->
+        <div class="p-5 space-y-4">
+            <div>
+                <h3 id={`${id}-title`} class="text-xl font-semibold text-gray-900"></h3>
+                <p id={`${id}-description`} class="mt-2 text-sm text-gray-600 line-clamp-2"></p>
+            </div>
+
+            <a
+                id={`${id}-action`}
+                href="#"
+                class="inline-flex w-full items-center justify-center px-4 py-2.5 bg-brand hover:bg-brand-dark text-white font-medium rounded-xl transition-colors group"
+            >
+                <span>Learn More</span>
+                <svg class="w-4 h-4 ml-2 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                </svg>
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- Mobile Version -->
+<div 
+    id={`${id}-mobile`}
+    class="fixed bottom-0 left-0 right-0 transform translate-y-full transition-transform duration-300 z-40 md:hidden"
+>
+    <div class="bg-white shadow-xl border-t border-gray-100">
+        <div class="flex items-center p-4">
+            <div id={`${id}-mobile-image`} class="w-16 h-16 rounded-lg overflow-hidden flex-shrink-0">
+                <img src="" alt="" class="w-full h-full object-cover">
+            </div>
+            <div class="ml-4 flex-grow min-w-0">
+                <span 
+                    id={`${id}-mobile-badge`}
+                    class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-brand/90 text-white"
+                >
+                    Upcoming Event
+                </span>
+                <h3 id={`${id}-mobile-title`} class="text-base font-semibold text-gray-900 mt-1 truncate"></h3>
+                <p id={`${id}-mobile-description`} class="text-sm text-gray-600 truncate"></p>
+            </div>
+            <button 
+                onclick={`document.getElementById('${id}-mobile').style.transform = 'translateY(100%)'`}
+                class="ml-2 p-2"
+            >
+                <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+            </button>
+        </div>
+        <a
+            id={`${id}-mobile-action`}
+            href="#"
+            class="block w-full py-3 px-4 bg-brand hover:bg-brand-dark text-white text-center font-medium transition-colors"
+        >
+            <span>Learn More</span>
+        </a>
+    </div>
+</div>
+
+<!-- Off-site Warning Alert -->
+<div 
+    id={`${id}-warning-modal`}
+    class="fixed inset-0 bg-black/50 hidden z-50"
+>
+    <div class="fixed bottom-4 right-4 max-w-sm w-full">
+        <div class="bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100">
+            <!-- Warning Banner -->
+            <div class="relative h-40 bg-yellow-50">
+                <div class="absolute inset-0 flex items-center justify-center">
+                    <svg class="w-20 h-20 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+                    </svg>
+                </div>
+                <div class="absolute top-4 left-4">
+                    <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-yellow-500/90 text-white backdrop-blur-sm">
+                        External Link
+                    </span>
+                </div>
+                <button 
+                    onclick={`document.getElementById('${id}-warning-modal').classList.add('hidden')`}
+                    class="absolute top-4 right-4 p-1.5 rounded-full bg-white/90 hover:bg-white transition-colors backdrop-blur-sm"
+                >
+                    <svg class="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Content -->
+            <div class="p-5 space-y-4">
+                <div>
+                    <h3 class="text-xl font-semibold text-gray-900">You are leaving Shelter in a Storm</h3>
+                    <p class="mt-2 text-sm text-gray-600">You're about to visit an external website.</p>
+                </div>
+
+                <div class="p-3 bg-gray-50 rounded-lg">
+                    <p class="text-xs text-gray-500">They may have different terms and privacy policies. Please note that you need to be over 18 to purchase products online. We hope to see you again soon!</p>
+                </div>
+
+                <div class="flex gap-3">
+                    <button
+                        onclick={`document.getElementById('${id}-warning-modal').classList.add('hidden')`}
+                        class="flex-1 px-4 py-2.5 border border-gray-200 text-gray-600 hover:text-gray-900 font-medium rounded-xl transition-colors"
+                    >
+                        Back
+                    </button>
+                    <a
+                        id={`${id}-external-link`}
+                        href="#"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="flex-1 inline-flex items-center justify-center px-4 py-2.5 bg-brand hover:bg-brand-dark text-white font-medium rounded-xl transition-colors group"
+                    >
+                        <span>Continue</span>
+                        <svg class="w-4 h-4 ml-2 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Mobile Warning Modal -->
+<div 
+    id={`${id}-warning-modal-mobile`}
+    class="fixed inset-0 bg-black/50 hidden z-50 md:hidden"
+>
+    <div class="fixed bottom-0 left-0 right-0 bg-white rounded-t-2xl">
+        <div class="p-5 space-y-4">
+            <div class="flex items-center justify-between">
+                <h3 class="text-lg font-semibold text-gray-900">External Link</h3>
+                <button 
+                    onclick={`document.getElementById('${id}-warning-modal-mobile').classList.add('hidden')`}
+                    class="p-2"
+                >
+                    <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                </button>
+            </div>
+            <p class="text-sm text-gray-600">You're about to visit an external website.</p>
+            <p class="text-xs text-gray-500">They may have different terms and privacy policies.</p>
+            <div class="flex gap-3">
+                <button
+                    onclick={`document.getElementById('${id}-warning-modal-mobile').classList.add('hidden')`}
+                    class="flex-1 px-4 py-3 border border-gray-200 text-gray-600 font-medium rounded-xl"
+                >
+                    Back
+                </button>
+                <a
+                    id={`${id}-external-link-mobile`}
+                    href="#"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="flex-1 text-center px-4 py-3 bg-brand text-white font-medium rounded-xl"
+                >
+                    Continue
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script define:vars={{ id }}>
+    window.showEventAlert = function({ 
+        title, 
+        description, 
+        image,
+        badge = 'Upcoming Event',
+        actionText = 'Learn More',
+        actionUrl = '#',
+        isExternalLink = false
+    }) {
+        // Desktop Elements
+        const alert = document.getElementById(id);
+        const titleEl = document.getElementById(`${id}-title`);
+        const descriptionEl = document.getElementById(`${id}-description`);
+        const badgeEl = document.getElementById(`${id}-badge`);
+        const actionEl = document.getElementById(`${id}-action`);
+        const imageEl = document.querySelector(`#${id}-image img`);
+        const externalLinkEl = document.getElementById(`${id}-external-link`);
+        
+        // Mobile Elements
+        const mobileAlert = document.getElementById(`${id}-mobile`);
+        const mobileTitleEl = document.getElementById(`${id}-mobile-title`);
+        const mobileDescriptionEl = document.getElementById(`${id}-mobile-description`);
+        const mobileBadgeEl = document.getElementById(`${id}-mobile-badge`);
+        const mobileActionEl = document.getElementById(`${id}-mobile-action`);
+        const mobileImageEl = document.querySelector(`#${id}-mobile-image img`);
+        const mobileExternalLinkEl = document.getElementById(`${id}-external-link-mobile`);
+        
+        // Update Desktop Version
+        if (alert && titleEl && descriptionEl && badgeEl && actionEl && imageEl && externalLinkEl) {
+            titleEl.textContent = title;
+            descriptionEl.textContent = description;
+            badgeEl.textContent = badge;
+            
+            const actionSpan = actionEl.querySelector('span');
+            if (actionSpan) actionSpan.textContent = actionText;
+            
+            if (isExternalLink) {
+                actionEl.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    document.getElementById(`${id}-warning-modal`).classList.remove('hidden');
+                });
+                externalLinkEl.href = actionUrl;
+                externalLinkEl.addEventListener('click', () => {
+                    window.open(actionUrl, '_blank');
+                });
+            } else {
+                actionEl.href = actionUrl;
+            }
+            
+            imageEl.src = image;
+            imageEl.alt = title;
+            
+            alert.style.transform = 'translateX(0)';
+        }
+        
+        // Update Mobile Version
+        if (mobileAlert && mobileTitleEl && mobileDescriptionEl && mobileBadgeEl && mobileActionEl && mobileImageEl && mobileExternalLinkEl) {
+            mobileTitleEl.textContent = title;
+            mobileDescriptionEl.textContent = description;
+            mobileBadgeEl.textContent = badge;
+            
+            const mobileActionSpan = mobileActionEl.querySelector('span');
+            if (mobileActionSpan) mobileActionSpan.textContent = actionText;
+            
+            if (isExternalLink) {
+                mobileActionEl.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    document.getElementById(`${id}-warning-modal-mobile`).classList.remove('hidden');
+                });
+                mobileExternalLinkEl.href = actionUrl;
+                mobileExternalLinkEl.addEventListener('click', () => {
+                    window.open(actionUrl, '_blank');
+                });
+            } else {
+                mobileActionEl.href = actionUrl;
+            }
+            
+            mobileImageEl.src = image;
+            mobileImageEl.alt = title;
+            
+            mobileAlert.style.transform = 'translateY(0)';
+        }
+    }
+</script>

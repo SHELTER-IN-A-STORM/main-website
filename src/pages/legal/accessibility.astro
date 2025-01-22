@@ -1,0 +1,152 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { siteConfig } from '../../config/site';
+---
+
+<Layout title="Accessibility">
+    <!-- Hero Section -->
+    <section class="relative min-h-screen flex items-center justify-center">
+        <div class="absolute inset-0">
+            <img 
+                src={siteConfig.metadata.openGraph.image}
+                alt="Accessibility"
+                class="w-full h-full object-cover"
+            />
+            <div class="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/60"></div>
+        </div>
+
+        <div class="relative container mx-auto px-6 z-10">
+            <div class="max-w-4xl mx-auto text-center text-white space-y-8">
+                <h1 
+                    class="text-5xl md:text-7xl font-bold mb-6 animate-fade-in"
+                    style="text-wrap: balance;"
+                >
+                    Our Commitment to Accessibility
+                </h1>
+                <p 
+                    class="text-xl md:text-2xl text-gray-200 mb-12 animate-slide-up-delay-1 max-w-2xl mx-auto"
+                    style="text-wrap: balance;"
+                >
+                    Making our services accessible to everyone in our community
+                </p>
+            </div>
+        </div>
+
+        <div class="absolute bottom-12 left-1/2 transform -translate-x-1/2 z-10">
+            <a 
+                href="#content" 
+                class="text-white/80 hover:text-white transition-colors duration-300 animate-float"
+                aria-label="Scroll to content"
+            >
+                <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/>
+                </svg>
+            </a>
+        </div>
+    </section>
+
+    <!-- Content Section -->
+    <section id="content" class="py-24 bg-gradient-to-b from-white to-gray-50">
+        <div class="container mx-auto px-6">
+            <div class="max-w-3xl mx-auto">
+                <div class="space-y-24">
+                    <!-- Mission Statement -->
+                    <div class="space-y-6">
+                        <div class="inline-flex items-center gap-2 text-brand font-medium">
+                            <span class="w-12 h-[2px] bg-brand"></span>
+                            <span>Our Mission</span>
+                        </div>
+                        <h2 class="text-3xl md:text-4xl font-bold text-gray-900 leading-tight">
+                            Making Our Services Accessible to All
+                        </h2>
+                        <p class="text-gray-600 leading-relaxed">
+                            At Shelter in a Storm, our mission is to ensure that everyone in our Lake Ozark community 
+                            can easily access emergency assistance and support services. We are committed to making 
+                            our services and digital platforms accessible to all, regardless of ability.
+                        </p>
+                    </div>
+
+                    <!-- Digital Accessibility -->
+                    <div class="space-y-6">
+                        <div class="inline-flex items-center gap-2 text-brand font-medium">
+                            <span class="w-12 h-[2px] bg-brand"></span>
+                            <span>Digital Access</span>
+                        </div>
+                        <h2 class="text-3xl md:text-4xl font-bold text-gray-900 leading-tight">
+                            Website Accessibility
+                        </h2>
+                        <div class="prose prose-gray max-w-none">
+                            <p>
+                                We ensure our digital services are accessible to everyone through:
+                            </p>
+                            <ul>
+                                <li>Screen reader compatibility</li>
+                                <li>Keyboard navigation support</li>
+                                <li>High-contrast design</li>
+                                <li>Text resizing capabilities</li>
+                                <li>Alternative text for images</li>
+                            </ul>
+                            <p>
+                                Our website follows WCAG 2.1 Level AA standards to provide an inclusive experience 
+                                for all users.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Physical Accessibility -->
+                    <div class="space-y-6">
+                        <div class="inline-flex items-center gap-2 text-brand font-medium">
+                            <span class="w-12 h-[2px] bg-brand"></span>
+                            <span>Physical Access</span>
+                        </div>
+                        <h2 class="text-3xl md:text-4xl font-bold text-gray-900 leading-tight">
+                            Facility Accessibility
+                        </h2>
+                        <div class="prose prose-gray max-w-none">
+                            <p>
+                                Our facilities are designed to be accessible to everyone, featuring:
+                            </p>
+                            <ul>
+                                <li>Barrier-free access throughout the building</li>
+                                <li>Dedicated accessible parking spaces</li>
+                                <li>Automatic doors</li>
+                                <li>Clear navigation paths</li>
+                                <li>Accessible restroom facilities</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Feedback Section -->
+                    <div class="space-y-6">
+                        <div class="inline-flex items-center gap-2 text-brand font-medium">
+                            <span class="w-12 h-[2px] bg-brand"></span>
+                            <span>Contact Us</span>
+                        </div>
+                        <h2 class="text-3xl md:text-4xl font-bold text-gray-900 leading-tight">
+                            Feedback and Support
+                        </h2>
+                        <p class="text-gray-600 leading-relaxed">
+                            We welcome your feedback on the accessibility of our services. If you 
+                            encounter any barriers or have suggestions for improvement, please 
+                            contact us at{' '}
+                            <a href={`mailto:${siteConfig.contact.email}`} class="text-brand hover:text-brand-dark">
+                                {siteConfig.contact.email}
+                            </a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</Layout>
+
+<style>
+    .animate-float {
+        animation: float 3s ease-in-out infinite;
+    }
+
+    @keyframes float {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-10px); }
+    }
+</style> 

@@ -1,0 +1,112 @@
+---
+import { siteConfig } from '../config/site';
+---
+
+<!-- Footer Separator -->
+<div class="w-full h-24 bg-gradient-to-b from-gray-50 to-gray-100">
+    <div class="container mx-auto px-6">
+        <div class="w-full h-[1px] bg-gradient-to-r from-transparent via-brand/20 to-transparent"></div>
+    </div>
+</div>
+
+<footer class="bg-gray-100">
+    <div class="container mx-auto px-6 py-20">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-x-16 gap-y-14 max-w-5xl mx-auto">
+            <!-- Brand Info -->
+            <div class="space-y-8 md:col-span-1">
+                <div class="flex items-center gap-3">
+                    <img 
+                        src="https://cdn.shelterinastorm.org/images/brand.png" 
+                        alt="Shelter in a Storm Logo" 
+                        class="h-20 w-auto"
+                    />
+                    <div class="flex flex-col">
+                        <span class="text-lg font-bold text-gray-900 leading-tight">
+                            SHELTER IN A STORM
+                        </span>
+                        <span class="text-xs text-gray-500 font-medium">
+                            Miller & Camden County
+                                                </span>
+                    </div>
+                </div>
+                <p class="text-sm text-gray-600 leading-relaxed">
+                    {siteConfig.shelter.mission.description}
+                </p>
+            </div>
+            <!-- Quick Links -->
+            <div class="space-y-8 md:col-span-1">
+                <h3 class="text-lg font-semibold text-gray-900">Our Services</h3>
+                <ul class="space-y-4">
+                    {siteConfig.shelter.services.map(service => (
+                        <li>
+                            <a 
+                                href={service.link} 
+                                class="text-brand hover:text-brand-dark transition-colors font-medium"
+                            >
+                                {service.title}
+                            </a>
+                            <p class="mt-1 text-sm text-gray-500">
+                                {service.description}
+                            </p>
+                        </li>
+                    ))}
+                </ul>
+            </div>
+
+            <!-- Help Request -->
+            <div class="space-y-8 md:col-span-1">
+                <h3 class="text-lg font-semibold text-gray-900">Emergency Help</h3>
+                <p class="text-gray-600 leading-relaxed">
+                    Need emergency assistance? Fill out our form and we'll respond as quickly as possible.
+                </p>
+                <a 
+                    href="/assistance-form"
+                    class="inline-flex items-center justify-center px-6 py-3 bg-brand hover:bg-brand-dark text-white rounded-lg transition-colors group font-medium"
+                >
+                    <span class="font-medium">Submit Assistance Request</span>
+                    <svg class="w-5 h-5 ml-2 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                    </svg>
+                </a>
+            </div>
+        </div>
+
+        <!-- Bottom Bar -->
+        <div class="mt-20 pt-8 border-t border-gray-200 max-w-5xl mx-auto text-center">
+            <div class="flex flex-col items-center gap-6">
+                <p class="text-gray-600 text-sm">
+                    © 2025 Shelter in a Storm. All rights reserved.
+                </p>
+                <div class="flex items-center flex-wrap justify-center gap-x-6 gap-y-2 text-sm">
+                    <a 
+                        class="text-gray-600 hover:text-brand transition-colors"
+                        href="/legal/privacy"
+                    >
+                        Privacy Policy
+                    </a>
+                    <a 
+                        class="text-gray-600 hover:text-brand transition-colors"
+                        href="/legal/terms"
+                    >
+                        Terms of Use
+                    </a>
+                    <a 
+                        class="text-gray-600 hover:text-brand transition-colors"
+                        href="/legal/accessibility"
+                    >
+                        Accessibility
+                    </a>
+                    <span class="text-gray-400">|</span>
+                    <a 
+                        href={siteConfig.developer.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="text-gray-600 hover:text-brand transition-colors"
+                    >
+                        Built by {siteConfig.developer.name}
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer> 

@@ -1,0 +1,93 @@
+---
+interface Props {
+    id?: string;
+}
+
+const { id = 'fullscreen-alert' } = Astro.props;
+---
+
+<div 
+    id={id}
+    class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4"
+>
+    <div class="bg-white rounded-2xl shadow-xl max-w-2xl w-full animate-scale-up">
+        <div class="p-6 md:p-8 space-y-6">
+            <div class="flex justify-between items-start">
+                <div class="space-y-2">
+                    <div class="inline-flex items-center gap-2 text-brand font-medium">
+                        <span class="w-12 h-[2px] bg-brand"></span>
+                        <span id={`${id}-badge`}>Important Update</span>
+                    </div>
+                    <h2 id={`${id}-title`} class="text-2xl md:text-3xl font-bold text-gray-900"></h2>
+                </div>
+                <button 
+                    onclick={`document.getElementById('${id}').classList.add('hidden')`}
+                    class="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                >
+                    <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                </button>
+            </div>
+            <div id={`${id}-content`} class="prose prose-gray max-w-none">
+            </div>
+            <div class="flex justify-end gap-4">
+                <button
+                    onclick={`document.getElementById('${id}').classList.add('hidden')`}
+                    class="px-6 py-2 text-gray-600 hover:text-gray-900 font-medium transition-colors"
+                >
+                    Close
+                </button>
+                <a
+                    id={`${id}-action`}
+                    href="#"
+                    class="px-6 py-2 bg-brand hover:bg-brand-dark text-white font-medium rounded-lg transition-colors"
+                >
+                    Learn More
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script define:vars={{ id }}>
+    window.showFullScreenAlert = function({ 
+        title, 
+        content, 
+        badge = 'Important Update',
+        actionText = 'Learn More',
+        actionUrl = '#'
+    }) {
+        const alert = document.getElementById(id);
+        const titleEl = document.getElementById(`${id}-title`);
+        const contentEl = document.getElementById(`${id}-content`);
+        const badgeEl = document.getElementById(`${id}-badge`);
+        const actionEl = document.getElementById(`${id}-action`);
+        
+        if (alert && titleEl && contentEl && badgeEl && actionEl) {
+            titleEl.textContent = title;
+            contentEl.innerHTML = content;
+            badgeEl.textContent = badge;
+            actionEl.textContent = actionText;
+            actionEl.href = actionUrl;
+            alert.classList.remove('hidden');
+        }
+    }
+</script>
+
+<style>
+    .animate-scale-up {
+        animation: scaleUp 0.3s ease-out;
+    }
+
+    @keyframes scaleUp {
+        from {
+            transform: scale(0.95);
+            opacity: 0;
+        }
+        to {
+            transform: scale(1);
+            opacity: 1;
+        }
+    }
+</style> 

@@ -1,0 +1,209 @@
+---
+import Layout from '../layouts/Layout.astro';
+import PageHeader from '../components/PageHeader.astro';
+import { siteConfig } from '../config/site';
+import RequestForm from '../components/RequestForm.astro';
+---
+
+<Layout title="Get Help">
+    <!-- Hero Section -->
+    <section class="relative min-h-screen flex items-center justify-center pt-20">
+        <div class="absolute inset-0">
+            <img 
+                src="https://images.unsplash.com/photo-1469571486292-0ba58a3f068b?q=80&w=2070&auto=format&fit=crop"
+                alt="Helping Hands"
+                class="w-full h-full object-cover"
+            />
+            <div class="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/60"></div>
+        </div>
+
+        <div class="relative container mx-auto px-6">
+            <div class="max-w-4xl mx-auto text-center text-white space-y-8">
+                <h1 
+                    class="text-5xl md:text-7xl font-bold mb-6 animate-fade-in"
+                    style="text-wrap: balance;"
+                >
+                    How Can We Help You?
+                </h1>
+                <p 
+                    class="text-xl md:text-2xl text-gray-200 mb-12 animate-slide-up-delay-1 max-w-2xl mx-auto"
+                    style="text-wrap: balance;"
+                >
+                    Our food pantry is available 24/7, and our team is ready to connect you with the resources you need.
+                </p>
+                <div class="flex flex-wrap gap-6 justify-center animate-slide-up-delay-2">
+                    <a
+                        href="#request-form"
+                        class="group inline-flex items-center px-8 py-4 rounded-full text-lg font-medium transition-all duration-300
+                            bg-brand hover:bg-brand-dark text-white animate-glow hover:scale-105
+                            shadow-lg hover:shadow-xl transform hover:-translate-y-1"
+                    >
+                        <span>Request Assistance</span>
+                        <svg 
+                            class="w-5 h-5 ml-2 transform group-hover:translate-x-1 transition-transform" 
+                            fill="none" 
+                            stroke="currentColor" 
+                            viewBox="0 0 24 24"
+                        >
+                            <path 
+                                stroke-linecap="round" 
+                                stroke-linejoin="round" 
+                                stroke-width="2" 
+                                d="M17 8l4 4m0 0l-4 4m4-4H3"
+                            />
+                        </svg>
+                    </a>
+                    <a
+                        href="#pantry-info"
+                        class="group inline-flex items-center px-8 py-4 rounded-full text-lg font-medium transition-all duration-300
+                            bg-white hover:bg-gray-100 text-gray-900
+                            shadow-lg hover:shadow-xl transform hover:-translate-y-1"
+                    >
+                        <span>Food Pantry Info</span>
+                        <svg 
+                            class="w-5 h-5 ml-2 transform group-hover:translate-x-1 transition-transform" 
+                            fill="none" 
+                            stroke="currentColor" 
+                            viewBox="0 0 24 24"
+                        >
+                            <path 
+                                stroke-linecap="round" 
+                                stroke-linejoin="round" 
+                                stroke-width="2" 
+                                d="M17 8l4 4m0 0l-4 4m4-4H3"
+                            />
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Scroll Indicator -->
+        <div class="absolute bottom-12 left-1/2 transform -translate-x-1/2">
+            <a 
+                href="#request-form" 
+                class="text-white/80 hover:text-white transition-colors duration-300 animate-float"
+                aria-label="Scroll to request form"
+            >
+                <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path 
+                        stroke-linecap="round" 
+                        stroke-linejoin="round" 
+                        stroke-width="2" 
+                        d="M19 14l-7 7m0 0l-7-7m7 7V3"
+                    />
+                </svg>
+            </a>
+        </div>
+    </section>
+
+    <!-- Request Form Section -->
+    <section id="request-form" class="py-24 bg-gradient-to-b from-white to-gray-50">
+        <div class="container mx-auto px-6">
+            <div class="max-w-7xl mx-auto">
+                <div class="space-y-6 mb-16">
+                    <div class="inline-flex items-center gap-2 text-brand font-medium">
+                        <span class="w-12 h-[2px] bg-brand"></span>
+                        <span>Request Assistance</span>
+                    </div>
+                    <h2 class="text-3xl font-bold text-gray-900 leading-tight">
+                        Tell Us What You Need
+                    </h2>
+                    <p class="text-gray-600 leading-relaxed">
+                        Fill out this form and we'll get back to you as soon as possible. For immediate food assistance, 
+                        please visit our 24/7 food pantry located at the west side of the church.
+                    </p>
+                </div>
+
+                <RequestForm />
+            </div>
+        </div>
+    </section>
+</Layout>
+
+<script is:inline>
+  document.addEventListener('DOMContentLoaded', () => {
+    let currentStep = 1;
+    const totalSteps = 4;
+
+    function updateProgress() {
+        document.querySelectorAll('.form-step').forEach(step => {
+            step.classList.add('hidden');
+        });
+        document.querySelector(`[data-step="${currentStep}"]`).classList.remove('hidden');
+
+        // Update progress indicators
+        document.querySelectorAll('.flex.justify-between > div').forEach((indicator, index) => {
+            const circle = indicator.querySelector('div');
+            if (index + 1 < currentStep) {
+                circle.classList.add('bg-brand', 'border-brand', 'text-white');
+            } else if (index + 1 === currentStep) {
+                circle.classList.add('bg-brand', 'border-brand', 'text-white');
+            } else {
+                circle.classList.remove('bg-brand', 'border-brand', 'text-white');
+            }
+        });
+    }
+
+    window.nextStep = function(step) {
+        if (validateStep(step) && step < totalSteps) {
+            currentStep = step + 1;
+            updateProgress();
+        }
+    }
+
+    window.prevStep = function(step) {
+        if (step > 1) {
+            currentStep = step - 1;
+            updateProgress();
+        }
+    }
+
+    function validateStep(step) {
+        const currentStepEl = document.querySelector(`[data-step="${step}"]`);
+        const inputs = currentStepEl.querySelectorAll('input, select, textarea');
+        let isValid = true;
+
+        inputs.forEach(input => {
+            if (input.required && !input.value) {
+                isValid = false;
+                input.classList.add('border-red-500');
+            } else {
+                input.classList.remove('border-red-500');
+            }
+        });
+
+        return isValid;
+    }
+
+    document.getElementById('multi-step-form').addEventListener('submit', (e) => {
+        e.preventDefault();
+        if (validateStep(currentStep)) {
+            // Submit form to Formspree
+            const form = e.target;
+            fetch(form.action, {
+                method: form.method,
+                body: new FormData(form),
+                headers: {
+                    'Accept': 'application/json'
+                }
+            })
+            .then(response => {
+                if (response.ok) {
+                    // Show success message
+                    alert('Thank you for your submission. We will get back to you soon.');
+                    form.reset();
+                    window.location.href = '/thank-you';
+                } else {
+                    // Show error message
+                    alert('Oops! There was a problem submitting your form. Please try again.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Oops! There was a problem submitting your form. Please try again.');
+            });
+        }
+    });
+  });
+</script> 

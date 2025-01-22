@@ -1,0 +1,179 @@
+---
+import { siteConfig } from '../config/site';
+import NotificationBanner from './NotificationBanner.astro';
+import EventAlert from './alerts/EventAlert.astro';
+import FullScreenAlert from './alerts/FullScreenAlert.astro';
+
+const navigation = [
+    { name: 'Home', href: '/' },
+    { name: 'About', href: '/about' },
+    { name: 'Services', href: '/services' },
+    { name: 'Get Help', href: '/get-help' },
+    { name: 'Donate', href: '/donate' },
+];
+
+// You can control banners through siteConfig or a CMS
+const notifications = [
+    {
+        enabled: true,
+        message: "We need your help to keep our food pantry stocked. Please consider donating today!",
+        link: "/donate",
+        linkText: "Support Our Mission",
+        variant: "info"
+    }
+];
+---
+
+<header class="fixed w-full top-0 z-50">
+    <div class="bg-white/95 backdrop-blur-sm border-b border-gray-100">
+        <div class="container mx-auto px-4">
+            <div class="flex items-center justify-between h-20">
+                <!-- Logo Section -->
+                <a href="/" class="flex items-center gap-3">
+                    <img 
+                        src="https://cdn.shelterinastorm.org/images/brand.png" 
+                        alt="Shelter in a Storm Logo" 
+                        class="h-12 w-auto"
+                    />
+                    <div class="flex flex-col">
+                        <span class="text-lg font-bold text-gray-900 leading-tight">
+                            SHELTER IN A STORM
+                        </span>
+                        <span class="text-xs text-gray-500 font-medium">
+                            Miller & Camden County                        </span>
+                    </div>
+                </a>
+
+                <!-- Desktop Navigation -->
+                <nav class="hidden md:flex items-center space-x-1">
+                    {navigation.map((item) => (
+                        <a
+                            href={item.href}
+                            class={`px-4 py-2 text-sm font-medium rounded-lg transition-colors
+                                ${item.name === 'Get Help' 
+                                    ? 'text-white bg-brand hover:bg-brand-dark' 
+                                    : 'text-gray-700 hover:bg-gray-50'
+                                }`}
+                        >
+                            {item.name}
+                        </a>
+                    ))}
+                </nav>
+
+                <!-- Mobile Menu Button -->
+                <button 
+                    type="button" 
+                    class="md:hidden inline-flex items-center justify-center p-2 rounded-lg text-gray-700 hover:bg-gray-50" 
+                    aria-expanded="false"
+                    id="mobile-menu-button"
+                >
+                    <span class="sr-only">Open main menu</span>
+                    <svg 
+                        class="block h-6 w-6" 
+                        id="menu-open-icon"
+                        fill="none" 
+                        viewBox="0 0 24 24" 
+                        stroke="currentColor"
+                    >
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                    <svg 
+                        class="hidden h-6 w-6" 
+                        id="menu-close-icon"
+                        fill="none" 
+                        viewBox="0 0 24 24" 
+                        stroke="currentColor"
+                    >
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Mobile Menu -->
+            <div 
+                class="hidden md:hidden" 
+                id="mobile-menu"
+            >
+                <div class="px-2 pt-2 pb-3 space-y-1">
+                    {navigation.map((item) => (
+                        <a
+                            href={item.href}
+                            class={`block px-3 py-2 text-base font-medium rounded-lg transition-colors
+                                ${item.name === 'Get Help' 
+                                    ? 'text-white bg-brand hover:bg-brand-dark' 
+                                    : 'text-gray-700 hover:bg-gray-50'
+                                }`}
+                        >
+                            {item.name}
+                        </a>
+                    ))}
+                </div>
+                
+            </div>
+            
+        </div>
+    </div>
+    {notifications.map(notification => (
+        notification.enabled && (
+            <NotificationBanner
+                enabled={notification.enabled}
+                message={notification.message}
+                link={notification.link}
+                linkText={notification.linkText}
+                variant={notification.variant as "info" | "warning" | "success" | undefined}
+            />
+        )
+    ))}
+</header>
+
+<script>
+    const mobileMenuButton = document.getElementById('mobile-menu-button');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const menuOpenIcon = document.getElementById('menu-open-icon');
+    const menuCloseIcon = document.getElementById('menu-close-icon');
+
+    if (mobileMenuButton && mobileMenu && menuOpenIcon && menuCloseIcon) {
+        mobileMenuButton.addEventListener('click', () => {
+            const isExpanded = mobileMenuButton.getAttribute('aria-expanded') === 'true';
+            
+            mobileMenuButton.setAttribute('aria-expanded', (!isExpanded).toString());
+            mobileMenu.classList.toggle('hidden');
+            menuOpenIcon.classList.toggle('hidden');
+            menuCloseIcon.classList.toggle('hidden');
+        });
+    }
+</script>
+
+<script>
+declare global {
+    interface Window {
+        showEventAlert: (options: {
+            title: string;
+            description: string;
+            image: string;
+            badge: string;
+            actionText: string;
+            actionUrl: string;
+            isExternalLink?: boolean;
+        }) => void;
+    }
+}
+</script>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    window.showEventAlert({
+        title: "Annual Chili Cook-Off",
+        description: "Join us for our biggest fundraising event! Compete or just enjoy great food and community.",
+        image: "https://i0.wp.com/fultonny.org/wp-content/uploads/2024/10/chilicookoff.jpg?fit=500%2C369&ssl=1",
+        badge: "Upcoming Event", 
+        actionText: "Register Now",
+        actionUrl: "/get-help",
+        isExternalLink: true
+    });
+});
+</script>
+
+<!-- Alert Components -->
+<EventAlert id="event-alert" />
+<FullScreenAlert id="site-alert" />

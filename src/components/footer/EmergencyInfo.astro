@@ -1,0 +1,17 @@
+---
+import { siteConfig } from '../../config/site';
+---
+
+<div class="space-y-4">
+    <h2 class="text-xl font-bold text-gray-900">Emergency Help</h2>
+    <div class="bg-red-50 rounded-lg p-4 border border-red-100">
+        <div class="flex items-center gap-3 text-red-600 mb-2">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/>
+            </svg>
+            <span class="font-bold text-xl">{siteConfig.contact.emergency}</span>
+        </div>
+        <p class="text-red-600 text-sm">For immediate assistance</p>
+    </div>
+    <p class="text-gray-600">{siteConfig.contact.hours}</p>
+</div> 

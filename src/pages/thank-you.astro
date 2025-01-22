@@ -1,0 +1,72 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { siteConfig } from '../config/site';
+---
+
+<Layout title="Thank You">
+    <section class="min-h-screen flex items-center justify-center bg-gradient-to-b from-white to-gray-50">
+        <div class="container mx-auto px-6">
+            <div class="max-w-4xl mx-auto text-center space-y-8">
+                <div class="flex justify-center mb-8">
+                    <div class="w-20 h-20 bg-brand/10 rounded-full flex items-center justify-center animate-scale-in">
+                        <svg class="w-10 h-10 text-brand" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                        </svg>
+                    </div>
+                </div>
+                <h1 
+                    class="text-4xl md:text-5xl font-bold text-gray-900 mb-6 animate-fade-in"
+                    style="text-wrap: balance;"
+                >
+                    Request Received
+                </h1> 
+                <p 
+                    class="text-xl text-gray-600 mb-12 animate-slide-up-delay-1 max-w-2xl mx-auto leading-relaxed"
+                    style="text-wrap: balance;"
+                >
+                    Your assistance request has been successfully submitted. Our team will contact you 
+                    within 2-3 business days. If you don't hear from us by then, please submit another request.
+                </p>
+                <div class="animate-slide-up-delay-2 bg-brand/5 rounded-2xl p-6 max-w-2xl mx-auto">
+                    <p class="text-gray-600">
+                        Need food assistance right away? Our food pantry is open 24/7 at the west side of the church. 
+                        No appointment needed.
+                    </p>
+                </div>
+                <div class="flex flex-wrap gap-6 justify-center animate-slide-up-delay-2">
+                    <a
+                        href="/"
+                        class="group inline-flex items-center px-8 py-4 rounded-full text-lg font-medium transition-all duration-300
+                            bg-brand hover:bg-brand-dark text-white
+                            shadow-lg hover:shadow-xl transform hover:-translate-y-1 animate-pulse-subtle"
+                    >
+                        <span>Return Home</span>
+                        <svg class="w-5 h-5 ml-2 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+</Layout>
+
+<style>
+    @keyframes scaleIn {
+        from { transform: scale(0.8); opacity: 0; }
+        to { transform: scale(1); opacity: 1; }
+    }
+
+    @keyframes pulseSubtle {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.02); }
+    }
+
+    .animate-scale-in {
+        animation: scaleIn 0.6s cubic-bezier(0.23, 1, 0.32, 1) both;
+    }
+
+    .animate-pulse-subtle {
+        animation: pulseSubtle 3s ease-in-out infinite;
+    }
+</style> 

@@ -1,0 +1,20 @@
+---
+import { siteConfig } from '../../config/site';
+---
+
+<div class="space-y-4">
+    <h2 class="text-xl font-bold text-gray-900">Quick Links</h2>
+    <ul class="space-y-2">
+        {siteConfig.shelter.services.map(service => (
+            <li>
+                <a 
+                    href={service.link} 
+                    class="text-gray-600 hover:text-brand transition-colors flex items-center gap-2 group"
+                >
+                    <span class="transform group-hover:translate-x-1 transition-transform">→</span>
+                    {service.title}
+                </a>
+            </li>
+        ))}
+    </ul>
+</div> 
