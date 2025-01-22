@@ -58,28 +58,15 @@ const formattedTitle = siteConfig.title.template.replace('%s', title);
 		</title>
 		
 		<style>
-			.skip-to-main-content {
-				position: absolute;
-				left: -9999px;
-				z-index: 999;
-				padding: 1em;
-				background-color: white;
-				color: black;
-				opacity: 0;
-			}
-			.skip-to-main-content:focus {
-				left: 50%;
-				transform: translateX(-50%);
-				opacity: 1;
-			}
+			/* Remove duplicate styles here since they're defined in global styles */
 		</style>
 	</head>
 	<body class="min-h-screen flex flex-col bg-gray-50 text-gray-900">
-		<a href="#main-content" class="skip-to-main-content">
+		<a href="#main-content" class="skip-to-main-content focus:fixed focus:top-0">
 			Skip to main content
 		</a>
 		<Header />
-		<main id="main-content" class="flex-grow">
+		<main id="main-content" class="flex-grow" tabindex="-1">
 			<slot />
 		</main>
 		<Footer />
@@ -105,20 +92,32 @@ const formattedTitle = siteConfig.title.template.replace('%s', title);
 		line-height: inherit;
 	}
 
-	/* Skip link styles */
+	/* Skip link styles - improved for better accessibility */
 	.skip-to-main-content {
 		position: absolute;
-		left: -9999px;
-		z-index: 999;
-		padding: 1em;
-		background-color: white;
-		color: black;
-		opacity: 0;
-	}
-	.skip-to-main-content:focus {
+		top: -9999px;
 		left: 50%;
 		transform: translateX(-50%);
+		z-index: 9999;
+		padding: 1rem 1.5rem;
+		background-color: var(--color-brand, #4F46E5);
+		color: white;
+		font-weight: 500;
+		text-decoration: none;
+		border-radius: 0 0 0.5rem 0.5rem;
+		opacity: 0;
+		pointer-events: none;
+		transition: opacity 0.2s ease-in-out;
+	}
+
+	.skip-to-main-content:focus {
 		opacity: 1;
+		pointer-events: auto;
+		top: 0;
+	}
+
+	.skip-to-main-content:hover {
+		text-decoration: underline;
 	}
 
 	/* Base styles */

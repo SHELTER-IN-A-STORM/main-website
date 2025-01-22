@@ -161,7 +161,43 @@ export const siteConfig = {
                 name: "Hope House of Miller County", 
                 logo: "https://hopehouseofmillercounty.com/wp-content/uploads/2022/12/Hope-House-Logo-e1511208623755.png",
                 url: "https://hopehouseofmillercounty.com"
+            },
+            { 
+                name: "Menards",
+                logo: "https://1000logos.net/wp-content/uploads/2020/11/Menards-logo.png",
+                url: "https://www.menards.com"
+            },
+            { 
+                name: "Walmart",
+                logo: "https://corporate.walmart.com/content/dam/corporate/site-images/WMT-Spark-New-SparkYellow-RGB.svg",
+                url: "https://www.walmart.com"
+            },
+            { 
+                name: "First Bank of the Lake",
+                logo: "https://www.fblake.bank/assets/img/first-bank-of-the-lake-logo.svg",
+                url: "https://www.fblake.bank"
+            },
+            { 
+                name: "Central Bank",
+                logo: "https://maxmoney.centralbank.net/images/Logo/CentralBank.png",
+                url: "https://centralbank.net"
+            },
+            { 
+                name: "RE/MAX",
+                logo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSLBHLiEGvZC6LeVNfFKtYzguC7vhNRmyiMvw&s",
+                url: "https://www.facebook.com/remaxlotofoundation/"
+            },
+            { 
+                name: "Infuze Credit Union",
+                logo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSWRYNHYfh4iE2Z05o9WTYKyhuNYm6LTCOjgQ&s",
+                url: "https://www.infuzecu.org/"
+            },
+            { 
+                name: "DWM",
+                logo: "https://s21pusa01afmsv2blkbsa03.blob.core.windows.net/image-upload/p-2Xj0BlI5rEm8MRVgKSYv6w/3d07045b-35e0-40a5-bbc8-e010429a2ddf/32b784cd-bf71-41a2-9621-e16e09e447a6.png",
+                url: "https://www.discipleshomemissions.org/"
             }
+            
         ],
         team: [
             {

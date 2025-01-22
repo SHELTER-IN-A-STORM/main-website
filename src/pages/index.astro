@@ -37,7 +37,7 @@ import Button from '../components/Button.astro';
                         <Button
                             href={button.href}
                             class={`w-full sm:w-auto px-8 py-4 rounded-lg font-medium transition-colors ${
-                                button.primary ? 'bg-brand hover:bg-brand-dark text-white' : 'bg-white/10 hover:bg-white/20 text-white'
+                                button.primary ? 'bg-brand hover:bg-brand-dark text-white' : 'text-white hover:text-white/80'
                             }`}
                         >
                             {button.text}
@@ -150,7 +150,7 @@ import Button from '../components/Button.astro';
                                     {service.description}
                                 </p>
                                 <div class="mt-auto">
-                                    <span class="inline-flex items-center text-brand font-medium group-hover:text-brand-dark transition-colors">
+                                    <span class="inline-flex items-center text-brand font-medium hover:text-brand-dark transition-colors">
                                         Learn More
                                         <svg class="w-5 h-5 ml-2 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
