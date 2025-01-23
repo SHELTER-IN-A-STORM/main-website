@@ -1,101 +1,172 @@
-# Shelter in a Storm
+# Shelter in a Storm - Technical Documentation
 
 [![Netlify Status](https://api.netlify.com/api/v1/badges/your-netlify-id/deploy-status)](https://app.netlify.com/sites/shelter-in-a-storm/deploys)
 
-Providing emergency assistance and support to those in need in our Lake Ozark community.
+## 🛠️ Tech Stack
 
-## 🏠 About
+- [Astro](https://astro.build/) - Static Site Generator
+- [Tailwind CSS](https://tailwindcss.com/) - Styling
+- [TypeScript](https://www.typescriptlang.org/) - Type Safety
+- [Netlify](https://netlify.com) - Hosting & Deployment
 
-Shelter in a Storm is a 24/7 emergency assistance initiative by Lake Ozark Christian Church. Our mission is to share the love of Jesus Christ by providing emergency basic needs for our neighbors in Miller and Camden counties through loving donations.
+## 🚀 Quick Start
 
-## 🌟 Key Features
-
-- **24/7 Emergency Food Pantry**: Located under our portico, following the principle "Take what you need, leave some for others"
-- **Emergency Assistance**: Support for low-income individuals with housing and transportation needs
-- **Community Support**: Serving Miller and Camden counties with essential services
-
-## 📍 Location
-
-**Pantry of Blessings**
-1560 Bagnell Dam Blvd.
-Lake Ozark, MO 65049
-
-Located on the west side of Lake Ozark Christian Church
-
-## 🤝 Community Partners
-
-- Dierbergs
-- HyVee
-- Smart Postal Center
-- Target
-- UPS Store
-- Woods
-- Hope House of Miller County
-
-## 💻 Technical Details
-
-### Tech Stack
-- [Astro](https://astro.build/)
-- [React](https://reactjs.org/)
-- [Tailwind CSS](https://tailwindcss.com/)
-- [TypeScript](https://www.typescriptlang.org/)
-- [Netlify](https://netlify.com) for hosting and deployment
-
-### Project Structure
-```text
-/
-├── public/
-│   └── favicon.svg
-├── src/
-│   ├── components/
-│   ├── layouts/
-│   ├── pages/
-│   └── config/
-├── package.json
-└── netlify.toml    # Netlify configuration
+1. Install dependencies:
+```bash
+npm install
 ```
 
-### Development Commands
+2. Start development server:
+```bash
+npm run dev
+```
 
-| Command           | Action                                      |
-| :--------------- | :------------------------------------------ |
-| `npm install`    | Installs dependencies                       |
-| `npm run dev`    | Starts local dev server at `localhost:4321` |
-| `npm run build`  | Build production site to `./dist/`          |
-| `npm run preview`| Preview build locally                       |
+3. Build for production:
+```bash
+npm run build
+```
+
+4. Preview production build:
+```bash
+npm run preview
+```
+
+## 📁 Project Structure
+
+```text
+/
+├── public/              # Static assets
+├── src/
+│   ├── components/      # Reusable UI components
+│   ├── config/         # Site configuration
+│   ├── content/        # Content collections (events)
+│   ├── layouts/        # Page layouts
+│   └── pages/          # Page components
+├── astro.config.mjs    # Astro configuration
+├── tailwind.config.mjs # Tailwind configuration
+└── netlify.toml        # Netlify configuration
+```
+
+## ⚙️ Common Configuration Tasks
+
+### Site Configuration
+
+The main site configuration is located in `src/config/site.ts`. Here you can modify:
+
+- Site metadata (title, description, etc.)
+- Theme colors and styling
+- Contact information
+- Mission statement and values
+- Partner information
+- Team members
+
+Example:
+```typescript
+export const siteConfig = {
+    name: "Your Site Name",
+    description: "Your site description",
+    theme: {
+        colors: {
+            primary: {
+                DEFAULT: '#666ed8',
+            }
+        }
+    }
+}
+```
+
+### Adding New Events
+
+1. Create a new markdown file in `src/content/events/`
+2. Follow the event schema defined in `src/content/config.ts`:
+
+```typescript
+{
+    title: "Event Title",
+    description: "Event Description",
+    date: new Date("2024-01-20"),
+    image: "image-url",
+    status: "upcoming", // 'upcoming' | 'ongoing' | 'past'
+    location: "Event Location",
+    time: "6:00 PM",
+    registrationUrl: "optional-registration-url", // url to register for the event or external link
+    featured: true, // show on the homepage
+    donation: {
+        enabled: true,
+        title: "Donation Title",
+        description: "Donation Description"
+    },
+    showPartners: true // show partners on the event page 
+}
+```
+
+### Styling Customization
+
+1. Global styles: Modify `tailwind.config.mjs`
+2. Component-specific styles: Edit the respective component files in `src/components/`
+
+Example tailwind customization:
+```javascript
+module.exports = {
+    theme: {
+        extend: {
+            colors: {
+                brand: {
+                    DEFAULT: '#your-color',
+                    light: '#light-variant',
+                    dark: '#dark-variant',
+                }
+            }
+        }
+    }
+}
+```
+
+### Environment Variables
+
+Required in Netlify deployment:
+- `SITE_URL`: Production URL of the site
+- `API_KEY`: API key for admin functionality 
+- `API_URL`: Backend API URL 
+
+Local development:
+1. Create `.env` file in project root
+2. Add required variables:
+```bash
+SITE_URL=http://localhost:4321
+API_KEY=your-api-key
+API_URL=your-api-url
+```
 
 ### Deployment
 
-This site is automatically deployed to Netlify. Every push to the main branch triggers a new deployment.
+Automatic deployment via Netlify:
+1. Push to main branch
+2. Netlify automatically builds and deploys
 
-#### Manual Deployment
-1. Install Netlify CLI:
+Manual deployment:
 ```bash
+# Install Netlify CLI
 npm install netlify-cli -g
-```
 
-2. Connect to your Netlify site:
-```bash
+# Link to your Netlify site
 netlify link
-```
 
-3. Deploy:
-```bash
+# Deploy
 netlify deploy
 ```
 
-#### Environment Variables
-Required environment variables in Netlify:
-- `SITE_URL`: Production URL of the site
-- Add any other environment variables your site needs
+## 📝 Contributing
 
-## 📞 Contact
+1. Fork the repository
+2. Create feature branch
+3. Commit changes
+4. Push to branch
+5. Create Pull Request
 
-- **Emergency Assistance**: (573) 365-3366
-- **Hours**: 24/7 for emergency food assistance
+## 🛟 Support
 
-## 🛠️ Development
-
-Developed and maintained by [PixelPulse Creations, LLC](https://benji.services/)
-
-For bug reports or issues, please visit our [report page](/report)
+For technical issues:
+1. Check the troubleshooting guide above
+2. Search existing GitHub issues
+3. Create a new issue if needed
