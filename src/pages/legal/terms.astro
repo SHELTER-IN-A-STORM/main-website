@@ -5,7 +5,7 @@ import { siteConfig } from '../../config/site';
 
 <Layout title="Terms of Use">
     <!-- Hero Section -->
-    <section class="relative min-h-[40vh] flex items-center justify-center">
+    <section class="relative min-h-screen flex items-center justify-center">
         <div class="absolute inset-0">
             <img 
                 src={siteConfig.metadata.openGraph.image}
@@ -15,29 +15,51 @@ import { siteConfig } from '../../config/site';
             <div class="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/60"></div>
         </div>
 
-        <div class="container mx-auto px-6 relative z-10">
-            <div class="max-w-3xl mx-auto text-center text-white space-y-4">
+        <div class="relative container mx-auto px-6 z-10">
+            <div class="max-w-4xl mx-auto text-center text-white space-y-8">
                 <h1 
-                    class="text-4xl md:text-5xl font-bold animate-fade-in"
+                    class="text-5xl md:text-7xl font-bold mb-6 animate-fade-in"
                     style="text-wrap: balance;"
                 >
                     Terms of Use
                 </h1>
                 <p 
-                    class="text-lg md:text-xl text-gray-200 animate-slide-up-delay-1"
+                    class="text-xl md:text-2xl text-gray-200 mb-12 animate-slide-up-delay-1 max-w-2xl mx-auto"
                     style="text-wrap: balance;"
                 >
                     Last Updated: {new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
                 </p>
             </div>
         </div>
+
+        <div class="absolute bottom-12 left-1/2 transform -translate-x-1/2 z-10">
+            <a 
+                href="#content" 
+                class="text-white/80 hover:text-white transition-colors duration-300 animate-float"
+                aria-label="Scroll to content"
+            >
+                <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/>
+                </svg>
+            </a>
+        </div>
     </section>
 
     <!-- Main Content -->
-    <section class="py-16 md:py-24">
+    <section id="content" class="py-16 md:py-24">
         <div class="container mx-auto px-4">
             <div class="max-w-3xl mx-auto prose prose-lg prose-gray">
                 <div class="space-y-12">
+                    <!-- Definitions -->
+                    <div>
+                        <h2>Definitions</h2>
+                        <ul>
+                            <li><strong>"Website"</strong> refers to Shelter in a Storm's online platform, including all pages and services available through it.</li>
+                            <li><strong>"User"</strong> refers to any individual accessing or interacting with the website.</li>
+                            <li><strong>"Services"</strong> refers to all assistance programs, volunteer opportunities, and other resources provided through our website.</li>
+                        </ul>
+                    </div>
+
                     <!-- Introduction -->
                     <div>
                         <p>
@@ -67,14 +89,27 @@ import { siteConfig } from '../../config/site';
                             <li>Submit false or misleading information</li>
                             <li>Attempt to gain unauthorized access to our systems</li>
                             <li>Interfere with the proper functioning of the website</li>
+                            <li>Use automated tools, bots, or scraping technologies to access or interact with our website</li>
                         </ul>
+                        <h3>2.2 User Account Responsibility</h3>
+                        <p>
+                            If our website allows for user accounts, you are responsible for maintaining the confidentiality of your account credentials and all activities under your account. Notify us immediately of any unauthorized use or security breach of your account.
+                        </p>
+                        <h3>2.3 Eligibility</h3>
+                        <p>
+                            Our website and services are intended for users 18 years of age or older. If you are under 18, you may use our services only with the involvement of a parent or guardian.
+                        </p>
                     </div>
 
                     <!-- User Information -->
                     <div>
                         <h2>3. User Information</h2>
                         <p>
-                            When using our services, you agree to provide accurate, current, and complete information. We handle your information in accordance with our Privacy Policy.
+                            When using our services, you agree to provide accurate, current, and complete information. We handle your information in accordance with our Privacy Policy and in compliance with the Missouri Personal Privacy Protection Act.
+                        </p>
+                        <h3>3.1 Privacy Notice</h3>
+                        <p>
+                            Your use of our website and services is also governed by our <a href="/legal/privacy" class="text-brand hover:text-brand-dark">Privacy Policy</a>. Please review it to understand how we collect, use, and protect your information.
                         </p>
                     </div>
 
@@ -84,13 +119,21 @@ import { siteConfig } from '../../config/site';
                         <p>
                             The Shelter in a Storm name, logo, branding, and original content are the property of Shelter in a Storm and are protected by copyright and other intellectual property laws. Some images and other content on this website are used under license from third parties. For detailed attribution and licensing information, please visit our <a href="/legal/license" class="text-brand hover:text-brand-dark">License</a> page.
                         </p>
+                        <h3>4.1 User-Generated Content</h3>
+                        <p>
+                            User-generated content includes, but is not limited to, testimonials, comments, reviews, feedback submissions, volunteer applications, assistance requests, or any other content submitted via forms, emails, or other communication channels on our website. By submitting such content, you grant Shelter in a Storm a non-exclusive, royalty-free, perpetual, irrevocable, and worldwide license to use, reproduce, modify, and distribute such content for operational or promotional purposes. You are responsible for ensuring any content you submit complies with applicable copyright laws.
+                        </p>
+                        <h3>4.2 Third-Party Services</h3>
+                        <p>
+                            Our website may contain links to third-party websites or services. Shelter in a Storm is not responsible for the content, accuracy, or practices of such third-party entities. Your use of third-party services is subject to their respective terms and policies.
+                        </p>
                     </div>
 
                     <!-- Disclaimer -->
                     <div>
                         <h2>5. Disclaimer</h2>
                         <p>
-                            Our services are provided "as is" without any warranties, expressed or implied. We do not guarantee the accuracy, completeness, or reliability of any content or services provided on our website.
+                            Our services are provided "as is" without any warranties, expressed or implied. We do not guarantee the accuracy, completeness, or reliability of any content or services provided on our website, including content from third-party sources.
                         </p>
                     </div>
 
@@ -100,6 +143,14 @@ import { siteConfig } from '../../config/site';
                         <p>
                             To the fullest extent permitted by law, Shelter in a Storm shall not be liable for any indirect, incidental, special, consequential, or punitive damages arising from or related to your use of our services.
                         </p>
+                        <h3>6.1 Indemnification</h3>
+                        <p>
+                            You agree to indemnify, defend, and hold harmless Shelter in a Storm, its affiliates, directors, officers, employees, and agents from any claims, damages, liabilities, costs, and expenses (including reasonable attorney fees) arising out of your use of our website or services, violation of these Terms of Use, or infringement of any third-party rights.
+                        </p>
+                        <h3>6.2 Security Responsibility</h3>
+                        <p>
+                            While we take reasonable measures to safeguard your information, you acknowledge that no method of electronic transmission or storage is completely secure. You agree to take reasonable precautions, such as using secure passwords and avoiding public Wi-Fi when accessing your account.
+                        </p>
                     </div>
 
                     <!-- Changes to Terms -->
@@ -108,6 +159,10 @@ import { siteConfig } from '../../config/site';
                         <p>
                             We reserve the right to modify these Terms of Use at any time. We will notify users of any material changes by posting the updated terms on our website. Your continued use of our services after such changes constitutes acceptance of the modified terms.
                         </p>
+                        <h3>7.1 Termination of Access</h3>
+                        <p>
+                            We reserve the right to terminate or suspend your access to our website or services at any time, with or without cause, and without prior notice, for conduct that we believe violates these Terms of Use or is otherwise harmful to our organization or users.
+                        </p>
                     </div>
 
                     <!-- Governing Law -->
@@ -115,6 +170,10 @@ import { siteConfig } from '../../config/site';
                         <h2>8. Governing Law</h2>
                         <p>
                             These Terms of Use shall be governed by and construed in accordance with the laws of the State of Missouri, without regard to its conflict of law provisions.
+                        </p>
+                        <h3>8.1 Dispute Resolution</h3>
+                        <p>
+                            Any disputes arising from these Terms of Use shall first be attempted to be resolved through informal negotiations. If unresolved, disputes shall be settled through binding arbitration in accordance with the rules of the American Arbitration Association, to be held in Missouri.
                         </p>
                     </div>
 
@@ -132,6 +191,10 @@ import { siteConfig } from '../../config/site';
                                 compliance@shelterinastorm.org
                             </a>
                         </div>
+                        <h3>9.1 Force Majeure</h3>
+                        <p>
+                            Shelter in a Storm shall not be held liable for any failure or delay in performance due to circumstances beyond our reasonable control, including acts of God, natural disasters, pandemics, government actions, or other events of force majeure.
+                        </p>
                     </div>
 
                     <!-- Severability -->
@@ -139,6 +202,46 @@ import { siteConfig } from '../../config/site';
                         <h2>10. Severability</h2>
                         <p>
                             If any provision of these Terms of Use is found to be invalid or unenforceable, the remaining provisions shall remain in full force and effect.
+                        </p>
+                    </div>
+
+                    <!-- Accessibility -->
+                    <div>
+                        <h2>11. Accessibility</h2>
+                        <p>
+                            We strive to make our website accessible to all users, including those with disabilities. If you experience any issues accessing our website, please contact us at <a href="mailto:compliance@shelterinastorm.org" class="text-brand hover:text-brand-dark">compliance@shelterinastorm.org</a> so we can assist you. For more details, visit our <a href="/legal/accessibility" class="text-brand hover:text-brand-dark">Accessibility Statement</a>.
+                        </p>
+                    </div>
+
+                    <!-- Volunteer and Assistance Programs -->
+                    <div>
+                        <h2>12. Volunteer and Assistance Programs</h2>
+                        <p>
+                            By submitting a volunteer application or assistance request, you confirm that the information provided is accurate to the best of your knowledge. Misrepresentation or misuse of these programs may result in suspension from future participation.
+                        </p>
+                    </div>
+
+                    <!-- Donations -->
+                    <div>
+                        <h2>13. Donations</h2>
+                        <p>
+                            By making a donation, you agree that all contributions are final and non-refundable unless required by law. We reserve the right to decline or refund donations that do not align with our mission or values.
+                        </p>
+                    </div>
+
+                    <!-- Updates to Terms -->
+                    <div>
+                        <h2>14. Updates to Terms</h2>
+                        <p>
+                            We may update these Terms of Use periodically to reflect changes in our practices or legal requirements. Any updates will be posted on this page with the revised date. Your continued use of the Website after changes take effect constitutes acceptance of the updated terms.
+                        </p>
+                    </div>
+
+                    <!-- Contact Us -->
+                    <div>
+                        <h2>15. Contact Us</h2>
+                        <p>
+                            If you have any questions about these Terms of Use or would like to request changes to your information, please contact us at <a href="mailto:compliance@shelterinastorm.org" class="text-brand hover:text-brand-dark">compliance@shelterinastorm.org</a>.
                         </p>
                     </div>
                 </div>

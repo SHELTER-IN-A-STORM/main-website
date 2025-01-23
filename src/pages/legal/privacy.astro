@@ -1,20 +1,22 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import { siteConfig } from '../../config/site';
 ---
 
 <Layout title="Privacy Policy">
-    <section class="relative min-h-[40vh] flex items-center justify-center">
+    <!-- Hero Section -->
+    <section class="relative min-h-screen flex items-center justify-center">
         <div class="absolute inset-0">
             <img 
-                src="/images/privacy-hero.jpg"
+                src={siteConfig.metadata.openGraph.image}
                 alt="Privacy Policy"
                 class="w-full h-full object-cover"
             />
             <div class="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/60"></div>
         </div>
 
-        <div class="container mx-auto px-6 relative z-10">
-            <div class="max-w-4xl mx-auto text-center text-white">
+        <div class="relative container mx-auto px-6 z-10">
+            <div class="max-w-4xl mx-auto text-center text-white space-y-8">
                 <h1 
                     class="text-5xl md:text-7xl font-bold mb-6 animate-fade-in"
                     style="text-wrap: balance;"
@@ -22,29 +24,61 @@ import Layout from '../../layouts/Layout.astro';
                     Privacy Policy
                 </h1>
                 <p 
-                    class="text-xl md:text-2xl text-gray-200 animate-slide-up-delay-1 max-w-2xl mx-auto"
+                    class="text-xl md:text-2xl text-gray-200 mb-12 animate-slide-up-delay-1 max-w-2xl mx-auto"
                     style="text-wrap: balance;"
                 >
                     How we protect and handle your information
                 </p>
             </div>
         </div>
+
+        <div class="absolute bottom-12 left-1/2 transform -translate-x-1/2 z-10">
+            <a 
+                href="#content" 
+                class="text-white/80 hover:text-white transition-colors duration-300 animate-float"
+                aria-label="Scroll to content"
+            >
+                <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/>
+                </svg>
+            </a>
+        </div>
     </section>
 
-    <section class="py-24">
+    <section id="content" class="py-24">
         <div class="container mx-auto px-6">
             <div class="prose prose-lg max-w-3xl mx-auto">
+                <!-- Information We Collect -->
+                <h2>Information We Collect</h2>
+                <p>
+                    We collect information that you voluntarily provide to us through various forms on our website. We may share this information with our trusted partners who help us process information or provide services on our behalf. These partners are contractually required to handle your information securely and in compliance with applicable laws. For a complete list of our trusted partners, please scroll to the bottom of any page on our website.
+                </p>
+                <p>
+                    Information we collect may include:
+                </p>
+                <ul>
+                    <li><strong>Assistance Request Forms:</strong> Personal information (name, contact details), address, and details about your assistance needs</li>
+                    <li><strong>Volunteer Applications:</strong> Contact information, availability, and relevant experience</li>
+                    <li><strong>Bug Reports:</strong> Email address (optional), page URL, and issue description</li>
+                    <li><strong>Donation Information:</strong> Contact details for donation receipts and acknowledgments</li>
+                </ul>
+
+                <p>
+                    To opt out of sharing your information with trusted partners, please contact us at <a href="mailto:compliance@shelterinastorm.org">compliance@shelterinastorm.org</a>, specifying your request.
+                </p>
+
+                <h3>Data Retention</h3>
+                <p>
+                    We retain data for up to 360 days to ensure adequate time for program coordination, volunteer activities, or responding to assistance requests. Data is securely deleted afterward unless otherwise required by law. You may request the deletion of your information at any time by emailing <a href="mailto:compliance@shelterinastorm.org">compliance@shelterinastorm.org</a>.
+                </p>
+
                 <h2>Cookies & Other Tracking Technologies</h2>
                 <p>
                     We and our third party service providers use cookies and other tracking mechanisms to track information about your use of our Website or Services. We may combine this information with other personal information we collect from you (and our third party service providers may do so on our behalf).
                 </p>
 
                 <p>
-                    Currently, our systems do not recognize browser "do-not-track" requests. You may, however, disable certain tracking as discussed in this section (e.g., by disabling cookies).
-                </p>
-
-                <p>
-                    When you come to the Website, our web server sends a cookie to your computer. Cookies are alphanumeric identifiers that we transfer to your computer's hard drive through your web browser for record-keeping purposes. There are two types of cookies: session-based and persistent-based cookies. We also may permit certain third party cookies to be placed on our Website.
+                    We currently do not respond to Do-Not-Track (DNT) browser settings. However, you can disable cookies or tracking technologies through your browser settings.
                 </p>
 
                 <h3>Session Cookies</h3>
@@ -59,52 +93,59 @@ import Layout from '../../layouts/Layout.astro';
 
                 <h3>Third Party Analytics</h3>
                 <p>
-                    We may use automated devices and applications, such as Google Analytics, to evaluate usage of our Website. We also may use other analytic means to evaluate our Services. We use these tools to help us improve our Services, performance and user experiences. These entities may use cookies and other tracking technologies to perform their services. We do not share your personal information with these third parties.
+                    We may use automated devices and applications, such as Google Analytics, to evaluate usage of our Website. We also may use other analytic means to evaluate our Services. We use these tools to help us improve our Services, performance and user experiences. These entities may use cookies and other tracking technologies to perform their services. We do not share your personal information with these third parties. You can opt out of Google Analytics by visiting the <a href="https://support.google.com/analytics/answer/181881" target="_blank" rel="noopener noreferrer">Google Analytics Opt-out Browser Add-on</a> page.
                 </p>
 
+                <h2>How We Use Your Information</h2>
                 <p>
-                    You may be able to opt-out or restrict the collection or use of information by some commonly used tracking pixels and services. The following links are provided for your convenience:
+                    We use the information we collect to:
                 </p>
-
                 <ul>
-                    <li>Google Analytics – <a href="https://tools.google.com/dlpage/gaoptout/" target="_blank" rel="noopener noreferrer">https://tools.google.com/dlpage/gaoptout/</a></li>
+                    <li>Process and respond to your assistance requests</li>
+                    <li>Coordinate volunteer activities</li>
+                    <li>Improve our website and services</li>
+                    <li>Send you important updates or information about our services</li>
+                    <li>Process and acknowledge donations</li>
+                    <li>Comply with legal obligations</li>
                 </ul>
-
-                <h3>Disabling Cookies</h3>
-                <p>
-                    Most web browsers automatically accept cookies, but if you prefer, you can edit your browser options to block them in future. The Help portion of the toolbar on most browsers will tell you how to prevent your computer from accepting new cookies, how to have the browser notify you when you receive a new cookie, or how to disable cookies altogether. Website visitors who disable their web browsers' ability to accept cookies will be able to browse the Website; however, you must enable cookies to use most of our Services.
-                </p>
-
-                <h2>Opting Out of Communications</h2>
-                <h3>Email</h3>
-                <p>
-                    If you have created an account with us or requested to receive information from us, we may send you email about topics and opportunities that we believe may be of interest to you. At any time, you may unsubscribe from our emails by using the link contained in the email. If you opt-out of receiving emails about recommendations or other information we think may interest you, we may still send you e-mails about your account or any Services you have requested or received from us.
-                </p>
-
-                <h3>Phone</h3>
-                <p>
-                    If you no longer wish to receive information from us, please email <a href="mailto:compliance@shelterinastorm.org">compliance@shelterinastorm.org</a>
-                </p>
 
                 <h2>Security of Your Information</h2>
                 <p>
-                    We want the information that you submit to us to be secure. We use industry-standard techniques to safeguard the information that you provide to us through our Website. Notwithstanding our commitment to your information, please be aware that there is a risk that others could find a way to thwart our security systems or the security systems of the third parties that host our server. As a result, we cannot ensure or warrant the security or privacy of any information that you choose to submit to us.
-                </p>
-
-                <p>
-                    You should take steps to protect against unauthorized access to your password, phone, and computer by, among other things, signing off after using a shared computer, choosing a robust password that nobody else knows or can easily guess, and keeping your log-in and password private. We are not responsible for any lost, stolen, or compromised passwords or for any activity on your account via unauthorized password activity.
+                    We employ encryption, secure servers, and access controls to protect your information. While no method of data transmission is 100% secure, we strive to use commercially acceptable means to safeguard your data. Please be aware that despite our best efforts, there is always some risk in transmitting information electronically.
                 </p>
 
                 <h2>Children's Privacy</h2>
                 <p>
-                    Our Website is not intended for persons under the age of 13, and we do not knowingly collect information from persons under the age of 13. If we learn that a person under the age of 13 has created an account or directly applied for programs through our Website, then we will remove that information from our systems. Please be advised, however, that certain programs offered by third parties may be applicable to persons under the age of 13 or may require us to provide information about the children in your household. In those situations, we only collect information about persons under the age of 13 directly from the registered user, which must be a person over the age of 13.
+                    Our Website is not intended for persons under the age of 13, and we do not knowingly collect information from persons under the age of 13. If you believe we have inadvertently collected information from a child under 13, please contact us at <a href="mailto:compliance@shelterinastorm.org">compliance@shelterinastorm.org</a> so we can promptly delete the data.
+                </p>
+
+                <h2>Updates to Privacy Policy</h2>
+                <p>
+                    We may update this Privacy Policy periodically to reflect changes in our practices or legal requirements. Any updates will be posted on this page with the revised date. Your continued use of the Website after changes take effect constitutes acceptance of the updated policy.
                 </p>
 
                 <h2>Contact Us</h2>
                 <p>
-                    Please contact us at <a href="mailto:compliance@shelterinastorm.org">compliance@shelterinastorm.org</a> if you have any questions regarding this Policy.
+                    If you have any questions about this Privacy Policy or would like to request deletion of your information, please contact us at <a href="mailto:compliance@shelterinastorm.org">compliance@shelterinastorm.org</a>.
                 </p>
+
+                <div class="mt-16 pt-8 border-t border-gray-200">
+                    <p class="text-sm text-gray-600">
+                        This Privacy Policy was last updated on {new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}.
+                    </p>
+                </div>
             </div>
         </div>
     </section>
 </Layout> 
+
+<style>
+    .animate-float {
+        animation: float 3s ease-in-out infinite;
+    }
+
+    @keyframes float {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-10px); }
+    }
+</style>

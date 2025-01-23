@@ -16,7 +16,7 @@ const formattedTitle = siteConfig.title.template.replace('%s', title);
 
 <!DOCTYPE html>
 <!-- ✨ Built by Benji.Services • https://benji.services/ -->
-<!-- ⚠️ Report issues via our Report page • https://lakeozarkdisciples.org/report -->
+<!-- ⚠️ Report issues via our Report page • https://shelterinastorm.org/report -->
  
  <html lang={siteConfig.metadata.language}>
 	<head>
@@ -42,7 +42,6 @@ const formattedTitle = siteConfig.title.template.replace('%s', title);
 		<link rel="canonical" href={Astro.url} />
 		<link rel="icon" type="image/png" href={siteConfig.metadata.favicon} />
 		
-		<!-- Google Fonts -->
 		{siteConfig.fonts.google.families.map(family => (
 			<link 
 				href={`https://fonts.googleapis.com/css2?family=${family}&display=swap`}
@@ -58,9 +57,9 @@ const formattedTitle = siteConfig.title.template.replace('%s', title);
 		</title>
 		
 		<style>
-			/* Remove duplicate styles here since they're defined in global styles */
 		</style>
 	</head>
+	
 	<body class="min-h-screen flex flex-col bg-gray-50 text-gray-900">
 		<a href="#main-content" class="skip-to-main-content focus:fixed focus:top-0">
 			Skip to main content
@@ -92,7 +91,6 @@ const formattedTitle = siteConfig.title.template.replace('%s', title);
 		line-height: inherit;
 	}
 
-	/* Skip link styles - improved for better accessibility */
 	.skip-to-main-content {
 		position: absolute;
 		top: -9999px;
@@ -120,18 +118,15 @@ const formattedTitle = siteConfig.title.template.replace('%s', title);
 		text-decoration: underline;
 	}
 
-	/* Base styles */
 	h1, h2, h3, h4, h5, h6 {
 		font-weight: 700;
 		line-height: 1.2;
 	}
 
-	/* Smooth scrolling */
 	html {
 		scroll-behavior: auto;
 	}
 
-	/* Container styles */
 	.container {
 		width: 100%;
 		margin-right: auto;
@@ -183,7 +178,6 @@ const formattedTitle = siteConfig.title.template.replace('%s', title);
     window.trackEvent = trackEvent;
 </script>
 
-<!-- Add type declaration -->
 <script>
 declare global {
     interface Window {
