@@ -3,6 +3,7 @@ import { siteConfig } from '../config/site';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import CookieConsent from '../components/CookieConsent.astro';
+import AccessibilitySettings from '../components/AccessibilitySettings.astro';
 
 import '../styles/global.css';
 
@@ -59,17 +60,13 @@ const formattedTitle = siteConfig.title.template.replace('%s', title);
 		<style>
 		</style>
 	</head>
-	
-	<body class="min-h-screen flex flex-col bg-gray-50 text-gray-900">
-		<a href="#main-content" class="skip-to-main-content focus:fixed focus:top-0">
-			Skip to main content
-		</a>
 		<Header />
 		<main id="main-content" class="flex-grow" tabindex="-1">
 			<slot />
 		</main>
 		<Footer />
 		<CookieConsent />
+		<AccessibilitySettings />
 	</body>
 </html>
 
@@ -162,6 +159,36 @@ const formattedTitle = siteConfig.title.template.replace('%s', title);
 			max-width: 1280px;
 			padding-right: 5rem;
 			padding-left: 5rem;
+		}
+	}
+
+	/* Skip Navigation Link */
+	.skip-nav {
+		background: #666ed8;
+		color: white;
+		padding: 1rem 2rem;
+		position: fixed;
+		transform: translateY(-120%);
+		transition: transform 0.3s;
+		left: 1rem;
+		top: 1rem;
+		z-index: 100;
+		border-radius: 0.5rem;
+		text-decoration: none;
+		font-weight: 500;
+		box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+	}
+
+	.skip-nav:focus {
+		transform: translateY(0);
+	}
+
+	/* Mobile Responsiveness */
+	@media (max-width: 640px) {
+		.skip-nav {
+			left: 0.5rem;
+			top: 0.5rem;
+			padding: 0.75rem 1.5rem;
 		}
 	}
 </style>
