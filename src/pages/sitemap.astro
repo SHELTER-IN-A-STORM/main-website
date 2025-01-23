@@ -1,0 +1,210 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { siteConfig } from '../config/site';
+
+// Import the same pages array we use in sitemap.xml
+const pages = [
+    {
+        title: 'Home',
+        path: '',
+        description: 'Welcome to Shelter in a Storm - Emergency assistance and support in Lake Ozark'
+    },
+    {
+        title: 'About Us',
+        path: 'about',
+        description: 'Learn about our mission, values, and the team behind Shelter in a Storm'
+    },
+    {
+        title: 'Donate',
+        path: 'donate',
+        description: 'Support our cause and help those in need in our community'
+    },
+    {
+        title: 'Events',
+        path: 'events',
+        description: 'Upcoming events, fundraisers, and community gatherings'
+    },
+    {
+        title: 'Get Help',
+        path: 'get-help',
+        description: 'Access emergency assistance and support services'
+    },
+    {
+        title: 'Food Pantry',
+        path: 'services/food-pantry',
+        description: '24/7 emergency food assistance for those in need'
+    },
+    {
+        title: 'Volunteer',
+        path: 'volunteer',
+        description: 'Join our team of volunteers and make a difference'
+    },
+    {
+        title: 'Report',
+        path: 'report',
+        description: 'Report issues or provide feedback'
+    },
+    {
+        title: 'Legal',
+        path: 'legal',
+        children: [
+            {
+                title: 'Privacy Policy',
+                path: 'legal/privacy-policy',
+                description: 'Our privacy policy and data protection practices'
+            },
+            {
+                title: 'Terms of Service',
+                path: 'legal/terms-of-service',
+                description: 'Terms and conditions for using our services'
+            },
+            {
+                title: 'Accessibility',
+                path: 'legal/accessibility',
+                description: 'Our commitment to making our services accessible to everyone'
+            }
+        ]
+    }
+];
+---
+
+<Layout title="Sitemap">
+    <!-- Hero Section -->
+    <section class="relative min-h-screen flex items-center justify-center">
+        <div class="absolute inset-0">
+            <img 
+                src={siteConfig.metadata.openGraph.image}
+                alt="Sitemap"
+                class="w-full h-full object-cover"
+            />
+            <div class="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/60"></div>
+        </div>
+
+        <div class="relative container mx-auto px-6 z-10">
+            <div class="max-w-4xl mx-auto text-center text-white space-y-8">
+                <h1 
+                    class="text-5xl md:text-7xl font-bold mb-6 animate-fade-in"
+                    style="text-wrap: balance;"
+                >
+                    Sitemap
+                </h1>
+                <p 
+                    class="text-xl md:text-2xl text-gray-200 mb-12 animate-slide-up-delay-1 max-w-2xl mx-auto"
+                    style="text-wrap: balance;"
+                >
+                    Find all pages available on our website
+                </p>
+            </div>
+        </div>
+
+        <div class="absolute bottom-12 left-1/2 transform -translate-x-1/2 z-10">
+            <a 
+                href="#content" 
+                class="text-white/80 hover:text-white transition-colors duration-300 animate-float"
+                aria-label="Scroll to content"
+            >
+                <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/>
+                </svg>
+            </a>
+        </div>
+    </section>
+
+    <div id="content" class="bg-gray-50 py-20">
+        <div class="container mx-auto px-4">
+            <div class="max-w-4xl mx-auto">
+                <!-- Pages Grid -->
+                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+                    <div class="divide-y divide-gray-100">
+                        {pages.map(page => (
+                            <div class="p-6 hover:bg-gray-50 transition-colors">
+                                {!page.children ? (
+                                    <a 
+                                        href={`/${page.path}`} 
+                                        class="block group"
+                                    >
+                                        <div class="flex items-center justify-between">
+                                            <h2 class="text-xl font-semibold text-gray-900 group-hover:text-brand">
+                                                {page.title}
+                                            </h2>
+                                            <svg 
+                                                class="w-5 h-5 text-gray-400 group-hover:text-brand transform group-hover:translate-x-1 transition-all" 
+                                                fill="none" 
+                                                stroke="currentColor" 
+                                                viewBox="0 0 24 24"
+                                            >
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                                            </svg>
+                                        </div>
+                                        {page.description && (
+                                            <p class="text-gray-600 mt-1">{page.description}</p>
+                                        )}
+                                    </a>
+                                ) : (
+                                    <div>
+                                        <h2 class="text-xl font-semibold text-gray-900 mb-4">{page.title}</h2>
+                                        <div class="space-y-4 pl-6">
+                                            {page.children.map(child => (
+                                                <a 
+                                                    href={`/${child.path}`}
+                                                    class="block group"
+                                                >
+                                                    <div class="flex items-center justify-between">
+                                                        <h3 class="text-lg font-medium text-gray-900 group-hover:text-brand">
+                                                            {child.title}
+                                                        </h3>
+                                                        <svg 
+                                                            class="w-5 h-5 text-gray-400 group-hover:text-brand transform group-hover:translate-x-1 transition-all" 
+                                                            fill="none" 
+                                                            stroke="currentColor" 
+                                                            viewBox="0 0 24 24"
+                                                        >
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                                                        </svg>
+                                                    </div>
+                                                    {child.description && (
+                                                        <p class="text-gray-600 mt-1">{child.description}</p>
+                                                    )}
+                                                </a>
+                                            ))}
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
+                        ))}
+                    </div>
+                </div>
+
+                <!-- XML Sitemap Link -->
+                <div class="mt-8 text-center">
+                    <p class="text-gray-600">
+                        Looking for the XML sitemap? 
+                        <a 
+                            href="/sitemap.xml" 
+                            class="text-brand hover:text-brand-dark font-medium"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
+                            View XML Sitemap
+                        </a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</Layout>
+
+<style>
+    .group:hover svg {
+        transform: translateX(0.25rem);
+    }
+
+    .animate-float {
+        animation: float 3s ease-in-out infinite;
+    }
+
+    @keyframes float {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-10px); }
+    }
+</style>
