@@ -1,0 +1,226 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { siteConfig } from '../../config/site';
+
+// Flag to disable ticket sales
+const DISABLE_SALES = true;
+const ALLOWED_DEVICE_ID = '12345235';
+
+// Stripe payment links for different ticket quantities
+const STRIPE_LINKS = {
+    1: 'https://buy.stripe.com/test_XXXXX1',
+    2: 'https://buy.stripe.com/test_XXXXX2',
+    3: 'https://buy.stripe.com/test_XXXXX3', 
+    4: 'https://buy.stripe.com/test_XXXXX4',
+    5: 'https://buy.stripe.com/test_XXXXX5'
+};
+---
+
+<Layout title="Event Tickets">
+    {DISABLE_SALES && (
+        <script define:vars={{ ALLOWED_DEVICE_ID }}>
+            // Check cookie on client side
+            function getCookie(name) {
+                const value = `; ${document.cookie}`;
+                const parts = value.split(`; ${name}=`);
+                if (parts.length === 2) return parts.pop().split(';').shift();
+                return null;
+            }
+
+            const deviceId = getCookie('deviceid');
+            if (deviceId !== ALLOWED_DEVICE_ID) {
+                window.location.href = '/tickets/sorry';
+            }
+        </script>
+    )}
+
+    <!-- Hero Section -->
+    <section class="relative min-h-screen flex items-center justify-center">
+        <div class="absolute inset-0">
+            <img 
+                src={siteConfig.metadata.openGraph.image}
+                alt="Event Tickets"
+                class="w-full h-full object-cover"
+            />
+            <div class="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/60"></div>
+        </div>
+
+        <div class="relative container mx-auto px-6 z-10">
+            <div class="max-w-4xl mx-auto text-center text-white space-y-8">
+                <h1 
+                    class="text-5xl md:text-7xl font-bold mb-6 animate-fade-in"
+                    style="text-wrap: balance;"
+                >
+                    Community Fundraiser Event
+                </h1>
+                <p 
+                    class="text-xl md:text-2xl text-gray-200 mb-12 animate-slide-up-delay-1 max-w-2xl mx-auto"
+                    style="text-wrap: balance;"
+                >
+                    Join us for an evening of community and support
+                </p>
+                <div class="flex flex-wrap gap-6 justify-center text-sm animate-slide-up-delay-2">
+                    <div class="flex items-center gap-2">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                        </svg>
+                        <span>Monday, January 20, 2025</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                        <span>6:00 PM - 9:00 PM</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                        </svg>
+                        <span>Lake Ozark Christian Church</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="absolute bottom-12 left-1/2 transform -translate-x-1/2 z-10">
+            <a 
+                href="#tickets" 
+                class="text-white/80 hover:text-white transition-colors duration-300 animate-float"
+                aria-label="Scroll to tickets"
+            >
+                <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/>
+                </svg>
+            </a>
+        </div>
+    </section>
+
+    <!-- Ticket Section -->
+    <section id="tickets" class="py-24 bg-gray-50">
+        <div class="container mx-auto px-6">
+            <div class="max-w-2xl mx-auto">
+                <!-- Important Notes Box -->
+                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 mb-6">
+                    <h3 class="font-medium text-gray-900 mb-3">Important Notes:</h3>
+                    <ul class="list-disc list-inside space-y-1 text-gray-600">
+                        <li>Tickets are non-refundable</li>
+                        <li>Please keep your digital receipt for entry</li>
+                        <li>Maximum 5 tickets per purchase</li>
+                    </ul>
+                </div>
+
+                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+                    <div class="p-8">
+                        <div class="text-center mb-8">
+                            <h2 class="text-2xl font-bold text-gray-900 mb-2">Purchase Tickets</h2>
+                            <p class="text-gray-600">Support our cause and join us for this special event</p>
+                        </div>
+
+                        <div class="bg-brand/5 rounded-xl p-6 mb-8">
+                            <div class="flex items-center justify-between mb-4">
+                                <div>
+                                    <h3 class="text-xl font-semibold text-gray-900">General Admission</h3>
+                                    <p class="text-gray-600 text-sm mt-1">Access to all event activities</p>
+                                </div>
+                                <div class="text-right">
+                                    <div class="text-2xl font-bold text-brand">$5</div>
+                                    <div class="text-sm text-gray-500">per ticket</div>
+                                </div>
+                            </div>
+                            <ul class="space-y-3 mb-6">
+                                <li class="flex items-center gap-2 text-gray-600">
+                                    <svg class="w-5 h-5 text-brand" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                    </svg>
+                                    Full event access
+                                </li>
+                                <li class="flex items-center gap-2 text-gray-600">
+                                    <svg class="w-5 h-5 text-brand" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                    </svg>
+                                    Complimentary refreshments
+                                </li>
+                                <li class="flex items-center gap-2 text-gray-600">
+                                    <svg class="w-5 h-5 text-brand" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                    </svg>
+                                    Community support contribution
+                                </li>
+                            </ul>
+
+                            <div class="space-y-4">
+                                <div class="relative">
+                                    <select 
+                                        id="ticket-quantity"
+                                        class="w-full px-4 py-3 bg-white border border-gray-200 rounded-xl appearance-none cursor-pointer focus:outline-none focus:border-brand focus:ring-2 focus:ring-brand/20"
+                                    >
+                                        <option value="" disabled selected>Select number of tickets</option>
+                                        {Object.entries(STRIPE_LINKS).map(([quantity, _]) => (
+                                            <option value={quantity}>
+                                                {quantity} {parseInt(quantity) === 1 ? 'Ticket' : 'Tickets'} (${parseInt(quantity) * 5})
+                                            </option>
+                                        ))}
+                                    </select>
+                                    <div class="absolute inset-y-0 right-0 flex items-center px-4 pointer-events-none">
+                                        <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                                        </svg>
+                                    </div>
+                                </div>
+                                <button
+                                    id="purchase-button"
+                                    class="w-full px-4 py-3 bg-brand text-white font-medium rounded-xl hover:bg-brand-dark transition-colors opacity-50 cursor-not-allowed"
+                                    disabled
+                                >
+                                    Purchase Tickets
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="text-center text-sm text-gray-500">
+                            <p>Need help? Contact us at <a href="mailto:support@shelterinastorm.org" class="text-brand hover:text-brand-dark">support@shelterinastorm.org</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</Layout>
+
+<style>
+    .animate-float {
+        animation: float 3s ease-in-out infinite;
+    }
+
+    @keyframes float {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-10px); }
+    }
+</style>
+
+<script>
+    const ticketSelect = document.getElementById('ticket-quantity') as HTMLSelectElement;
+    const purchaseButton = document.getElementById('purchase-button') as HTMLButtonElement;
+    const stripeLinks: Record<number, string> = {
+        1: 'https://buy.stripe.com/test_XXXXX1',
+        2: 'https://buy.stripe.com/test_XXXXX2',
+        3: 'https://buy.stripe.com/test_XXXXX3',
+        4: 'https://buy.stripe.com/test_XXXXX4',
+        5: 'https://buy.stripe.com/test_XXXXX5'
+    };
+
+    ticketSelect.addEventListener('change', () => {
+        const selectedQuantity = ticketSelect.value;
+        if (selectedQuantity) {
+            purchaseButton.disabled = false;
+            purchaseButton.classList.remove('opacity-50', 'cursor-not-allowed');
+            purchaseButton.onclick = () => {
+                window.location.href = stripeLinks[Number(selectedQuantity)];
+            };
+        } else {
+            purchaseButton.disabled = true;
+            purchaseButton.classList.add('opacity-50', 'cursor-not-allowed');
+        }
+    });
+</script>

@@ -1,0 +1,35 @@
+---
+import Layout from '../../layouts/Layout.astro';
+---
+
+<Layout title="Purchase Successful">
+    <div class="min-h-screen bg-gray-50 pt-20">
+        <div class="max-w-2xl mx-auto px-4 py-16">
+            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 text-center">
+                <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <svg class="w-8 h-8 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                    </svg>
+                </div>
+                <h1 class="text-3xl font-bold text-gray-900 mb-4">Thank You!</h1>
+                <p class="text-gray-600 mb-8">
+                    Your ticket purchase was successful. You will receive a confirmation email shortly with your tickets.
+                </p>
+                <div class="space-y-4">
+                    <a 
+                        href="/tickets"
+                        class="block w-full px-4 py-3 bg-brand text-white font-medium rounded-xl hover:bg-brand-dark transition-colors"
+                    >
+                        Return to Tickets Page
+                    </a>
+                    <a 
+                        href="/"
+                        class="block w-full px-4 py-3 text-brand bg-brand/5 hover:bg-brand/10 rounded-xl transition-colors"
+                    >
+                        Back to Home
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</Layout> 
