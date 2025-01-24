@@ -1,0 +1,1112 @@
+---
+// Common questions and their responses
+const commonQuestions = {
+    "help": {
+        patterns: [
+            "help", "assistance", "support", "need help", "hlp", "halp", "assist", "helping",
+            "can you help", "need assistance", "support me", "get help", "how to get help",
+            "help me", "i need help", "looking for help", "where can i get help",
+            "how do i get help", "help please", "pls help", "plz help", "please help"
+        ],
+        response: {
+            text: "We offer various forms of assistance. The fastest way to get help is to fill out our assistance request form. For immediate food needs, our 24/7 food pantry is always available.",
+            links: [
+                {
+                    text: "Request Assistance",
+                    url: "/get-help#request-form",
+                    icon: "🆘"
+                },
+                {
+                    text: "Food Pantry Information",
+                    url: "/services/food-pantry",
+                    icon: "🥫"
+                }
+            ]
+        }
+    },
+    "food": {
+        patterns: [
+            "food", "hungry", "meal", "eat", "food pantry", "pantry", "foods", "feeding",
+            "need food", "get food", "where is food", "food bank", "foodbank", "food assistance",
+            "food help", "hunger", "starving", "food location", "food place", "meals",
+            "emergency food", "free food", "food available", "food service", "food services",
+            "food pickup", "pick up food", "get food", "food hours", "food times"
+        ],
+        response: {
+            text: "Our food pantry is open 24/7, located under our portico on the west side of the church. No paperwork required - just take what you need and leave some for others.",
+            links: [
+                {
+                    text: "Food Pantry Location",
+                    url: "/services/food-pantry#location",
+                    icon: "🏪"
+                }
+            ]
+        }
+    },
+    "assistance": {
+        patterns: [
+            "emergency", "crisis", "urgent", "shelter", "housing", "utilities", "emergency help",
+            "crisis help", "urgent help", "need shelter", "homeless", "house", "utility", "bill",
+            "bills", "electricity", "water bill", "gas bill", "power bill", "rent", "rental",
+            "housing help", "need a place", "place to stay", "emergency shelter", "emergency housing",
+            "utility assistance", "bill help", "help with bills", "help with rent",
+            "rental assistance", "need money", "financial", "finance", "money help"
+        ],
+        response: {
+            text: "For assistance with emergency needs (housing, utilities, etc.), please fill out our request form. We'll respond within 2-3 business days. For immediate food needs, visit our 24/7 food pantry.",
+            links: [
+                {
+                    text: "Submit Request Form",
+                    url: "/get-help#request-form",
+                    icon: "📝"
+                }
+            ]
+        }
+    },
+    "donate": {
+        patterns: [
+            "donate", "give", "contribution", "support us", "donating", "donation", "donor",
+            "how to donate", "can i donate", "want to donate", "make donation", "giving",
+            "contribute", "help out", "support", "monetary", "money donation", "financial support",
+            "charitable", "charity", "gift", "giving", "donate money", "donate food",
+            "food donation", "monetary donation", "monthly donation", "donate to us", "donate to our church"
+        ],
+        response: {
+            text: "Your generosity helps us provide emergency assistance and support to those in need in our Lake Ozark community.",
+            links: [
+                {
+                    text: "Make a Donation",
+                    url: "/donate",
+                    icon: "💝"
+                }
+            ]
+        }
+    },
+    "volunteer": {
+        patterns: [
+            "volunteer", "help out", "work with you", "volunteering", "can i help",
+            "want to help", "assist you", "join", "participate", "get involved",
+            "how can i help", "ways to help", "help the community", "community service",
+            "volunteer work", "volunteer opportunities", "volunteer program", "volunteer time",
+            "give time", "helping out", "help community", "serve", "service", "job", "jobs", "work", "works"
+        ],
+        response: {
+            text: "We have various volunteer opportunities, including helping with our food pantry, community outreach, and more.",
+            links: [
+                {
+                    text: "Volunteer Opportunities",
+                    url: "/volunteer",
+                    icon: "🤝"
+                }
+            ]
+        }
+    },
+    "services": {
+        patterns: [
+            "services", "programs", "offer", "provide", "available", "what do you do",
+            "what help", "what assistance", "what services", "what programs", "how do you help",
+            "tell me about", "about you", "about your", "what is", "what's available",
+            "what can you", "service list", "program list", "available help", "resources",
+            "resource", "what resources", "community resources", "available services"
+        ],
+        response: {
+            text: "We offer a 24/7 food pantry, emergency assistance programs, and other support services for our community in Miller and Camden counties.",
+            links: [
+                {
+                    text: "Our Services",
+                    url: "/services",
+                    icon: "📋"
+                }
+            ]
+        }
+    },
+    "human": {
+        patterns: [
+            "human", "agent", "person", "representative", "speak to someone", "talk to someone",
+            "real person", "someone real", "actual person", "live person", "live agent",
+            "real human", "speak with", "talk with", "chat with", "connect me", "connect with",
+            "need to speak", "need to talk", "want to speak", "want to talk", "contact person",
+            "contact someone", "reach someone", "reach a person", "talk to staff", "speak to staff"
+        ],
+        response: {
+            text: "To speak with a member of our team, please fill out our assistance request form. We'll get back to you within 2-3 business days.",
+            links: [
+                {
+                    text: "Request Assistance",
+                    url: "/get-help",
+                    icon: "👋"
+                }
+            ]
+        }
+    },
+    "bug": {
+        patterns: [
+            "bug", "error", "problem", "issue", "broken", "not working", "doesn't work",
+            "isnt working", "site issue", "website problem", "technical", "tech issue",
+            "glitch", "malfunction", "wrong", "incorrect", "mistake", "report problem",
+            "report issue", "report bug", "site error", "page error", "form error",
+            "cant access", "cannot access", "having trouble", "trouble with"
+        ],
+        response: {
+            text: "Thank you for reporting this issue. Please use our report form to provide details about the problem you've encountered. This helps us improve our site.",
+            links: [
+                {
+                    text: "Report an Issue",
+                    url: "/report",
+                    icon: "🐛"
+                }
+            ]
+        }
+    },
+    "thanks": {
+        patterns: [
+            "thank", "thanks", "thx", "appreciate", "grateful", "helped", "thankyou",
+            "thank you", "thanks a lot", "many thanks", "much appreciated", "ty", "thks",
+            "thank u", "thankful", "appreciative", "great help", "helpful", "big help",
+            "thanks for help", "thanks for helping", "appreciate it", "appreciate your help"
+        ],
+        response: {
+            text: "You're welcome! I'm glad I could help. Let me know if you need anything else.",
+            links: []
+        }
+    },
+    "bye": {
+        patterns: [
+            "bye", "goodbye", "see you", "cya", "good night", "good day", "farewell",
+            "take care", "ttyl", "talk later", "catch you", "have a good", "bye bye",
+            "see ya", "see u", "c ya", "leaving", "gotta go", "got to go", "gtg",
+            "signing off", "signing out", "good evening", "good morning"
+        ],
+        response: {
+            text: "Goodbye! Feel free to come back if you have any more questions.",
+            links: []
+        }
+    }
+};
+
+// Suggested questions when we don't understand
+const suggestedQuestions = [
+    {
+        text: "Where is the food pantry located?",
+        key: "food"
+    },
+    {
+        text: "How can I request emergency assistance?",
+        key: "assistance"
+    },
+    {
+        text: "What services do you offer?",
+        key: "services"
+    },
+    {
+        text: "Can I speak to a human?",
+        key: "human"
+    },
+    {
+        text: "How can I report an issue?",
+        key: "bug"
+    }
+];
+
+// Add typing indicator template
+const typingIndicator = `
+    <div class="flex items-start gap-2.5 typing-indicator">
+        <div class="w-8 h-8 rounded-full bg-brand flex items-center justify-center text-white font-semibold">
+            S
+        </div>
+        <div class="flex flex-col w-full max-w-[320px] leading-1.5 p-4 border border-gray-100 bg-white rounded-2xl shadow-sm">
+            <div class="flex gap-2">
+                <span class="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></span>
+                <span class="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style="animation-delay: 0.2s"></span>
+                <span class="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style="animation-delay: 0.4s"></span>
+            </div>
+        </div>
+    </div>
+`;
+
+// Name collection prompt
+const namePrompt = {
+    text: "Thank you for accepting our terms. Could you please provide your first name so I can properly assist you with our services?",
+    isNamePrompt: true
+};
+
+// Terms agreement prompt
+const termsPrompt = {
+    text: "To ensure your privacy and provide you with the best possible assistance, we need your consent to our Privacy Policy. Please review and accept it by clicking 'I Agree' below to continue.",
+    isTermsPrompt: true
+};
+---
+
+<!-- Welcome Tooltip -->
+<div id="chat-tooltip" class="fixed bottom-20 right-4 z-40 bg-white rounded-xl shadow-lg border border-gray-100 p-4 max-w-[200px] hidden">
+    <button id="close-tooltip" class="absolute top-1 right-1 p-1 text-gray-400 hover:text-gray-600 rounded-lg">
+        <span class="sr-only">Close tooltip</span>
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+        </svg>
+    </button>
+    <p id="chat-tooltip-text" class="text-sm text-gray-700">👋 We're here to help! Click to chat with us.</p>
+    <div class="absolute -bottom-2 right-6 w-4 h-4 bg-white border-r border-b border-gray-100 transform rotate-45"></div>
+</div>
+
+<!-- Chat Button -->
+<button
+    id="chat-button"
+    class="fixed bottom-4 right-4 z-40 w-14 h-14 bg-brand text-white rounded-full shadow-lg hover:bg-brand-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand flex items-center justify-center group transition-all duration-300 hover:scale-110"
+    aria-label="Open chat"
+>
+    <div class="relative">
+        <svg class="w-6 h-6 transform group-hover:rotate-12 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/>
+        </svg>
+        <div id="chat-status" class="absolute -top-1 -right-1 w-3 h-3 rounded-full bg-red-500 border-2 border-white"></div>
+    </div>
+</button>
+
+<!-- Chat Box -->
+<div id="chat-box" class="fixed bottom-4 right-4 z-40 w-[400px] max-w-[calc(100vw-2rem)] bg-white rounded-3xl shadow-xl border border-gray-100 overflow-hidden hidden">
+    <!-- Chat Header -->
+    <div class="flex items-center justify-between px-6 py-4 border-b border-gray-100 bg-[#6366F1] text-white">
+        <div class="flex items-center gap-3">
+            <div>
+                <h3 class="text-lg font-semibold">Hi there! 👋</h3>
+                <p class="text-sm opacity-90">Need help? We're here to assist you.</p>
+            </div>
+        </div>
+        <button id="toggle-chat" class="p-2 text-white/80 hover:text-white rounded-lg transition-colors">
+            <span class="sr-only">Close chat</span>
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+            </svg>
+        </button>
+    </div>
+
+    <!-- Chat Messages -->
+    <div id="chat-messages" class="px-6 py-4 h-[400px] overflow-y-auto space-y-6 bg-white">
+        <!-- Initial message will be added by JavaScript -->
+    </div>
+
+    <!-- Chat Input Area -->
+    <div class="border-t border-gray-100">
+        <!-- Input Form -->
+        <div class="px-6 py-4 bg-white">
+            <form id="chat-form" class="flex gap-2">
+                <input
+                    type="text"
+                    id="chat-input"
+                    class="flex-grow px-4 py-3 text-sm border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#6366F1] focus:border-transparent bg-gray-50"
+                    placeholder="Please complete the introduction first..."
+                    disabled
+                />
+                <button
+                    type="submit"
+                    class="px-4 py-2 text-sm font-medium text-white bg-[#6366F1] hover:bg-[#4F46E5] rounded-xl transition-all duration-300 shadow-sm hover:shadow-md focus:outline-none focus:ring-2 focus:ring-[#6366F1] focus:ring-offset-2 flex items-center gap-2"
+                >
+                    Send
+                </button>
+            </form>
+        </div>
+        
+        <!-- Policy Links -->
+        <div class="px-6 pb-4 text-xs text-gray-500 flex items-center justify-center gap-4">
+            <a href="/legal/privacy" class="hover:text-[#6366F1] hover:underline" target="_blank">Privacy Policy</a>
+            <span>•</span>
+            <a href="/legal/terms" class="hover:text-[#6366F1] hover:underline" target="_blank">Terms of Use</a>
+        </div>
+    </div>
+</div>
+
+<script define:vars={{ commonQuestions, suggestedQuestions, typingIndicator, namePrompt, termsPrompt }}>
+    const chatButton = document.getElementById('chat-button');
+    const chatBox = document.getElementById('chat-box');
+    const toggleChat = document.getElementById('toggle-chat');
+    const chatMessages = document.getElementById('chat-messages');
+    const chatForm = document.getElementById('chat-form');
+    const chatInput = document.getElementById('chat-input');
+
+    // Add privacy agreement handling
+    const privacyModal = document.getElementById('privacy-modal');
+    const privacyCheckbox = document.getElementById('privacy-checkbox');
+    const termsCheckbox = document.getElementById('terms-checkbox');
+    const acceptButton = document.getElementById('accept-policies');
+    const declineButton = document.getElementById('decline-policies');
+
+    // Update the welcome message to be more explicit about policies
+    const welcomeMessage = {
+        text: "Before we start chatting, please review our Privacy Policy and Terms of Use. Click 'I Agree' when you're ready to continue.",
+        isWelcome: true
+    };
+
+    // Add chat history persistence
+    const CHAT_HISTORY_KEY = 'chat-history';
+    const CHAT_STATE_KEY = 'chat-state';
+    
+    // Add chat availability state
+    const CHAT_AVAILABILITY_KEY = 'chatAvailability';
+
+    // Load chat state
+    let chatState = {
+        isOpen: localStorage.getItem(CHAT_STATE_KEY) === 'open',
+        hasAccepted: localStorage.getItem('chat-policies-accepted') === 'true',
+        userName: localStorage.getItem('chat-user-name') || '',
+        hasSharedName: false,
+        hasAgreedToTerms: localStorage.getItem('chat-terms-accepted') === 'true',
+        isAvailable: localStorage.getItem(CHAT_AVAILABILITY_KEY) !== 'disabled'
+    };
+
+    chatState.hasSharedName = !!chatState.userName;
+
+    // Add consecutive unrecognized questions counter
+    let consecutiveUnrecognizedCount = 0;
+
+    // Function to clear chat history
+    function clearChatHistory() {
+        localStorage.removeItem(CHAT_HISTORY_KEY);
+        if (chatMessages) {
+            chatMessages.innerHTML = '';
+        }
+    }
+
+    // Function to save chat state
+    function saveChatState() {
+        localStorage.setItem(CHAT_STATE_KEY, chatState.isOpen ? 'open' : 'closed');
+        localStorage.setItem('chat-policies-accepted', chatState.hasAccepted.toString());
+        localStorage.setItem('chat-user-name', chatState.userName);
+        localStorage.setItem('chat-terms-accepted', chatState.hasAgreedToTerms.toString());
+    }
+
+    // Function to save message to history
+    function saveMessageToHistory(content, sender) {
+        const history = JSON.parse(localStorage.getItem(CHAT_HISTORY_KEY) || '[]');
+        history.push({ content, sender, timestamp: new Date().toISOString() });
+        localStorage.setItem(CHAT_HISTORY_KEY, JSON.stringify(history));
+    }
+
+    // Function to load chat history with error handling
+    function loadChatHistory() {
+        try {
+            const history = JSON.parse(localStorage.getItem(CHAT_HISTORY_KEY) || '[]');
+            if (history && Array.isArray(history)) {
+                history.forEach(msg => {
+                    addMessage(msg.content, msg.sender, false, false);
+                });
+                return true;
+            }
+            throw new Error('Invalid chat history format');
+        } catch (error) {
+            console.error('Failed to load chat history:', error);
+            addMessage({
+                text: "I apologize, but I couldn't load your previous chat history. Would you like to start a fresh conversation?",
+                links: [
+                    {
+                        text: "Start New Chat",
+                        key: "new-chat",
+                        icon: "🔄"
+                    }
+                ]
+            }, 'bot', false, false);
+            return false;
+        }
+    }
+
+    // Update showChat function
+    function showChat() {
+        chatBox?.classList.remove('hidden');
+        chatButton?.classList.add('hidden');
+        chatState.isOpen = true;
+        saveChatState();
+        
+        // Clear messages first
+        if (chatMessages) {
+            chatMessages.innerHTML = '';
+        }
+        
+        // Try to load history or show welcome message
+        const history = JSON.parse(localStorage.getItem(CHAT_HISTORY_KEY) || '[]');
+        if (history.length > 0) {
+            const historyLoaded = loadChatHistory();
+            if (historyLoaded && chatState.hasAgreedToTerms && chatState.hasSharedName) {
+                enableChatInput();
+            } else {
+                disableChatInput();
+            }
+        } else if (!chatState.hasAgreedToTerms) {
+            const typingElement = showTyping();
+            setTimeout(() => {
+                hideTyping(typingElement);
+                addMessage(termsPrompt, 'bot');
+            }, 1000);
+        }
+    }
+
+    // Show typing indicator
+    function showTyping() {
+        const typingDiv = document.createElement('div');
+        typingDiv.innerHTML = typingIndicator;
+        chatMessages?.appendChild(typingDiv);
+        chatMessages?.scrollTo(0, chatMessages.scrollHeight);
+        return typingDiv;
+    }
+
+    // Hide typing indicator
+    function hideTyping(element) {
+        element?.remove();
+    }
+
+    // Function to capitalize first letter
+    function capitalizeFirstLetter(string) {
+        return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
+    }
+
+    // Add fuzzy matching function
+    function fuzzyMatch(input, pattern) {
+        input = input.toLowerCase();
+        pattern = pattern.toLowerCase();
+        
+        // Direct match
+        if (input.includes(pattern)) return true;
+        
+        // Allow for one character difference (typos)
+        if (pattern.length > 3) {
+            for (let i = 0; i < pattern.length; i++) {
+                const typoPattern = pattern.slice(0, i) + pattern.slice(i + 1);
+                if (input.includes(typoPattern)) return true;
+            }
+        }
+        
+        // Check for similar word starts (minimum 3 characters)
+        if (pattern.length >= 3) {
+            const patternStart = pattern.slice(0, 3);
+            const words = input.split(/\s+/);
+            for (const word of words) {
+                if (word.startsWith(patternStart)) return true;
+            }
+        }
+        
+        return false;
+    }
+
+    // Process message and return appropriate response
+    function processMessage(message) {
+        // Handle initial agreement
+        if (!chatState.hasAgreedToTerms) {
+            consecutiveUnrecognizedCount = 0; // Reset counter during onboarding
+            if (message.toLowerCase() === 'i agree') {
+                chatState.hasAgreedToTerms = true;
+                saveChatState();
+                return namePrompt;
+            } else {
+                return {
+                    text: "To continue, please type 'I agree' to accept our Privacy Policy and Terms of Use.",
+                    isTermsPrompt: true
+                };
+            }
+        }
+
+        // Handle name collection
+        if (!chatState.hasSharedName) {
+            consecutiveUnrecognizedCount = 0; // Reset counter during onboarding
+            chatState.userName = capitalizeFirstLetter(message.trim());
+            chatState.hasSharedName = true;
+            saveChatState();
+            return {
+                text: `Nice to meet you, ${chatState.userName}! How can I help you today?`,
+            };
+        }
+
+        // Check for matches in common questions with fuzzy matching
+        for (const [key, data] of Object.entries(commonQuestions)) {
+            if (data.patterns.some(pattern => {
+                // Try exact match first
+                if (message.toLowerCase().includes(pattern)) return true;
+                // Try fuzzy match if no exact match
+                return fuzzyMatch(message, pattern);
+            })) {
+                consecutiveUnrecognizedCount = 0;
+                const response = { ...data.response };
+                if (chatState.userName) {
+                    response.text = `${chatState.userName}, ${response.text}`;
+                }
+                return response;
+            }
+        }
+
+        // Increment counter for unrecognized questions
+        consecutiveUnrecognizedCount++;
+
+        // If user has had 3 consecutive unrecognized questions, offer human support
+        if (consecutiveUnrecognizedCount >= 3) {
+            consecutiveUnrecognizedCount = 0; // Reset counter
+            return {
+                text: "I notice you might be having trouble getting the information you need. Would you like to speak with a member of our team? They'll be happy to help you directly.",
+                links: [
+                    {
+                        text: "Request Human Support",
+                        url: "/get-help",
+                        icon: "👋"
+                    }
+                ]
+            };
+        }
+
+        // If no match found but under 3 attempts, return simple response with suggestions
+        return {
+            text: `I'm not sure I understand. Could you please rephrase your question? Here are some topics I can help with:`,
+            links: suggestedQuestions.slice(0, 3).map(q => ({
+                text: q.text,
+                url: "#",
+                key: q.key,
+                icon: "💡"
+            }))
+        };
+    }
+
+    // Update the formatLinks function with better button styling
+    function formatLinks(links) {
+        if (!links || links.length === 0) return '';
+        
+        return `<div class="mt-3 space-y-2">
+            ${links.map(link => {
+                // For suggested questions (links with key and no specific URL)
+                if (link.key) {
+                    return `
+                        <button
+                            type="button"
+                            class="block w-full text-left px-4 py-3 text-sm text-[#6366F1] bg-white border border-[#6366F1]/20 hover:border-[#6366F1] hover:bg-[#6366F1]/5 rounded-xl transition-all duration-200 flex items-center"
+                            data-question-key="${link.key}"
+                        >
+                            ${link.icon ? `<span class="mr-2">${link.icon}</span>` : ''}
+                            <span>${link.text}</span>
+                            <svg class="w-4 h-4 ml-auto text-[#6366F1]/70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                            </svg>
+                        </button>
+                    `;
+                }
+                // For regular links
+                return `
+                    <a href="${link.url}" 
+                       class="block w-full px-4 py-3 text-sm text-[#6366F1] bg-white border border-[#6366F1]/20 hover:border-[#6366F1] hover:bg-[#6366F1]/5 rounded-xl transition-all duration-200 flex items-center"
+                       target="_blank"
+                    >
+                        ${link.icon ? `<span class="mr-2">${link.icon}</span>` : ''}
+                        <span>${link.text}</span>
+                        <svg class="w-4 h-4 ml-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+                        </svg>
+                    </a>
+                `;
+            }).join('')}
+        </div>`;
+    }
+
+    // Update the click handler to handle new chat option
+    document.addEventListener('click', (e) => {
+        if (!(e.target instanceof HTMLElement)) return;
+        
+        // Handle suggested question buttons
+        const questionButton = e.target.closest('[data-question-key]');
+        if (questionButton) {
+            const key = questionButton.getAttribute('data-question-key');
+            if (key === 'new-chat') {
+                // Clear history and start fresh
+                clearChatHistory();
+                chatState.hasAgreedToTerms = false;
+                chatState.hasSharedName = false;
+                chatState.userName = '';
+                saveChatState();
+                
+                // Show terms prompt
+                const typingElement = showTyping();
+                setTimeout(() => {
+                    hideTyping(typingElement);
+                    addMessage(termsPrompt, 'bot');
+                }, 1000);
+                return;
+            }
+            
+            if (key && commonQuestions[key]) {
+                e.preventDefault();
+                const question = suggestedQuestions.find(q => q.key === key);
+                if (question) {
+                    addMessage(question.text, 'user');
+                    const typingElement = showTyping();
+                    setTimeout(() => {
+                        hideTyping(typingElement);
+                        addMessage(commonQuestions[key].response, 'bot');
+                    }, 1000);
+                }
+            }
+            return;
+        }
+        
+        // Handle regular links
+        const link = e.target.closest('a');
+        if (link && !link.hasAttribute('data-question-key')) {
+            return;
+        }
+    });
+
+    // Ensure single initialization of chat state
+    let chatInitialized = false;
+
+    // Function to initialize chat
+    function initializeChat() {
+        if (chatInitialized) return;
+        chatInitialized = true;
+
+        // Add chat button click handler - ensure it only shows chat once
+        chatButton?.addEventListener('click', () => {
+            if (!chatState.isAvailable) {
+                // Show unavailable message in a toast or alert
+                const toast = document.createElement('div');
+                toast.className = 'fixed bottom-24 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white px-6 py-3 rounded-full text-sm font-medium shadow-lg z-50';
+                toast.textContent = 'Chat is currently unavailable. Please try again later.';
+                document.body.appendChild(toast);
+                
+                // Remove toast after 3 seconds
+                setTimeout(() => {
+                    toast.remove();
+                }, 3000);
+                return;
+            }
+            
+            if (!chatState.isOpen) {
+                showChat();
+            }
+        });
+
+        // Update toggle chat handler
+        toggleChat?.addEventListener('click', () => {
+            chatBox?.classList.add('hidden');
+            chatButton?.classList.remove('hidden');
+            chatState.isOpen = false;
+            saveChatState();
+        });
+
+        // Handle accept button click
+        acceptButton?.addEventListener('click', () => {
+            chatState.hasAccepted = true;
+            privacyModal?.classList.add('hidden');
+            showChat();
+        });
+
+        // Handle decline button click
+        declineButton?.addEventListener('click', () => {
+            privacyModal?.classList.add('hidden');
+        });
+
+        // Show privacy modal when chat button is clicked (if not accepted)
+        chatButton?.addEventListener('click', () => {
+            if (chatState.hasAccepted) {
+                showChat();
+            } else {
+                privacyModal?.classList.remove('hidden');
+            }
+        });
+
+        // Initialize availability state on load
+        window.toggleChatAvailability(true);
+    }
+
+    // Initialize on page load
+    window.addEventListener('load', () => {
+        // Always start with chat closed and button visible
+        chatBox?.classList.add('hidden');
+        chatButton?.classList.remove('hidden');
+        
+        // If chat was open before, show it
+        if (chatState.isOpen) {
+            showChat();
+        }
+
+        // Initialize chat once
+        initializeChat();
+    });
+
+    // Update addMessage function to handle persistence and prevent duplicate prompts
+    function addMessage(content, sender, includeForm = false, saveToHistory = true) {
+        const messageDiv = document.createElement('div');
+        messageDiv.className = 'flex items-start gap-3' + (sender === 'user' ? ' justify-end' : '');
+
+        if (sender === 'bot') {
+            const links = content.links ? formatLinks(content.links) : '';
+            let formHtml = '';
+            
+            if (content.isWelcome || content.isTermsPrompt) {
+                formHtml = `
+                    <div class="mt-4 flex flex-wrap gap-2">
+                        <button
+                            type="button"
+                            id="agree-button"
+                            class="px-6 py-3 text-sm font-medium text-white bg-[#6366F1] hover:bg-[#4F46E5] rounded-xl transition-all duration-300"
+                        >
+                            I Agree
+                        </button>
+                    </div>
+                `;
+            }
+            
+            if (content.isNamePrompt) {
+                formHtml = `
+                    <form id="name-form" class="mt-4 flex flex-wrap gap-2">
+                        <input
+                            type="text"
+                            id="name-input"
+                            class="flex-grow min-w-[150px] px-4 py-3 text-sm border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#6366F1] focus:border-transparent bg-gray-50"
+                            placeholder="Enter your first name"
+                            required
+                        />
+                        <button
+                            type="submit"
+                            class="px-6 py-3 text-sm font-medium text-white bg-[#6366F1] hover:bg-[#4F46E5] rounded-xl transition-all duration-300"
+                        >
+                            Continue
+                        </button>
+                    </form>
+                `;
+            }
+
+            messageDiv.innerHTML = `
+                <div class="flex-shrink-0 w-8 h-8 rounded-full bg-[#6366F1] flex items-center justify-center text-white font-semibold">
+                    S
+                </div>
+                <div class="flex flex-col flex-grow max-w-[280px] leading-1.5 p-4 bg-gray-100 rounded-xl">
+                    <p class="text-sm text-gray-900">${content.text}</p>
+                    ${links}
+                    ${formHtml}
+                </div>
+            `;
+        } else {
+            messageDiv.innerHTML = `
+                <div class="flex flex-col flex-grow max-w-[280px] leading-1.5 p-4 bg-[#6366F1] text-white rounded-xl ml-auto">
+                    <p class="text-sm">${content}</p>
+                </div>
+            `;
+        }
+
+        chatMessages?.appendChild(messageDiv);
+        chatMessages?.scrollTo(0, chatMessages.scrollHeight);
+
+        if (saveToHistory) {
+            saveMessageToHistory(content, sender);
+        }
+
+        // Add event listeners for forms if they exist and ensure they are not duplicated
+        if (content.isWelcome || content.isTermsPrompt) {
+            const agreeButton = document.getElementById('agree-button');
+            if (agreeButton && !agreeButton.dataset.listenerAttached) {
+                agreeButton.addEventListener('click', () => {
+                    chatState.hasAgreedToTerms = true;
+                    saveChatState();
+                    addMessage("I agree", 'user');
+                    const typingElement = showTyping();
+                    setTimeout(() => {
+                        hideTyping(typingElement);
+                        addMessage(namePrompt, 'bot');
+                    }, 1000);
+                });
+                agreeButton.dataset.listenerAttached = 'true';
+            }
+        }
+
+        if (content.isNamePrompt) {
+            const nameForm = document.getElementById('name-form');
+            if (nameForm && !nameForm.dataset.listenerAttached) {
+                nameForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    const nameInput = document.getElementById('name-input');
+                    if (!nameInput || !(nameInput instanceof HTMLInputElement)) return;
+                    const name = nameInput.value.trim();
+                    if (name) {
+                        chatState.userName = capitalizeFirstLetter(name);
+                        chatState.hasSharedName = true;
+                        saveChatState();
+                        addMessage(name, 'user');
+                        const typingElement = showTyping();
+                        setTimeout(() => {
+                            hideTyping(typingElement);
+                            addMessage({
+                                text: `Nice to meet you, ${chatState.userName}! How can I help you today?`,
+                            }, 'bot');
+                            enableChatInput(); // Enable the main chat input
+                        }, 1000);
+                    }
+                });
+                nameForm.dataset.listenerAttached = 'true';
+            }
+        }
+    }
+
+    // Function to disable chat input
+    function disableChatInput() {
+        if (chatInput && chatForm) {
+            chatInput.disabled = true;
+            chatInput.placeholder = "Please complete the introduction first...";
+            chatForm.classList.add('opacity-50', 'pointer-events-none');
+        }
+    }
+
+    // Function to enable chat input
+    function enableChatInput() {
+        if (chatInput && chatForm) {
+            chatInput.disabled = false;
+            chatInput.placeholder = "Type your message...";
+            chatForm.classList.remove('opacity-50', 'pointer-events-none');
+        }
+    }
+
+    // Handle form submission with typing indicator
+    chatForm?.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        // Don't process messages if terms haven't been accepted or name hasn't been shared
+        if (!chatState.hasAgreedToTerms || !chatState.hasSharedName) {
+            return;
+        }
+
+        const message = chatInput?.value.trim();
+        if (!message) return;
+
+        // Add user message
+        addMessage(message, 'user');
+        chatInput.value = '';
+
+        // Show typing indicator
+        const typingElement = showTyping();
+
+        // Process message and get response with delay
+        const response = processMessage(message.toLowerCase());
+        
+        // Simulate typing delay based on response length
+        const delay = Math.min(1500, 500 + response.text.length * 20);
+        
+        setTimeout(() => {
+            hideTyping(typingElement);
+            addMessage(response, 'bot');
+        }, delay);
+    });
+
+    // Update tooltip handling
+    const chatTooltip = document.getElementById('chat-tooltip');
+    const closeTooltip = document.getElementById('close-tooltip');
+    const TOOLTIP_SHOWN_KEY = 'chat-tooltip-shown';
+
+    // Show tooltip if it hasn't been shown before
+    function showTooltipIfNeeded() {
+        const hasShownTooltip = localStorage.getItem(TOOLTIP_SHOWN_KEY) === 'true';
+        if (!hasShownTooltip && chatTooltip) {
+            chatTooltip.classList.remove('hidden');
+        }
+    }
+
+    // Handle tooltip close button
+    closeTooltip?.addEventListener('click', (e) => {
+        e.stopPropagation(); // Prevent triggering chat open
+        chatTooltip?.classList.add('hidden');
+        localStorage.setItem(TOOLTIP_SHOWN_KEY, 'true');
+    });
+
+    // Hide tooltip when chat button is clicked
+    chatButton?.addEventListener('click', () => {
+        chatTooltip?.classList.add('hidden');
+        localStorage.setItem(TOOLTIP_SHOWN_KEY, 'true');
+        showChat();
+    });
+
+    // Show tooltip on page load with a slight delay
+    window.addEventListener('load', () => {
+        setTimeout(showTooltipIfNeeded, 1000);
+    });
+
+    // Update the toggleChatAvailability function
+    window.toggleChatAvailability = function(available) {
+        chatState.isAvailable = available;
+        localStorage.setItem(CHAT_AVAILABILITY_KEY, available ? 'enabled' : 'disabled');
+        
+        const chatButton = document.getElementById('chat-button');
+        const chatBox = document.getElementById('chat-box');
+        const chatStatus = document.getElementById('chat-status');
+        const tooltipText = document.getElementById('chat-tooltip-text');
+        
+        if (!available) {
+            // If chat was open, close it
+            if (chatState.isOpen) {
+                chatBox?.classList.add('hidden');
+                chatState.isOpen = false;
+            }
+            
+            // Update button to show unavailable state
+            chatButton?.classList.remove('bg-brand', 'hover:bg-brand-dark');
+            chatButton?.classList.add('bg-gray-400', 'cursor-not-allowed');
+            chatButton?.setAttribute('title', 'Chat is currently unavailable');
+            
+            // Update status indicator
+            chatStatus?.classList.remove('bg-green-500');
+            chatStatus?.classList.add('bg-red-500');
+            
+            // Update tooltip text
+            if (tooltipText) {
+                tooltipText.innerHTML = '⚠️ Chat is currently unavailable. Please try again later.';
+            }
+        } else {
+            // Restore button state
+            chatButton?.classList.remove('bg-gray-400', 'cursor-not-allowed');
+            chatButton?.classList.add('bg-brand', 'hover:bg-brand-dark');
+            chatButton?.setAttribute('title', 'Click to chat with us');
+            
+            // Update status indicator
+            chatStatus?.classList.remove('bg-red-500');
+            chatStatus?.classList.add('bg-green-500');
+            
+            // Update tooltip text
+            if (tooltipText) {
+                tooltipText.innerHTML = '👋 We\'re here to help! Click to chat with us.';
+            }
+        }
+    };
+</script>
+
+<style>
+    /* Smooth transitions */
+    #chat-box {
+        transition: all 0.3s ease-in-out;
+    }
+
+    /* Custom scrollbar */
+    #chat-messages {
+        scrollbar-width: thin;
+        scrollbar-color: #E5E7EB transparent;
+    }
+
+    #chat-messages::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    #chat-messages::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    #chat-messages::-webkit-scrollbar-thumb {
+        background-color: #E5E7EB;
+        border-radius: 3px;
+    }
+
+    /* Message animations */
+    #chat-messages > div {
+        animation: message-fade-in 0.3s ease-out;
+    }
+
+    @keyframes message-fade-in {
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* Chat button hover effect */
+    #chat-button {
+        transition: all 0.2s ease-in-out;
+    }
+
+    #chat-button:hover {
+        transform: scale(1.1);
+    }
+
+    #chat-button:active {
+        transform: scale(0.95);
+    }
+
+    /* Typing indicator animation */
+    .typing-indicator span {
+        animation: bounce 1s infinite;
+    }
+
+    @keyframes bounce {
+        0%, 80%, 100% { transform: translateY(0); }
+        40% { transform: translateY(-6px); }
+    }
+
+    /* Enhanced message styles */
+    .user-message {
+        background-color: #6366F1;
+        color: white;
+    }
+    
+    .bot-message {
+        background-color: #f3f4f6;
+    }
+
+    /* Checkbox styles */
+    input[type="checkbox"] {
+        @apply rounded border-gray-300 text-brand focus:ring-brand;
+    }
+
+    /* Modal animation */
+    #privacy-modal {
+        animation: fade-in 0.2s ease-out;
+    }
+
+    #privacy-modal > div {
+        animation: slide-up 0.3s ease-out;
+    }
+
+    @keyframes fade-in {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+
+    @keyframes slide-up {
+        from { 
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* Update colors to match the example */
+    .bg-brand {
+        background-color: #6366F1;
+    }
+    
+    .hover\:bg-brand-dark:hover {
+        background-color: #4F46E5;
+    }
+    
+    .text-brand {
+        color: #6366F1;
+    }
+
+    /* Adjust message container for better spacing */
+    #chat-messages > div {
+        margin-bottom: 1rem;
+    }
+
+    /* Ensure profile photo doesn't get cut off */
+    .flex-shrink-0 {
+        margin-top: 2px;
+    }
+
+    /* Add responsive adjustments for small screens */
+    @media (max-width: 640px) {
+        #chat-messages > div {
+            margin-bottom: 0.75rem;
+        }
+        
+        .max-w-[280px] {
+            max-width: calc(100% - 3rem);
+        }
+    }
+
+    /* Remove bounce animation for tooltip */
+    #chat-tooltip {
+        transition: all 0.3s ease-in-out;
+    }
+</style> 
