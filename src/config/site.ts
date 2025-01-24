@@ -48,7 +48,7 @@ export const siteConfig = {
     shelter: {
         hero: {
             title: "Emergency Assistance When You Need It Most",
-            subtitle: "Providing 24/7 access to food and emergency assistance in the Lake Ozark area.",
+            subtitle: "God works through people to help them through their storm.",
             cta: [
                 {
                     text: "Get Help",
@@ -109,7 +109,7 @@ export const siteConfig = {
             },
             {
                 title: "Emergency Assistance",
-                description: "Please call if you are low-income with an emergency housing or transportation need.",
+                description: "Please fill out the form if you need help you with a temporary crisis or prevent homelessness.",
                 link: "/get-help",
                 image: "https://media.istockphoto.com/id/1199696901/photo/happy-interracial-couple-handshake-bank-manager-take-mortgage-loan.jpg?s=612x612&w=0&k=20&c=_ovUfKCtMnZ-cN4YE31W92p3cpDLuw5MFRzFRPj2oB0=",
                 icon: "food-bank"
@@ -130,32 +130,22 @@ export const siteConfig = {
             { 
                 name: "Dierbergs", 
                 logo: "https://mrcheckout.net/wp-content/uploads/2022/06/Dierbergs.png",
-                url: "https://www.dierbergs.com"
+                url: "https://www.dierbergs.com/store-locations/lakeview-pointe"
             },
             { 
                 name: "HyVee", 
                 logo: "https://upload.wikimedia.org/wikipedia/en/thumb/a/ae/Hy-Vee.svg/1200px-Hy-Vee.svg.png",
-                url: "https://www.hy-vee.com"
-            },
-            { 
-                name: "Smart Postal Center", 
-                logo: "https://www.themailboxstore.net/app/uploads/2018/02/SmartShip-300x125.png",
-                url: "http://www.smartpostalcenters.com"
+                url: "https://www.hy-vee.com/stores/detail.aspx?s=230"
             },
             { 
                 name: "Target", 
                 logo: "https://static.vecteezy.com/system/resources/previews/027/127/443/non_2x/target-logo-target-icon-transparent-free-png.png",
-                url: "https://www.target.com"
-            },
-            { 
-                name: "UPS Store", 
-                logo: "https://media.nbcsandiego.com/2021/10/UPSStore.jpg?quality=85&strip=all&resize=1200%2C675",
-                url: "https://www.theupsstore.com"
+                url: "https://www.target.com/sl/osage-beach/1914"
             },
             { 
                 name: "Woods", 
                 logo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTPIU4q1sXG-b23nA8aSIOId56s40rOD2HOKQ&s",
-                url: "https://www.woodssupermarket.com/"
+                url: "https://www.woodssupermarket.com/stores/lake-ozark/"
             },
             { 
                 name: "Hope House of Miller County", 
@@ -165,12 +155,12 @@ export const siteConfig = {
             { 
                 name: "Menards",
                 logo: "https://1000logos.net/wp-content/uploads/2020/11/Menards-logo.png",
-                url: "https://www.menards.com"
+                url: "https://www.menards.com/store-details/store.html?store=3288   "
             },
             { 
                 name: "Walmart",
                 logo: "https://corporate.walmart.com/content/dam/corporate/site-images/WMT-Spark-New-SparkYellow-RGB.svg",
-                url: "https://www.walmart.com"
+                url: "https://www.walmart.com/store/815-osage-beach-mo  "
             },
             { 
                 name: "First Bank of the Lake",
@@ -179,8 +169,8 @@ export const siteConfig = {
             },
             { 
                 name: "Central Bank",
-                logo: "https://maxmoney.centralbank.net/images/Logo/CentralBank.png",
-                url: "https://centralbank.net"
+                logo: "https://d31s10tn3clc14.cloudfront.net/imgs/bankreviewlogos/centralbank_theozarks_17633.png",
+                url: "https://www.centralbank.net/lake/"
             },
             { 
                 name: "RE/MAX",
@@ -191,11 +181,6 @@ export const siteConfig = {
                 name: "Infuze Credit Union",
                 logo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSWRYNHYfh4iE2Z05o9WTYKyhuNYm6LTCOjgQ&s",
                 url: "https://www.infuzecu.org/"
-            },
-            { 
-                name: "DWM",
-                logo: "https://s21pusa01afmsv2blkbsa03.blob.core.windows.net/image-upload/p-2Xj0BlI5rEm8MRVgKSYv6w/3d07045b-35e0-40a5-bbc8-e010429a2ddf/32b784cd-bf71-41a2-9621-e16e09e447a6.png",
-                url: "https://www.discipleshomemissions.org/"
             }
             
         ],
