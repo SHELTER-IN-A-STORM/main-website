@@ -4,9 +4,9 @@ interface Props {
 }
 
 const donationAmounts = [
-    { value: 5, label: '$5' },
     { value: 25, label: '$25' },
     { value: 50, label: '$50' },
+    { value: 75, label: '$75' },
     { value: 100, label: '$100' },
 ];
 
@@ -200,15 +200,15 @@ type PaymentUrls = Record<DonationType, Record<number, string>>;
     const form = document.getElementById('donation-form');
     const paymentUrls: { [key: string]: { [key: number]: string } } = {
         'one-time': {
-            5: 'https://buy.stripe.com/test_cN215A5da9pZdnG9AB',
-            25: '',
-            50: 'https://buy.stripe.com/your-50-url',
+            25: 'https://buy.stripe.com/test_cN215A5da9pZdnG9AB',
+            50: '',
+            75: 'https://buy.stripe.com/your-50-url',
             100: 'https://buy.stripe.com/your-100-url',
         },
         'monthly': {
-            5: 'https://buy.stripe.com/monthly-5-url',
-            25: 'https://buy.stripe.com/monthly-25-url',
-            50: 'https://buy.stripe.com/monthly-50-url',
+            25: 'https://buy.stripe.com/monthly-5-url',
+            50: 'https://buy.stripe.com/monthly-25-url',
+            75: 'https://buy.stripe.com/monthly-50-url',
             100: 'https://buy.stripe.com/monthly-100-url',
         }
     } as const;

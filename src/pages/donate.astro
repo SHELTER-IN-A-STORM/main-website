@@ -29,7 +29,7 @@ import DonationForm from '../components/donation/DonationForm.astro';
                     style="text-wrap: balance;"
                 >
                     Your generosity helps us provide emergency assistance and support to those in need 
-                    in our Lake Ozark community.
+                    around our community.
                 </p>
                 <div class="flex flex-wrap gap-6 justify-center animate-slide-up-delay-2">
                     <a
@@ -80,6 +80,36 @@ import DonationForm from '../components/donation/DonationForm.astro';
         <div class="container mx-auto px-6">
             <div class="max-w-3xl mx-auto">
                 <DonationForm />
+
+                <!-- Most Needed Items Section -->
+                <div class="mt-12">
+                    <div class="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
+                        <div class="p-8">
+                            <div class="flex items-start gap-3">
+                                <div class="p-2 bg-brand/10 rounded-lg">
+                                    <svg class="w-5 h-5 text-brand" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                                            d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
+                                        />
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h4 class="text-sm font-medium text-gray-900">Most Needed This Month</h4>
+                                    <div class="flex flex-wrap gap-4 mt-3">
+                                        <div class="flex items-center gap-2">
+                                            <span class="w-2 h-2 rounded-full bg-brand"></span>
+                                            <span class="text-sm text-gray-600">Canned Chili</span>
+                                        </div>
+                                        <div class="flex items-center gap-2">
+                                            <span class="w-2 h-2 rounded-full bg-brand"></span>
+                                            <span class="text-sm text-gray-600">Body Wash</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>

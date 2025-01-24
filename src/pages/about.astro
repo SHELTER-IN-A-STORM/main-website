@@ -3,6 +3,7 @@ import Layout from '../layouts/Layout.astro';
 import { siteConfig } from '../config/site';
 import { trackEvent } from '../utils/analytics';
 import TeamMemberModal from '../components/TeamMemberModal.astro';
+import PartnerScroll from '../components/PartnerScroll.astro';
 ---
 
 <Layout title="About Us">
@@ -28,7 +29,7 @@ import TeamMemberModal from '../components/TeamMemberModal.astro';
                     class="text-xl md:text-2xl text-gray-200 mb-12 animate-slide-up-delay-1 max-w-2xl mx-auto"
                     style="text-wrap: balance;"
                 >
-                    Making a difference in Miller & Camden County since 2021
+                    Making a difference in Miller & Camden Counties since 2021
                 </p>
             </div>
         </div>
@@ -80,7 +81,7 @@ import TeamMemberModal from '../components/TeamMemberModal.astro';
                             <p class="text-gray-600">
                                 Through the support of our community partners and volunteers, we've expanded our 
                                 services to provide 24/7 emergency food assistance and connect those in need with 
-                                essential resources throughout Miller & Camden County.
+                                essential resources throughout Miller & Camden Counties.
                             </p>
                         </div>
                     </div>
@@ -95,32 +96,19 @@ import TeamMemberModal from '../components/TeamMemberModal.astro';
                 </div>
             </section>
 
-            <!-- Mission Section -->
-            <section class="max-w-4xl mx-auto mb-24">
+            <!-- Partners Section -->
+            <section class="mb-24">
                 <div class="text-center mb-16">
                     <div class="inline-flex items-center gap-2 text-brand font-medium mb-4">
                         <span class="w-12 h-[2px] bg-brand"></span>
-                        <span>Why We Serve</span>
+                        <span>Our Partners</span>
                     </div>
-                    <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Our Mission</h2>
-                    <p class="text-xl text-gray-600 leading-relaxed">
-                        {siteConfig.shelter.mission.description}
+                    <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Meet Our Partners</h2>
+                    <p class="text-xl text-gray-600">
+                        Working together to make a difference in our community.
                     </p>
                 </div>
-
-                <div class="grid md:grid-cols-3 gap-8">
-                    {siteConfig.shelter.mission.values.map(value => (
-                        <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 h-full flex flex-col">
-                            <div class="p-3 bg-brand/10 w-fit rounded-lg mb-4">
-                                <svg class="w-6 h-6 text-brand" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d={value.icon}/>
-                                </svg>
-                            </div>
-                            <h3 class="text-lg font-semibold text-gray-900 mb-2">{value.title}</h3>
-                            <p class="text-gray-600 flex-grow">{value.description}</p>
-                        </div>
-                    ))}
-                </div>
+                <PartnerScroll />
             </section>
 
             <!-- Impact Section -->
@@ -138,9 +126,9 @@ import TeamMemberModal from '../components/TeamMemberModal.astro';
 
                 <div class="grid md:grid-cols-3 gap-8 text-center">
                     {[
-                        { number: '0+', label: 'Families Helped' },
-                        { number: '0+', label: 'Meals Provided' },
-                        { number: '0+', label: 'Volunteers' },
+                        { number: '200+', label: 'Individuals Helped' },
+                        { number: '6,000+', label: 'Pantry Items Taken' },
+                        { number: '$55,000', label: 'Donated & Used' },
                     ].map(stat => (
                         <div class="bg-white p-8 rounded-xl shadow-sm border border-gray-100">
                             <div class="text-4xl font-bold text-brand mb-2">{stat.number}</div>
@@ -194,6 +182,34 @@ import TeamMemberModal from '../components/TeamMemberModal.astro';
 
             <TeamMemberModal id="team-modal" />
 
+            <!-- Mission Section -->
+            <section class="max-w-4xl mx-auto mb-24">
+                <div class="text-center mb-16">
+                    <div class="inline-flex items-center gap-2 text-brand font-medium mb-4">
+                        <span class="w-12 h-[2px] bg-brand"></span>
+                        <span>Why We Serve</span>
+                    </div>
+                    <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Our Mission</h2>
+                    <p class="text-xl text-gray-600 leading-relaxed">
+                        {siteConfig.shelter.mission.description}
+                    </p>
+                </div>
+
+                <div class="grid md:grid-cols-3 gap-8">
+                    {siteConfig.shelter.mission.values.map(value => (
+                        <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 h-full flex flex-col">
+                            <div class="p-3 bg-brand/10 w-fit rounded-lg mb-4">
+                                <svg class="w-6 h-6 text-brand" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d={value.icon}/>
+                                </svg>
+                            </div>
+                            <h3 class="text-lg font-semibold text-gray-900 mb-2">{value.title}</h3>
+                            <p class="text-gray-600 flex-grow">{value.description}</p>
+                        </div>
+                    ))}
+                </div>
+            </section>
+
             <!-- CTA Section -->
             <section class="max-w-4xl mx-auto mt-24 text-center">
                 <div class="bg-brand/5 rounded-2xl p-12">
@@ -204,19 +220,13 @@ import TeamMemberModal from '../components/TeamMemberModal.astro';
                     </p>
                     <div class="flex flex-col sm:flex-row gap-4 justify-center">
                         <a 
-                            href="/volunteer" 
+                            href="/donate" 
                             class="inline-flex items-center justify-center px-6 py-3 bg-brand hover:bg-brand-dark text-white rounded-lg transition-colors"
                             onclick="trackEvent('About Page', 'Click', 'Volunteer CTA')"
                         >
-                            Become a Volunteer
+                            Donate
                         </a>
-                        <a 
-                            href="/donate" 
-                            class="inline-flex items-center justify-center px-6 py-3 bg-white hover:bg-gray-50 text-brand border-2 border-brand rounded-lg transition-colors"
-                            onclick="trackEvent('About Page', 'Click', 'Donate CTA')"
-                        >
-                            Support Our Work
-                        </a>
+                    
                     </div>
                 </div>
             </section>

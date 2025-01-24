@@ -19,7 +19,7 @@ export const siteConfig = {
         default: "Shelter in a Storm",
         template: "%s | Shelter in a Storm - Lake Ozark"
     },
-    author: "Helping Miller & Camden County",
+    author: "Helping Miller & Camden Counties",
     developer: {
         name: "Benji.Services",
         url: "https://benji.services/",
@@ -109,7 +109,7 @@ export const siteConfig = {
             },
             {
                 title: "Emergency Assistance",
-                description: "Please fill out the form if you need help you with a temporary crisis or prevent homelessness.",
+                description: "Please fill out the form if you need help you with a temporary crisis or to prevent homelessness.",
                 link: "/get-help",
                 image: "https://media.istockphoto.com/id/1199696901/photo/happy-interracial-couple-handshake-bank-manager-take-mortgage-loan.jpg?s=612x612&w=0&k=20&c=_ovUfKCtMnZ-cN4YE31W92p3cpDLuw5MFRzFRPj2oB0=",
                 icon: "food-bank"
