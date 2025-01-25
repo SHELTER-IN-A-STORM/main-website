@@ -6,11 +6,12 @@ import { trackEvent } from '../utils/analytics';
 <!-- Footer Separator -->
 <div class="w-full h-16 bg-gradient-to-b from-gray-50 to-gray-100">
     <div class="container mx-auto px-4">
-        <div class="w-full h-[1px] bg-gradient-to-r from-transparent via-brand/20 to-transparent"></div>
+        <div class="w-full h-[1px] bg-gradient-to-r from-transparent via-brand/30 to-transparent shadow-lg"></div>
     </div>
 </div>
 
-<footer class="bg-gray-100">
+<footer class="bg-gray-100 relative overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-b from-transparent via-brand/5 to-transparent pointer-events-none"></div>
     <div class="container mx-auto px-4 py-12">
         <div class="grid grid-cols-1 md:grid-cols-3 gap-x-12 gap-y-10 max-w-5xl mx-auto">
             <!-- Brand Info -->
@@ -36,11 +37,7 @@ import { trackEvent } from '../utils/analytics';
                 <p class="text-sm text-gray-600 leading-relaxed">
                     {siteConfig.shelter.mission.description}
                 </p>
-                <address class="text-sm text-gray-600 leading-relaxed not-italic">
-                    1560 Bagnell Dam Blvd.<br/>
-                    P.O. Box 194<br/>
-                    Lake Ozark, MO 65049
-                </address>
+               
             </div>
             <!-- Quick Links -->
             <div class="space-y-6 md:col-span-1">
@@ -80,11 +77,10 @@ import { trackEvent } from '../utils/analytics';
             </div>
         </div>
 
-        <!-- Bottom Bar -->
+        <!-- Legal Links -->
         <div class="mt-12 pt-6 border-t border-gray-200 max-w-5xl mx-auto">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <!-- Legal Links -->
-                <div class="flex items-center justify-center md:justify-start space-x-6">
+            <div class="flex flex-col items-center space-y-6">
+                <div class="flex flex-wrap items-center justify-center gap-6">
                     <a 
                         href="/legal/privacy"
                         onclick="trackEvent('Footer', 'Click', 'Privacy Policy')"
@@ -119,7 +115,7 @@ import { trackEvent } from '../utils/analytics';
                 </div>
 
                 <!-- Copyright & Credits -->
-                <div class="flex flex-col items-center md:items-end gap-2">
+                <div class="flex flex-col items-center gap-3 text-center">
                     <p class="text-sm text-gray-400">
                         © {new Date().getFullYear()} Shelter in a Storm. All rights reserved.
                     </p>
@@ -128,9 +124,12 @@ import { trackEvent } from '../utils/analytics';
                         target="_blank"
                         rel="noopener noreferrer"
                         onclick="trackEvent('Footer', 'Click', 'Developer Link')"
-                        class="inline-flex items-center gap-2 text-sm text-gray-400 hover:text-brand transition-colors group"
+                        class="inline-flex items-center gap-2 text-sm text-gray-400 hover:text-brand transition-all duration-300 group relative"
                     >
-                        <span>Built by {siteConfig.developer.name}</span>
+                        <span class="font-handwriting animate-glow-soft relative">
+                            Designed & hosted with ❤️ by {siteConfig.developer.name}
+                            <span class="absolute inset-0 bg-brand/5 blur-xl group-hover:bg-brand/10 transition-colors duration-300"></span>
+                        </span>
                         <svg class="w-4 h-4 transform group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
                         </svg>
@@ -138,5 +137,5 @@ import { trackEvent } from '../utils/analytics';
                 </div>
             </div>
         </div>
-    </div>
+    </div>  
 </footer>

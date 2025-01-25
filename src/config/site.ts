@@ -21,7 +21,7 @@ export const siteConfig = {
     },
     author: "Helping Miller & Camden Counties",
     developer: {
-        name: "Benji.Services",
+        name: "Ben Trimmer",
         url: "https://benji.services/",
         reportUrl: "/report"
     },

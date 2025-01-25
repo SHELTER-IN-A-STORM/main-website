@@ -96,7 +96,7 @@
         }
     }
 
-    import { trackEvent } from '../utils/analytics';
+    import { trackEvent, handleCookieConsent, loadAnalytics } from '../utils/analytics';
     
     const cookieConsent = document.getElementById('cookie-consent');
     const acceptAllBtn = document.getElementById('accept-all');
@@ -121,10 +121,12 @@
     }
 
     // Check if consent has already been given
-    const hasConsent = localStorage.getItem('cookieConsent');
+    const hasConsent = localStorage.getItem('cookie-consent');
     if (!hasConsent) {
         // Show the consent popup after a short delay
         setTimeout(showCookieConsent, 1000);
+    } else {
+        loadAnalytics();
     }
 
     // Load saved preferences
@@ -136,8 +138,8 @@
         }
     }
 
-    function saveConsent(analytics: boolean) {
-        localStorage.setItem('cookieConsent', 'true');
+    function saveConsent(analytics: boolean, action: 'accept' | 'reject' | 'dismiss') {
+        handleCookieConsent(action);
         localStorage.setItem('cookiePreferences', JSON.stringify({
             essential: true,
             analytics: analytics
@@ -147,37 +149,22 @@
         trackEvent('Cookie Consent', 'Click', analytics ? 'Accept All' : 'Custom Preferences');
 
         hideCookieConsent();
-
-        if (analytics) {
-            enableAnalytics();
-        } else {
-            disableAnalytics();
-        }
-    }
-
-    function enableAnalytics() {
-        // Add your analytics initialization code here
-        console.log('Analytics enabled');
-    }
-
-    function disableAnalytics() {
-        // Add your analytics cleanup code here
-        console.log('Analytics disabled');
     }
 
     // Event listeners
     acceptAllBtn?.addEventListener('click', () => {
         trackEvent('Cookie Consent', 'Click', 'Accept All');
-        saveConsent(true);
+        saveConsent(true, 'accept');
     });
 
     savePreferencesBtn?.addEventListener('click', () => {
         trackEvent('Cookie Consent', 'Click', 'Save Preferences');
-        saveConsent(analyticsCheckbox?.checked || false);
+        saveConsent(analyticsCheckbox?.checked || false, analyticsCheckbox?.checked ? 'accept' : 'reject');
     });
 
     closeConsentBtn?.addEventListener('click', () => {
         trackEvent('Cookie Consent', 'Click', 'Close');
+        saveConsent(true, 'dismiss');
         hideCookieConsent();
     });
 
@@ -189,4 +176,13 @@
 
     // Make functions available globally
     window.showCookieConsent = showCookieConsent;
+
+    window.addEventListener('load', () => {
+        const consent = localStorage.getItem('cookie-consent');
+        if (!consent) {
+            showCookieConsent();
+        } else {
+            loadAnalytics();
+        }
+    });
 </script> 
