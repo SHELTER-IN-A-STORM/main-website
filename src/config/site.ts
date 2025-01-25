@@ -30,7 +30,7 @@ export const siteConfig = {
         language: "en",
         themeColor: "#666ed8",
         openGraph: {
-            image: "/src/assets/hero.jpg"
+            image: "cdn.shelterinastorm.org/images/hero.jpg"
         },
         favicon: "https://cdn.shelterinastorm.org/images/brand.png"
     },
