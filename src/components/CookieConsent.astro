@@ -98,6 +98,9 @@
 
     import { trackEvent, handleCookieConsent, loadAnalytics } from '../utils/analytics';
     
+    // Initialize analytics immediately
+    loadAnalytics();
+    
     const cookieConsent = document.getElementById('cookie-consent');
     const acceptAllBtn = document.getElementById('accept-all');
     const savePreferencesBtn = document.getElementById('save-preferences');
@@ -125,8 +128,6 @@
     if (!hasConsent) {
         // Show the consent popup after a short delay
         setTimeout(showCookieConsent, 1000);
-    } else {
-        loadAnalytics();
     }
 
     // Load saved preferences
@@ -176,13 +177,4 @@
 
     // Make functions available globally
     window.showCookieConsent = showCookieConsent;
-
-    window.addEventListener('load', () => {
-        const consent = localStorage.getItem('cookie-consent');
-        if (!consent) {
-            showCookieConsent();
-        } else {
-            loadAnalytics();
-        }
-    });
 </script> 
