@@ -126,7 +126,7 @@ export const siteConfig = {
                 directions: "Located on the west side of Lake Ozark Christian Church"
             }
         },
-        partners: [
+        donors: [
             { 
                 name: "Dierbergs", 
                 logo: "https://mrcheckout.net/wp-content/uploads/2022/06/Dierbergs.png",
@@ -184,6 +184,21 @@ export const siteConfig = {
             }
             
         ],
+
+        partners: [
+            { 
+                name: "Infuze Credit Union",
+                logo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSWRYNHYfh4iE2Z05o9WTYKyhuNYm6LTCOjgQ&s",
+                url: "https://www.infuzecu.org/"
+            },
+            { 
+                name: "Lake Ozark Christian Church",
+                logo: "https://cdn.shelterinastorm.org/images/brand.png",
+                url: "https://www.facebook.com/LakeOzarkChristianChurch"
+            }
+        ],
+
+
         team: [
             {
                 name: "Audrey Tanner",
@@ -193,6 +208,13 @@ export const siteConfig = {
             },
             // Add more team members
         ],
-        ein: "43-1193150"
+        ein: "43-1193150",
+        impact: {
+            stats: {
+                individualsHelped: 200,
+                pantryItemsTaken: 6000,
+                donationsUsed: 55000
+            }
+        }
     }
 } 

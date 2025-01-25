@@ -3,7 +3,7 @@ import Layout from '../layouts/Layout.astro';
 import { siteConfig } from '../config/site';
 import { trackEvent } from '../utils/analytics';
 import TeamMemberModal from '../components/TeamMemberModal.astro';
-import PartnerScroll from '../components/PartnerScroll.astro';
+import PartnersSection from '../components/PartnersSection.astro';
 ---
 
 <Layout title="About Us">
@@ -97,19 +97,8 @@ import PartnerScroll from '../components/PartnerScroll.astro';
             </section>
 
             <!-- Partners Section -->
-            <section class="mb-24">
-                <div class="text-center mb-16">
-                    <div class="inline-flex items-center gap-2 text-brand font-medium mb-4">
-                        <span class="w-12 h-[2px] bg-brand"></span>
-                        <span>Our Partners</span>
-                    </div>
-                    <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Meet Our Partners</h2>
-                    <p class="text-xl text-gray-600">
-                        Working together to make a difference in our community.
-                    </p>
-                </div>
-                <PartnerScroll />
-            </section>
+            <PartnersSection />
+
 
             <!-- Impact Section -->
             <section class="max-w-4xl mx-auto mb-24">
@@ -125,18 +114,64 @@ import PartnerScroll from '../components/PartnerScroll.astro';
                 </div>
 
                 <div class="grid md:grid-cols-3 gap-8 text-center">
-                    {[
-                        { number: '200+', label: 'Individuals Helped' },
-                        { number: '6,000+', label: 'Pantry Items Taken' },
-                        { number: '$55,000', label: 'Donated & Used' },
-                    ].map(stat => (
-                        <div class="bg-white p-8 rounded-xl shadow-sm border border-gray-100">
-                            <div class="text-4xl font-bold text-brand mb-2">{stat.number}</div>
-                            <div class="text-gray-600">{stat.label}</div>
+                    <div class="bg-white p-8 rounded-xl shadow-sm border border-gray-100">
+                        <div class="text-4xl font-bold text-brand mb-2">
+                            <span class="stat-number" data-target={siteConfig.shelter.impact.stats.individualsHelped}>0</span>
+                            <span>+</span>
                         </div>
-                    ))}
+                        <div class="text-gray-600">Individuals Helped</div>
+                    </div>
+                    <div class="bg-white p-8 rounded-xl shadow-sm border border-gray-100">
+                        <div class="text-4xl font-bold text-brand mb-2">
+                            <span class="stat-number" data-target={siteConfig.shelter.impact.stats.pantryItemsTaken}>0</span>
+                            <span>+</span>
+                        </div>
+                        <div class="text-gray-600">Pantry Items Taken</div>
+                    </div>
+                    <div class="bg-white p-8 rounded-xl shadow-sm border border-gray-100">
+                        <div class="text-4xl font-bold text-brand mb-2">
+                            $<span class="stat-number" data-target={siteConfig.shelter.impact.stats.donationsUsed}>0</span>
+                        </div>
+                        <div class="text-gray-600">Donated & Used</div>
+                    </div>
                 </div>
+                <p class="text-sm text-gray-500 text-center mt-6 italic">
+                    * Statistics are updated every 30 days and may not reflect current numbers.
+                </p>
             </section>
+
+            <script>
+                function animateValue(element: HTMLElement, start: number, end: number, duration: number) {
+                    let startTimestamp: number | null = null;
+                    const step = (timestamp: number) => {
+                        if (!startTimestamp) startTimestamp = timestamp;
+                        const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+                        const current = Math.floor(progress * (end - start) + start);
+                        element.innerText = current.toLocaleString();
+                        if (progress < 1) {
+                            window.requestAnimationFrame(step);
+                        }
+                    };
+                    window.requestAnimationFrame(step);
+                }
+            
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            const element = entry.target as HTMLElement;
+                            const target = parseInt(element.dataset.target || '0');
+                            animateValue(element, 0, target, 2000);
+                            observer.unobserve(element);
+                        }
+                    });
+                }, {
+                    threshold: 0.1
+                });
+            
+                document.querySelectorAll('.stat-number').forEach(stat => {
+                    observer.observe(stat);
+                });
+            </script>
 
             <!-- Team Section -->
             <section class="max-w-4xl mx-auto">

@@ -4,6 +4,7 @@ import Layout from '../../layouts/Layout.astro';
 import { format } from 'date-fns';
 import DonationForm from '../../components/donation/DonationForm.astro';
 import PartnersSection from '../../components/PartnersSection.astro';
+import DonorSection from '../../components/DonorSection.astro';
 
 export async function getStaticPaths() {
   const events = await getCollection('events');
@@ -174,4 +175,5 @@ const moreEvents = allEvents
 
     <!-- Partners Section -->
     {event.data.showPartners && <PartnersSection />}
+    {event.data.showPartners && <DonorSection />}
 </Layout> 
