@@ -30,7 +30,7 @@ export const siteConfig = {
         language: "en",
         themeColor: "#666ed8",
         openGraph: {
-            image: "https://cms-images.life.church/lc-site/pages/homepage/Evergreen%20Heros/Attendance/Attendance_Hero_Evegreen-Desktop-2.jpg"
+            image: "/src/assets/hero.jpg"
         },
         favicon: "https://cdn.shelterinastorm.org/images/brand.png"
     },
