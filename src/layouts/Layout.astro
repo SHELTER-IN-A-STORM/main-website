@@ -25,8 +25,53 @@ const formattedTitle = siteConfig.title.template.replace('%s', title);
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<meta name="description" content={siteConfig.description} />
-		<meta name="keywords" content={siteConfig.metadata.keywords.join(', ')} />
+		<meta name="description" content={`Find comprehensive support and resources in Lake Ozark, including emergency assistance, food pantries, and community services. ${siteConfig.description}`} />
+		<meta name="keywords" content={siteConfig.metadata.keywords.concat([
+			'Lake Ozark community services',
+			'Lake Ozark emergency assistance', 
+			'Lake Ozark food pantry',
+			'Lake Ozark support',
+			'Lake Ozark resources',
+			'24/7 food assistance',
+			'emergency basic needs',
+			'Miller County help',
+			'Camden County help',
+			'crisis prevention',
+			'homelessness prevention',
+			'utility bill assistance',
+			'rent assistance',
+			'gas assistance',
+			'electric assistance',
+			'water assistance',
+			'food assistance',
+			'clothing assistance',
+			'furniture assistance',
+			'transportation assistance',
+			'medical assistance',
+			'mental health assistance',
+			'addiction recovery assistance',
+			'youth services',
+			'LGBTQ+ support',
+			'domestic violence support',
+			'homelessness prevention',
+			'emergency financial help',
+			'Christian community support',
+			'no paperwork food pantry',
+			'immediate food assistance',
+			'Lake Ozark Christian Church',
+			'faith-based assistance',
+			'community partnerships',
+			'local emergency help',
+			'Lake Ozark charity',
+			'food insecurity help',
+			'basic needs assistance',
+			'temporary crisis help',
+			'community food bank',
+			'emergency shelter services',
+			'Lake Ozark nonprofit',
+			'Missouri food assistance',
+			'Lake Ozark financial aid'
+		]).join(', ')} />
 		<meta name="author" content={siteConfig.author} />
 		<meta name="theme-color" content={siteConfig.metadata.themeColor} />
 		
