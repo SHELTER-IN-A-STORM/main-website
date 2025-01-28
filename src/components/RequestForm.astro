@@ -1,6 +1,14 @@
 ---
 // Import any necessary dependencies
 import { siteConfig } from '../config/site';
+
+const formSteps = [
+    'Personal Info',
+    'Contact Details',
+    'Household Info',
+    'Assistance Type',
+    'Additional Info'
+];
 ---
 
 <div class="grid md:grid-cols-2 gap-12 items-start">
@@ -8,16 +16,14 @@ import { siteConfig } from '../config/site';
     <form 
         id="multi-step-form" 
         class="space-y-6"
-        action="https://formspree.io/f/xanqwbqb"
-        method="POST"
+        onsubmit="return false;"
     >
         <!-- Progress Steps -->
         <div class="flex justify-between mb-8">
-            {['Personal Info', 'Contact Details', 'Assistance Type', 'Additional Info'].map((step, index) => (
+            {formSteps.map((step, index) => (
                 <div class="flex flex-col items-center">
-                    <div class={`w-10 h-10 rounded-full flex items-center justify-center border-2 transition-colors duration-300 
-                        ${index === 0 ? 'bg-brand border-brand text-white' : 'border-gray-300 text-gray-400'}`}
-                    >
+                    <div class="w-10 h-10 rounded-full flex items-center justify-center border-2 transition-colors duration-300 
+                        border-gray-300 text-gray-400" data-step-indicator={index + 1}>
                         {index + 1}
                     </div>
                     <span class="text-sm mt-2 text-gray-600">{step}</span>
@@ -36,8 +42,8 @@ import { siteConfig } from '../config/site';
                         type="text" 
                         id="firstName" 
                         name="firstName" 
-                        class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-brand focus:ring-2 focus:ring-brand/20 outline-none transition-colors"
                         required
+                        class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-brand focus:ring-2 focus:ring-brand/20"
                     />
                 </div>
                 <div class="space-y-2">
@@ -48,16 +54,16 @@ import { siteConfig } from '../config/site';
                         type="text" 
                         id="lastName" 
                         name="lastName" 
-                        class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-brand focus:ring-2 focus:ring-brand/20 outline-none transition-colors"
                         required
+                        class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-brand focus:ring-2 focus:ring-brand/20"
                     />
                 </div>
             </div>
             <div class="mt-8 flex justify-end">
                 <button 
                     type="button"
-                    class="px-8 py-3 bg-brand hover:bg-brand-dark text-white rounded-lg transition-colors duration-300 font-medium shadow-lg shadow-brand/20"
-                    onclick="event.preventDefault(); nextStep(1);"
+                    class="next-step px-8 py-3 bg-brand text-white rounded-lg font-medium"
+                    data-current-step="1"
                 >
                     Next Step
                 </button>
@@ -68,37 +74,87 @@ import { siteConfig } from '../config/site';
         <div class="form-step hidden" data-step="2">
             <div class="space-y-6">
                 <div class="space-y-2">
-                    <label for="phone" class="text-sm font-medium text-gray-900">Phone Number</label>
+                    <label for="phone" class="text-sm font-medium text-gray-900">
+                        Phone Number <span class="text-brand">*</span>
+                    </label>
                     <input 
                         type="tel" 
                         id="phone" 
                         name="phone" 
-                        class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-brand focus:ring-2 focus:ring-brand/20 outline-none transition-colors"
+                        required
+                        class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-brand focus:ring-2 focus:ring-brand/20"
                     />
-                    <p class="text-sm text-gray-500 mt-1">Optional, but helpful for urgent communication</p>
                 </div>
                 <div class="space-y-2">
-                    <label for="email" class="text-sm font-medium text-gray-900">
-                        Email Address <span class="text-brand">*</span>
-                    </label>
+                    <label for="email" class="text-sm font-medium text-gray-900">Email Address</label>
                     <input 
                         type="email" 
                         id="email" 
                         name="email" 
-                        class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-brand focus:ring-2 focus:ring-brand/20 outline-none transition-colors"
-                        required
+                        class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-brand focus:ring-2 focus:ring-brand/20"
                     />
                 </div>
+            </div>
+            <div class="mt-8 flex justify-between">
+                <button 
+                    type="button"
+                    class="prev-step px-8 py-3 bg-gray-100 text-gray-900 rounded-lg font-medium"
+                    data-current-step="2"
+                >
+                    Previous
+                </button>
+                <button 
+                    type="button"
+                    class="next-step px-8 py-3 bg-brand text-white rounded-lg font-medium"
+                    data-current-step="2"
+                >
+                    Next Step
+                </button>
+            </div>
+        </div>
+
+        <!-- Step 3: Household Info -->
+        <div class="form-step hidden" data-step="3">
+            <div class="space-y-6">
+                <div class="space-y-2">
+                    <label for="householdSize" class="text-sm font-medium text-gray-900">
+                        Total Household Members <span class="text-brand">*</span>
+                    </label>
+                    <input 
+                        type="number" 
+                        id="householdSize" 
+                        name="householdSize" 
+                        required
+                        min="1"
+                        class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-brand focus:ring-2 focus:ring-brand/20"
+                    />
+                </div>
+
+                <div class="space-y-2">
+                    <label for="minorsCount" class="text-sm font-medium text-gray-900">
+                        Number of Children (Under 18) <span class="text-brand">*</span>
+                    </label>
+                    <input 
+                        type="number" 
+                        id="minorsCount" 
+                        name="minorsCount" 
+                        required
+                        min="0"
+                        class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-brand focus:ring-2 focus:ring-brand/20"
+                    />
+                </div>
+
                 <!-- Address Fields -->
                 <div class="space-y-4">
-                    <h4 class="text-sm font-medium text-gray-700">Mailing Address (Optional)</h4>
+                    <h4 class="text-sm font-medium text-gray-900">Current Address <span class="text-brand">*</span></h4>
                     <div class="space-y-2">
                         <label for="street" class="text-sm font-medium text-gray-900">Street Address</label>
                         <input 
                             type="text" 
                             id="street" 
                             name="street" 
-                            class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-brand focus:ring-2 focus:ring-brand/20 outline-none transition-colors"
+                            required
+                            class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-brand focus:ring-2 focus:ring-brand/20"
                         />
                     </div>
                     <div class="grid grid-cols-2 gap-4">
@@ -108,7 +164,8 @@ import { siteConfig } from '../config/site';
                                 type="text" 
                                 id="city" 
                                 name="city" 
-                                class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-brand focus:ring-2 focus:ring-brand/20 outline-none transition-colors"
+                                required
+                                class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-brand focus:ring-2 focus:ring-brand/20"
                             />
                         </div>
                         <div class="space-y-2">
@@ -117,7 +174,8 @@ import { siteConfig } from '../config/site';
                                 type="text" 
                                 id="state" 
                                 name="state" 
-                                class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-brand focus:ring-2 focus:ring-brand/20 outline-none transition-colors"
+                                required
+                                class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-brand focus:ring-2 focus:ring-brand/20"
                             />
                         </div>
                     </div>
@@ -127,7 +185,25 @@ import { siteConfig } from '../config/site';
                             type="text" 
                             id="zipcode" 
                             name="zipcode" 
-                            class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-brand focus:ring-2 focus:ring-brand/20 outline-none transition-colors"
+                            required
+                            class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-brand focus:ring-2 focus:ring-brand/20"
+                        />
+                    </div>
+                </div>
+
+                <div class="space-y-2">
+                    <label for="householdIncome" class="text-sm font-medium text-gray-900">
+                        Monthly Household Income <span class="text-brand">*</span>
+                    </label>
+                    <div class="relative">
+                        <span class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500">$</span>
+                        <input 
+                            type="number" 
+                            id="householdIncome" 
+                            name="householdIncome" 
+                            required
+                            min="0"
+                            class="w-full pl-8 py-3 rounded-lg border border-gray-200 focus:border-brand focus:ring-2 focus:ring-brand/20"
                         />
                     </div>
                 </div>
@@ -135,83 +211,140 @@ import { siteConfig } from '../config/site';
             <div class="mt-8 flex justify-between">
                 <button 
                     type="button"
-                    class="px-8 py-3 bg-gray-100 hover:bg-gray-200 text-gray-900 rounded-lg transition-colors duration-300 font-medium"
-                    onclick="event.preventDefault(); prevStep(2);"
+                    class="prev-step px-8 py-3 bg-gray-100 text-gray-900 rounded-lg font-medium"
+                    data-current-step="3"
                 >
                     Previous
                 </button>
                 <button 
                     type="button"
-                    class="px-8 py-3 bg-brand hover:bg-brand-dark text-white rounded-lg transition-colors duration-300 font-medium shadow-lg shadow-brand/20"
-                    onclick="event.preventDefault(); nextStep(2);"
+                    class="next-step px-8 py-3 bg-brand text-white rounded-lg font-medium"
+                    data-current-step="3"
                 >
                     Next Step
                 </button>
             </div>
         </div>
 
-        <!-- Step 3: Assistance Type -->
-        <div class="form-step hidden" data-step="3">
-            <div class="space-y-2">
-                <label for="assistance" class="text-sm font-medium text-gray-900">
-                    Type of Assistance Needed <span class="text-brand">*</span>
-                </label>
-                <select 
-                    id="assistance" 
-                    name="assistance" 
-                    class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-brand focus:ring-2 focus:ring-brand/20 outline-none transition-colors"
-                    required
-                >
-                    <option value="">Please select...</option>
-                    <option value="food">Food Assistance</option>
-                    <option value="shelter">Emergency Shelter</option>
-                    <option value="utilities">Utility Assistance</option>
-                    <option value="other">Other Support</option>
-                </select>
-            </div>
-            <div class="mt-8 flex justify-between">
-                <button 
-                    type="button"
-                    class="px-8 py-3 bg-gray-100 hover:bg-gray-200 text-gray-900 rounded-lg transition-colors duration-300 font-medium"
-                    onclick="event.preventDefault(); prevStep(3);"
-                >
-                    Previous
-                </button>
-                <button 
-                    type="button"
-                    class="px-8 py-3 bg-brand hover:bg-brand-dark text-white rounded-lg transition-colors duration-300 font-medium shadow-lg shadow-brand/20"
-                    onclick="event.preventDefault(); nextStep(3);"
-                >
-                    Next Step
-                </button>
-            </div>
-        </div>
-
-        <!-- Step 4: Additional Info -->
+        <!-- Step 4: Assistance Type -->
         <div class="form-step hidden" data-step="4">
-            <div class="space-y-2">
-                <label for="message" class="text-sm font-medium text-gray-900">Additional Details</label>
-                <textarea 
-                    id="message" 
-                    name="message" 
-                    rows="4" 
-                    class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-brand focus:ring-2 focus:ring-brand/20 outline-none transition-colors"
-                    required
-                ></textarea>
+            <div class="space-y-6">
+                <div class="space-y-2">
+                    <label for="assistance" class="text-sm font-medium text-gray-900">
+                        Type of Assistance <span class="text-brand">*</span>
+                    </label>
+                    <select 
+                        id="assistance" 
+                        name="assistance" 
+                        required
+                        class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-brand focus:ring-2 focus:ring-brand/20"
+                    >
+                        <option value="">Select assistance type...</option>
+                        <option value="foodbox">Food Box</option>
+                        <option value="homelessness">Homelessness Prevention</option>
+                        <option value="other">Other Support</option>
+                    </select>
+                </div>
+                
+                <!-- Other Support Description (only shown if 'other' is selected) -->
+                <div id="otherSupportDetails" class="hidden space-y-2">
+                    <label for="otherSupportDescription" class="text-sm font-medium text-gray-900">
+                        Please describe what type of assistance you need <span class="text-brand">*</span>
+                    </label>
+                    <textarea 
+                        id="otherSupportDescription" 
+                        name="otherSupportDescription" 
+                        rows="3"
+                        class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-brand focus:ring-2 focus:ring-brand/20"
+                    ></textarea>
+                </div>
+
+                <!-- Food Assistance Options -->
+                <div id="foodOptions" class="hidden space-y-4">
+                    <div class="space-y-2">
+                        <label class="text-sm font-medium text-gray-900">Dietary Restrictions</label>
+                        <div class="space-y-2">
+                            <label class="flex items-center gap-2">
+                                <input type="checkbox" name="dietary[]" value="vegetarian">
+                                <span>Vegetarian</span>
+                            </label>
+                            <label class="flex items-center gap-2">
+                                <input type="checkbox" name="dietary[]" value="gluten-free">
+                                <span>Gluten-Free</span>
+                            </label>
+                            <label class="flex items-center gap-2">
+                                <input type="checkbox" name="dietary[]" value="dairy-free">
+                                <span>Dairy-Free</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="mt-8 flex justify-between">
                 <button 
                     type="button"
-                    class="px-8 py-3 bg-gray-100 hover:bg-gray-200 text-gray-900 rounded-lg transition-colors duration-300 font-medium"
-                    onclick="event.preventDefault(); prevStep(4);"
+                    class="prev-step px-8 py-3 bg-gray-100 text-gray-900 rounded-lg font-medium"
+                    data-current-step="4"
+                >
+                    Previous
+                </button>
+                <button 
+                    type="button"
+                    class="next-step px-8 py-3 bg-brand text-white rounded-lg font-medium"
+                    data-current-step="4"
+                >
+                    Next Step
+                </button>
+            </div>
+        </div>
+
+        <!-- Step 5: Additional Info -->
+        <div class="form-step hidden" data-step="5">
+            <div class="space-y-6">
+                <div class="space-y-2">
+                    <label for="additionalInfo" class="text-sm font-medium text-gray-900">
+                        Additional Information
+                    </label>
+                    <textarea 
+                        id="additionalInfo" 
+                        name="additionalInfo" 
+                        rows="4"
+                        class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-brand focus:ring-2 focus:ring-brand/20"
+                    ></textarea>
+                </div>
+
+                <!-- Terms and Privacy Policy Agreement -->
+                <div class="space-y-2">
+                    <label class="flex items-start gap-3">
+                        <input 
+                            type="checkbox" 
+                            id="termsAgreement" 
+                            name="termsAgreement" 
+                            required
+                            class="mt-1 rounded text-brand focus:ring-brand"
+                        />
+                        <span class="text-sm text-gray-600">
+                            I agree to the <a href="/legal/terms" class="text-brand hover:underline" target="_blank">Terms of Service</a> 
+                            and <a href="/legal/privacy" class="text-brand hover:underline" target="_blank">Privacy Policy</a>. 
+                            I understand that my information will be used to process my assistance request.
+                            <span class="text-brand">*</span>
+                        </span>
+                    </label>
+                </div>
+            </div>
+            <div class="mt-8 flex justify-between">
+                <button 
+                    type="button"
+                    class="prev-step px-8 py-3 bg-gray-100 text-gray-900 rounded-lg font-medium"
+                    data-current-step="5"
                 >
                     Previous
                 </button>
                 <button 
                     type="submit"
-                    class="px-8 py-4 bg-brand hover:bg-brand-dark text-white rounded-lg transition-colors duration-300 font-medium shadow-lg shadow-brand/20"
+                    class="px-8 py-3 bg-brand text-white rounded-lg font-medium"
                 >
-                    Submit Form
+                    Submit Request
                 </button>
             </div>
         </div>
@@ -256,10 +389,22 @@ import { siteConfig } from '../config/site';
     </div>
 </div>
 
+<style>
+    /* Remove spinner arrows from number inputs */
+    input[type="number"]::-webkit-inner-spin-button,
+    input[type="number"]::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+    input[type="number"] {
+        -moz-appearance: textfield;
+    }
+</style>
+
 <script is:inline>
     document.addEventListener('DOMContentLoaded', () => {
         let currentStep = 1;
-        const totalSteps = 4;
+        const totalSteps = 5;
 
         // Check for existing submission
         function checkSubmissionStatus() {
@@ -283,66 +428,99 @@ import { siteConfig } from '../config/site';
 
         checkSubmissionStatus();
 
-        function updateProgress() {
-            // Prevent scroll jumping
-            const formTop = document.getElementById('multi-step-form').getBoundingClientRect().top;
-            const scrollPos = window.scrollY;
-
+        function updateStepVisibility() {
             document.querySelectorAll('.form-step').forEach(step => {
                 step.classList.add('hidden');
             });
-            document.querySelector(`[data-step="${currentStep}"]`).classList.remove('hidden');
-
+            document.querySelector(`[data-step="${currentStep}"]`)?.classList.remove('hidden');
+            
             // Update progress indicators
-            document.querySelectorAll('.flex.justify-between > div').forEach((indicator, index) => {
-                const circle = indicator.querySelector('div');
-                if (index + 1 < currentStep) {
-                    circle.classList.add('bg-brand', 'border-brand', 'text-white');
-                } else if (index + 1 === currentStep) {
-                    circle.classList.add('bg-brand', 'border-brand', 'text-white');
+            document.querySelectorAll('[data-step-indicator]').forEach((indicator, index) => {
+                if (index + 1 === currentStep) {
+                    indicator.classList.add('bg-brand', 'border-brand', 'text-white');
+                } else if (index + 1 < currentStep) {
+                    indicator.classList.add('bg-brand', 'border-brand', 'text-white');
                 } else {
-                    circle.classList.remove('bg-brand', 'border-brand', 'text-white');
+                    indicator.classList.remove('bg-brand', 'border-brand', 'text-white');
                 }
             });
-
-            // Maintain scroll position
-            window.scrollTo(0, scrollPos);
-        }
-
-        window.nextStep = function(step) {
-            if (validateStep(step) && step < totalSteps) {
-                currentStep = step + 1;
-                updateProgress();
-            }
-        }
-
-        window.prevStep = function(step) {
-            if (step > 1) {
-                currentStep = step - 1;
-                updateProgress();
-            }
         }
 
         function validateStep(step) {
-            const currentStepEl = document.querySelector(`[data-step="${step}"]`);
-            const inputs = currentStepEl.querySelectorAll('input, select, textarea');
+            const stepElement = document.querySelector(`[data-step="${step}"]`);
+            const requiredFields = stepElement.querySelectorAll('[required]');
             let isValid = true;
 
-            inputs.forEach(input => {
-                if (input.required && !input.value) {
+            requiredFields.forEach(field => {
+                if (field.type === 'checkbox' && !field.checked) {
                     isValid = false;
-                    input.classList.add('border-red-500');
+                    field.classList.add('border-red-500');
+                    window.showNotification?.('Please agree to the Terms and Privacy Policy');
+                } else if (!field.value) {
+                    isValid = false;
+                    field.classList.add('border-red-500');
                 } else {
-                    input.classList.remove('border-red-500');
+                    field.classList.remove('border-red-500');
                 }
             });
+
+            if (step === 3) {
+                const householdSize = Number(document.getElementById('householdSize')?.value || 0);
+                const minorsCount = Number(document.getElementById('minorsCount')?.value || 0);
+                
+                if (minorsCount > householdSize) {
+                    window.showNotification?.('Number of children cannot exceed total household size');
+                    document.getElementById('minorsCount')?.classList.add('border-red-500');
+                    isValid = false;
+                }
+            }
 
             return isValid;
         }
 
+        // Event Listeners
+        document.querySelectorAll('.next-step').forEach(button => {
+            button.addEventListener('click', () => {
+                const step = parseInt(button.dataset.currentStep);
+                if (validateStep(step)) {
+                    currentStep = Math.min(step + 1, totalSteps);
+                    updateStepVisibility();
+                }
+            });
+        });
+
+        document.querySelectorAll('.prev-step').forEach(button => {
+            button.addEventListener('click', () => {
+                const step = parseInt(button.dataset.currentStep);
+                currentStep = Math.max(step - 1, 1);
+                updateStepVisibility();
+            });
+        });
+
+        // Handle assistance type change
+        const assistanceSelect = document.getElementById('assistance');
+        const foodOptions = document.getElementById('foodOptions');
+        const otherSupportDetails = document.getElementById('otherSupportDetails');
+        
+        assistanceSelect?.addEventListener('change', (e) => {
+            if (e.target.value === 'foodbox') {
+                foodOptions?.classList.remove('hidden');
+                otherSupportDetails?.classList.add('hidden');
+            } else if (e.target.value === 'other') {
+                otherSupportDetails?.classList.remove('hidden');
+                foodOptions?.classList.add('hidden');
+            } else {
+                foodOptions?.classList.add('hidden');
+                otherSupportDetails?.classList.add('hidden');
+            }
+        });
+
+        // Initialize first step
+        updateStepVisibility();
+
         const form = document.getElementById('multi-step-form');
         if (form) {
-            form.addEventListener('submit', function(e) {
+            form.addEventListener('submit', async function(e) {
                 e.preventDefault();
                 // Check if submission cookie exists
                 if (document.cookie.split(';').some((item) => item.trim().startsWith('formSubmitted='))) {
@@ -353,8 +531,8 @@ import { siteConfig } from '../config/site';
                 if (validateStep(currentStep)) {
                     // Submit form to Formspree
                     const formData = new FormData(this);
-                    fetch(this.action, {
-                        method: this.method,
+                    fetch('https://formspree.io/f/xanqwbqb', {
+                        method: 'POST',
                         body: formData,
                         headers: {
                             'Accept': 'application/json'
@@ -379,6 +557,30 @@ import { siteConfig } from '../config/site';
                     });
                 }
             }, false);
+
+            // Format phone number as user types
+            const phoneInput = document.getElementById('phone');
+            if (phoneInput) {
+                phoneInput.addEventListener('input', (e) => {
+                    // Remove all non-digits
+                    let value = e.target.value.replace(/\D/g, '');
+                    // Limit to 10 digits
+                    value = value.substring(0, 10);
+                    e.target.value = value;
+                });
+            }
+
+            // Format household income as user types
+            const incomeInput = document.getElementById('householdIncome');
+            if (incomeInput) {
+                incomeInput.addEventListener('input', (e) => {
+                    let value = e.target.value.replace(/\D/g, '');
+                    if (value) {
+                        value = parseInt(value, 10);
+                        e.target.value = value;
+                    }
+                });
+            }
         }
     });
 </script> 
