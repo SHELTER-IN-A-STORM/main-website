@@ -41,6 +41,15 @@ if (!images || images.length === 0) return null;
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
             </svg>
         </button>
+        
+        <!-- View Full Image Button -->
+        <button 
+            id="view-full-image"
+            class="absolute bottom-4 right-4 bg-white/80 hover:bg-white text-black p-2 rounded-lg transition-colors"
+            aria-label="View full image"
+        >
+            View Full Image
+        </button>
     </div>
 
     <!-- Thumbnail Strip -->
@@ -67,10 +76,9 @@ if (!images || images.length === 0) return null;
 <div 
     id="lightbox" 
     class="fixed inset-0 bg-black/90 z-50 hidden items-center justify-center p-4"
-    onclick="closeLightbox()"
 >
     <button 
-        onclick="closeLightbox()" 
+        id="close-lightbox"
         class="absolute top-4 right-4 text-white hover:text-gray-300"
         aria-label="Close lightbox"
     >
@@ -92,6 +100,10 @@ if (!images || images.length === 0) return null;
     const featuredImage = document.getElementById('featured-image') as HTMLImageElement;
     const prevButton = document.getElementById('prev-button');
     const nextButton = document.getElementById('next-button');
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImage = document.getElementById('lightbox-image') as HTMLImageElement;
+    const viewFullImageBtn = document.getElementById('view-full-image');
+    const closeLightboxBtn = document.getElementById('close-lightbox');
     
     // Update active thumbnail
     function updateActiveThumbnail() {
@@ -135,6 +147,32 @@ if (!images || images.length === 0) return null;
         updateFeaturedImage();
     });
 
+    // View full image functionality
+    viewFullImageBtn?.addEventListener('click', () => {
+        const fullImageSrc = images[currentIndex]?.querySelector('img')?.src;
+        if (fullImageSrc && lightbox && lightboxImage) {
+            lightboxImage.src = fullImageSrc;
+            lightbox.classList.remove('hidden');
+            lightbox.classList.add('flex');
+        }
+    });
+
+    // Close lightbox
+    closeLightboxBtn?.addEventListener('click', () => {
+        if (lightbox) {
+            lightbox.classList.add('hidden');
+            lightbox.classList.remove('flex');
+        }
+    });
+
+    // Close lightbox when clicking outside the image
+    lightbox?.addEventListener('click', (e) => {
+        if (e.target === lightbox) {
+            lightbox.classList.add('hidden');
+            lightbox.classList.remove('flex');
+        }
+    });
+
     // Keyboard navigation
     document.addEventListener('keydown', (e) => {
         if (e.key === 'ArrowLeft') {
@@ -143,6 +181,9 @@ if (!images || images.length === 0) return null;
         } else if (e.key === 'ArrowRight') {
             currentIndex = (currentIndex + 1) % images.length;
             updateFeaturedImage();
+        } else if (e.key === 'Escape' && lightbox) {
+            lightbox.classList.add('hidden');
+            lightbox.classList.remove('flex');
         }
     });
 
