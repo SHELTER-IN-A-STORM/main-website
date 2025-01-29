@@ -15,6 +15,22 @@ interface Props {
 const { title } = Astro.props;
 
 const formattedTitle = siteConfig.title.template.replace('%s', title);
+
+// Health check API endpoint
+const HEALTH_CHECK_URL = 'https://api.shelterinastorm.org/api/v2/health';
+
+// Perform health check
+try {
+  const response = await fetch(HEALTH_CHECK_URL, {
+    headers: {
+      'Accept': 'application/json'
+    }
+  });
+  const health = await response.json();
+  console.log('API Health Status:', health);
+} catch (error) {
+  console.error('Health check failed:', error);
+}
 ---
 
 <!DOCTYPE html>
@@ -107,6 +123,8 @@ const formattedTitle = siteConfig.title.template.replace('%s', title);
 		<style>
 		</style>
 	</head>
+	<body>
+		
 		<Header />
 		<main id="main-content" class="flex-grow" tabindex="-1">
 			<slot />
@@ -115,6 +133,33 @@ const formattedTitle = siteConfig.title.template.replace('%s', title);
 		<CookieConsent />
 		<AccessibilitySettings />
 		<ChatBox />
+
+		<script>
+		document.addEventListener('DOMContentLoaded', () => {
+			fetch('https://api.shelterinastorm.org/api/v2/health', {
+				headers: {
+					'Accept': 'application/json'
+				}
+			})
+			.then(response => response.json())
+			.then(health => console.log('Client-side API Health Status:', health))
+			.catch(error => console.error('Client-side health check failed:', error));
+
+			if (import.meta.env.DEV) {
+				setTimeout(() => {
+					window.showEventAlert({
+						title: 'Development Mode Test Alert',
+						description: 'This notification only appears in development mode to test the alert system.',
+						image: 'https://cdn-locc-org.vercel.app/media/8F240771-48E1-4868-9BC6-6AB8256F433F.jpeg',
+						badge: '[DEV MODE ONLY]',
+						actionText: 'Learn More',
+						actionUrl: 'https://www.lakeozarkdisciples.org/',
+						isExternalLink: true
+					});
+				}, 1000);
+			}
+		});
+		</script>
 	</body>
 </html>
 
@@ -251,36 +296,6 @@ const formattedTitle = siteConfig.title.template.replace('%s', title);
         }
     }
     window.trackEvent = trackEvent;
-</script>
-
-<script>
-declare global {
-    interface Window {
-        trackEvent: (category: string, action: string, label?: string) => void;
-        gtag: any;
-    }
-}
-</script>
-
-
-
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-    if (import.meta.env.DEV) {
-        setTimeout(() => {
-            window.showEventAlert({
-                title: 'Development Mode Test Alert',
-                description: 'This notification only appears in development mode to test the alert system.',
-                image: 'https://cdn-locc-org.vercel.app/media/8F240771-48E1-4868-9BC6-6AB8256F433F.jpeg',
-                badge: '[DEV MODE ONLY]',
-                actionText: 'Learn More',
-                actionUrl: 'https://www.lakeozarkdisciples.org/',
-                isExternalLink: true
-            });
-        }, 1000);
-    }
-});
-</script>
 </script>
 
 <!-- Template for upcoming event alert: Update image path and event slug to match your event. Note: External link must be set to true for links to open. This will be fixed in a future update.
