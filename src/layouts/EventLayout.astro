@@ -1,0 +1,122 @@
+---
+import Layout from './Layout.astro';
+import EventGallery from '../components/events/EventGallery.astro';
+import { format } from 'date-fns';
+
+const { frontmatter } = Astro.props;
+const startTime = performance.now();
+---
+
+<Layout title={frontmatter.title}>
+    <article>
+        <!-- Hero Section -->
+        <section class="relative min-h-screen flex items-center justify-center">
+            <div class="absolute inset-0">
+                <img 
+                    src={frontmatter.image} 
+                    alt={frontmatter.title}
+                    class="w-full h-full object-cover"
+                    loading="eager" 
+                />
+                <div class="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/60"></div>
+            </div>
+
+            <div class="container mx-auto px-6 relative z-10">
+                <div class="max-w-4xl mx-auto text-white space-y-8">
+                    <h1 
+                        class="text-5xl md:text-7xl font-bold mb-6 animate-fade-in"
+                        style="text-wrap: balance;"
+                    >
+                        {frontmatter.title}
+                    </h1>
+                    <div class="flex flex-wrap gap-6 items-center text-xl">
+                        <div class="flex items-center gap-2">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                            </svg>
+                            <time>{format(new Date(frontmatter.date), 'MMMM d, yyyy')}</time>
+                        </div>
+                        {frontmatter.time && (
+                            <div class="flex items-center gap-2">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                <span>{frontmatter.time}</span>
+                            </div>
+                        )}
+                        {frontmatter.location && (
+                            <div class="flex items-center gap-2">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                                </svg>
+                                <span>{frontmatter.location}</span>
+                            </div>
+                        )}
+                    </div>
+                </div>
+            </div>
+
+            <div class="absolute bottom-12 left-1/2 transform -translate-x-1/2 z-10">
+                <a 
+                    href="#content" 
+                    class="text-white/80 hover:text-white transition-colors duration-300 animate-float"
+                    aria-label="Scroll to content"
+                >
+                    <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/>
+                    </svg>
+                </a>
+            </div>
+        </section>
+
+        <!-- Content Section -->
+        <div id="content" class="container mx-auto px-4 py-12">
+            <div class="max-w-4xl mx-auto">
+                <!-- Event Stats if available -->
+                {frontmatter.stats && (
+                    <div class="grid grid-cols-2 md:grid-cols-3 gap-6 mb-12">
+                        {frontmatter.stats.map((stat: { value: string; label: string }) => (
+                            <div class="bg-white rounded-lg p-6 text-center shadow-sm border border-gray-100">
+                                <div class="text-2xl font-bold text-brand mb-1">{stat.value}</div>
+                                <div class="text-gray-600 text-sm">{stat.label}</div>
+                            </div>
+                        ))}
+                    </div>
+                )}
+
+                <!-- Main Content -->
+                <div class="prose prose-lg max-w-none mb-12">
+                    <slot />
+                </div>
+
+                <!-- Gallery Section -->
+                {frontmatter.gallery && frontmatter.gallery.length > 0 && (
+                    <div class="mt-12">
+                        <h2 class="text-2xl font-bold mb-6">Event Gallery</h2>
+                        <EventGallery 
+                            images={frontmatter.gallery}
+                        />
+                    </div>
+                )}
+            </div>
+        </div>
+    </article>
+</Layout>
+
+<script>
+    const startTime = performance.now();
+    const endTime = performance.now();
+    console.log(`Client-side render time: ${endTime - startTime}ms`);
+</script>
+
+<style>
+    .animate-float {
+        animation: float 3s ease-in-out infinite;
+    }
+
+    @keyframes float {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-10px); }
+    }
+</style>

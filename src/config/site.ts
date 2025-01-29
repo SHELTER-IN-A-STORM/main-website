@@ -186,15 +186,40 @@ export const siteConfig = {
         ],
 
         partners: [
-            { 
-                name: "Infuze Credit Union",
-                logo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSWRYNHYfh4iE2Z05o9WTYKyhuNYm6LTCOjgQ&s",
-                url: "https://www.infuzecu.org/"
+            {
+                name: "Compass Health Network",
+                logo: "https://compasshealthnetwork.org/wp-content/uploads/2023/12/CHN-2023-logo-01-768x180.png",
+                url: "https://compasshealthnetwork.org/locations/osage-beach/"
             },
-            { 
-                name: "Lake Ozark Christian Church",
-                logo: "https://cdn.shelterinastorm.org/images/brand.png",
-                url: "https://www.facebook.com/LakeOzarkChristianChurch"
+            {
+                name: "Central Ozarks Medical Center",
+                logo: "https://centralozarks.org/wp-content/uploads/2020/07/COMC-Logo-Resized.jpg", 
+                url: "https://www.centralozarks.org/"
+            },
+            {
+                name: "Encompassed Purpose",
+                logo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT_luo0bRxZjB90J6pSUzAoCQS95NTH8Ir9Uw&s",
+                url: "https://encompassedpurpose.com/"
+            },
+            {
+                name: "First Christian Church Eldon",
+                logo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS91ApfmDOjnlnsGHCdEA0PnMKaUetQQJ6i_g&s",
+                url: "http://www.eldonfirstchristian.com/"
+            },
+            {
+                name: "Hope House of Miller County",
+                logo: "https://hopehouseofmillercounty.com/wp-content/uploads/2022/12/Hope-House-Logo-e1511208623755.png",
+                url: "https://hopehouseofmillercounty.com/"
+            },
+            {
+                name: "Local Area Needs Initiative",
+                logo: "https://static.wixstatic.com/media/10c148_8e6a7f16d09f4cb09ab8c3e8ed61af46~mv2.png/v1/fill/w_158,h_66,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/LANI%20LOGO.png",
+                url: "https://www.localareaneeds.org/"
+            },
+            {
+                name: "The Answers Project",
+                logo: "https://cdn.shelterinastorm.org/partners/answers-project.png",
+                url: "https://get2answers.org/"
             }
         ],
 

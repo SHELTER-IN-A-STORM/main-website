@@ -1,12 +1,13 @@
 import { defineCollection, z } from 'astro:content';
 
-const events = defineCollection({
+const eventsCollection = defineCollection({
   type: 'content',
   schema: z.object({
     title: z.string(),
     description: z.string(),
     date: z.date(),
     image: z.string(),
+    gallery: z.array(z.string()).optional(),
     status: z.enum(['upcoming', 'ongoing', 'past']),
     location: z.string().optional(),
     time: z.string().optional(),
@@ -18,9 +19,13 @@ const events = defineCollection({
       description: z.string().optional(),
     }).optional(),
     showPartners: z.boolean().default(false),
+    stats: z.array(z.object({
+      value: z.string(),
+      label: z.string(),
+    })).optional(),
   })
 });
 
 export const collections = {
-  events
+  events: eventsCollection
 }; 

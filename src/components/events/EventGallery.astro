@@ -1,0 +1,162 @@
+---
+interface Props {
+    images: string[];
+    title?: string;
+}
+
+const { images, title } = Astro.props;
+
+// Guard against empty images array
+if (!images || images.length === 0) return null;
+---
+
+<div class="my-8">
+    {title && <h3 class="text-xl font-semibold mb-4">{title}</h3>}
+    
+    <!-- Main Featured Image -->
+    <div class="relative aspect-[16/9] mb-4">
+        <img
+            id="featured-image"
+            src={images[0]}
+            alt="Featured event photo"
+            class="w-full h-full object-cover rounded-lg"
+        />
+        
+        <!-- Navigation Arrows -->
+        <button 
+            id="prev-button"
+            class="absolute left-4 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full transition-colors"
+            aria-label="Previous image"
+        >
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+            </svg>
+        </button>
+        <button 
+            id="next-button"
+            class="absolute right-4 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full transition-colors"
+            aria-label="Next image"
+        >
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+            </svg>
+        </button>
+    </div>
+
+    <!-- Thumbnail Strip -->
+    <div class="grid grid-cols-5 gap-2">
+        {images.map((image, index) => (
+            <button 
+                class="thumbnail-btn relative aspect-[4/3] overflow-hidden rounded-lg border-2 transition-all duration-200"
+                data-index={index}
+                aria-label={`View image ${index + 1}`}
+            >
+                <img
+                    src={image}
+                    alt={`Event photo ${index + 1}`}
+                    class="w-full h-full object-cover"
+                    loading="lazy"
+                />
+                <div class="absolute inset-0 bg-black/20 hover:bg-black/10 transition-colors"></div>
+            </button>
+        ))}
+    </div>
+</div>
+
+<!-- Lightbox Modal -->
+<div 
+    id="lightbox" 
+    class="fixed inset-0 bg-black/90 z-50 hidden items-center justify-center p-4"
+    onclick="closeLightbox()"
+>
+    <button 
+        onclick="closeLightbox()" 
+        class="absolute top-4 right-4 text-white hover:text-gray-300"
+        aria-label="Close lightbox"
+    >
+        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+    </button>
+    <img 
+        id="lightbox-image" 
+        src="" 
+        alt="Full size event photo" 
+        class="max-w-full max-h-[90vh] object-contain"
+    />
+</div>
+
+<script>
+    let currentIndex = 0;
+    const images = document.querySelectorAll('.thumbnail-btn');
+    const featuredImage = document.getElementById('featured-image') as HTMLImageElement;
+    const prevButton = document.getElementById('prev-button');
+    const nextButton = document.getElementById('next-button');
+    
+    // Update active thumbnail
+    function updateActiveThumbnail() {
+        images.forEach((img, idx) => {
+            if (idx === currentIndex) {
+                img.classList.add('border-brand');
+                img.classList.remove('border-transparent');
+            } else {
+                img.classList.remove('border-brand');
+                img.classList.add('border-transparent');
+            }
+        });
+    }
+
+    // Update featured image
+    function updateFeaturedImage() {
+        const newSrc = images[currentIndex]?.querySelector('img')?.src;
+        if (featuredImage && newSrc) {
+            featuredImage.src = newSrc;
+        }
+        updateActiveThumbnail();
+    }
+
+    // Event Listeners
+    images.forEach((img, idx) => {
+        img.addEventListener('click', () => {
+            currentIndex = idx;
+            updateFeaturedImage();
+        });
+    });
+
+    prevButton?.addEventListener('click', (e) => {
+        e.stopPropagation();
+        currentIndex = (currentIndex - 1 + images.length) % images.length;
+        updateFeaturedImage();
+    });
+
+    nextButton?.addEventListener('click', (e) => {
+        e.stopPropagation();
+        currentIndex = (currentIndex + 1) % images.length;
+        updateFeaturedImage();
+    });
+
+    // Keyboard navigation
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowLeft') {
+            currentIndex = (currentIndex - 1 + images.length) % images.length;
+            updateFeaturedImage();
+        } else if (e.key === 'ArrowRight') {
+            currentIndex = (currentIndex + 1) % images.length;
+            updateFeaturedImage();
+        }
+    });
+
+    // Initialize
+    updateActiveThumbnail();
+</script>
+
+<style>
+    .thumbnail-btn.border-brand {
+        border-color: var(--color-brand);
+        transform: scale(1.05);
+    }
+    
+    .thumbnail-btn.border-transparent {
+        border-color: transparent;
+    }
+</style> 
