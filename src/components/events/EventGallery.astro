@@ -19,7 +19,7 @@ if (!images || images.length === 0) return null;
             id="featured-image"
             src={images[0]}
             alt="Featured event photo"
-            class="w-full h-full object-cover rounded-lg"
+            class="w-full h-full object-contain bg-gray-50 rounded-lg"
         />
         
         <!-- Navigation Arrows -->
@@ -63,7 +63,7 @@ if (!images || images.length === 0) return null;
                 <img
                     src={image}
                     alt={`Event photo ${index + 1}`}
-                    class="w-full h-full object-cover"
+                    class="w-full h-full object-contain bg-gray-50"
                     loading="lazy"
                 />
                 <div class="absolute inset-0 bg-black/20 hover:bg-black/10 transition-colors"></div>
@@ -90,7 +90,7 @@ if (!images || images.length === 0) return null;
         id="lightbox-image" 
         src="" 
         alt="Full size event photo" 
-        class="max-w-full max-h-[90vh] object-contain"
+        class="max-w-full max-h-[90vh] object-contain bg-gray-50 rounded-lg"
     />
 </div>
 

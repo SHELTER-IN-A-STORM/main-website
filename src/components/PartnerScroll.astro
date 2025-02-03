@@ -13,15 +13,29 @@ const partners = [...siteConfig.shelter.partners, ...siteConfig.shelter.partners
                     href={partner.url}
                     target="_blank"
                     rel="noopener noreferrer" 
-                    class="block bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300 w-[200px]"
+                    class="group block bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 w-[200px] relative"
                 >
                     <div class="flex items-center justify-center h-[100px] w-[168px]">
-                        <img 
-                            src={partner.logo} 
-                            alt={`${partner.name} logo`} 
-                            class="max-h-[80px] w-full object-contain"
-                            loading="lazy"
-                        />
+                        {partner.logo ? (
+                            <img 
+                                src={partner.logo} 
+                                alt={`${partner.name} logo`} 
+                                class="max-h-[80px] w-full object-contain"
+                                loading="lazy"
+                            />
+                        ) : (
+                            <div class="text-center">
+                                <span class="text-xl font-bold text-brand">{partner.name}</span>
+                            </div>
+                        )}
+                    </div>
+                    <!-- Hover Arrow -->
+                    <div class="absolute inset-0 flex items-center justify-center bg-black/0 group-hover:bg-black/5 transition-all duration-300">
+                        <div class="opacity-0 group-hover:opacity-100 transform group-hover:scale-110 transition-all duration-300 bg-white/90 p-3 rounded-full shadow-lg">
+                            <svg class="w-6 h-6 text-brand" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                            </svg>
+                        </div>
                     </div>
                 </a>
             </div>
@@ -33,15 +47,29 @@ const partners = [...siteConfig.shelter.partners, ...siteConfig.shelter.partners
                     href={partner.url}
                     target="_blank"
                     rel="noopener noreferrer" 
-                    class="block bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300 w-[200px]"
+                    class="group block bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 w-[200px] relative"
                 >
                     <div class="flex items-center justify-center h-[100px] w-[168px]">
-                        <img 
-                            src={partner.logo} 
-                            alt={`${partner.name} logo`} 
-                            class="max-h-[80px] w-full object-contain"
-                            loading="lazy"
-                        />
+                        {partner.logo ? (
+                            <img 
+                                src={partner.logo} 
+                                alt={`${partner.name} logo`} 
+                                class="max-h-[80px] w-full object-contain"
+                                loading="lazy"
+                            />
+                        ) : (
+                            <div class="text-center">
+                                <span class="text-xl font-bold text-brand">{partner.name}</span>
+                            </div>
+                        )}
+                    </div>
+                    <!-- Hover Arrow -->
+                    <div class="absolute inset-0 flex items-center justify-center bg-black/0 group-hover:bg-black/5 transition-all duration-300">
+                        <div class="opacity-0 group-hover:opacity-100 transform group-hover:scale-110 transition-all duration-300 bg-white/90 p-3 rounded-full shadow-lg">
+                            <svg class="w-6 h-6 text-brand" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                            </svg>
+                        </div>
                     </div>
                 </a>
             </div>

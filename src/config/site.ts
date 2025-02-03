@@ -104,8 +104,9 @@ export const siteConfig = {
                 title: "Emergency Food Pantry",
                 description: "Open 7 days a week, 24 hours a day. Located under our portico. \"Take what you need, leave some for others.\"",
                 link: "/services/food-pantry",
-                image: "https://images.squarespace-cdn.com/content/v1/53c68a2de4b0929c16dd9bf2/1623779915649-KOGVC81NLQDLR632328M/ribbon-cutting+photo+best.jpg?format=2500w",
+                image: "https://cdn.shelterinastorm.org/images/foodbank.jpeg",
                 icon: "food-bank"
+
             },
             {
                 title: "Emergency Assistance",
@@ -164,7 +165,7 @@ export const siteConfig = {
             },
             { 
                 name: "First Bank of the Lake",
-                logo: "https://www.fblake.bank/assets/img/first-bank-of-the-lake-logo.svg",
+                logo: "https://cdn.shelterinastorm.org/images/firstbank.png",
                 url: "https://www.fblake.bank"
             },
             { 
@@ -198,7 +199,7 @@ export const siteConfig = {
             },
             {
                 name: "Encompassed Purpose",
-                logo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT_luo0bRxZjB90J6pSUzAoCQS95NTH8Ir9Uw&s",
+                logo: null,
                 url: "https://encompassedpurpose.com/"
             },
             {
@@ -212,13 +213,18 @@ export const siteConfig = {
                 url: "https://hopehouseofmillercounty.com/"
             },
             {
+                name: "Lake Ozark Christian Church",
+                logo: "https://cdn-locc-org.vercel.app/media/LOCC-header.png",
+                url: "https://lakeozarkdisciples.org/"
+            },
+            {
                 name: "Local Area Needs Initiative",
                 logo: "https://static.wixstatic.com/media/10c148_8e6a7f16d09f4cb09ab8c3e8ed61af46~mv2.png/v1/fill/w_158,h_66,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/LANI%20LOGO.png",
                 url: "https://www.localareaneeds.org/"
             },
             {
                 name: "The Answers Project",
-                logo: "https://cdn.shelterinastorm.org/partners/answers-project.png",
+                logo: null,
                 url: "https://get2answers.org/"
             }
         ],
@@ -227,7 +233,7 @@ export const siteConfig = {
         team: [
             {
                 name: "Audrey Tanner",
-                role: "Executive Director",
+                role: "Director",
                 image: "https://cdn.shelterinastorm.org/team/coming-soon.jpg",
                 bio: "A bio for this team member is not yet available. Check back soon!"
             },
