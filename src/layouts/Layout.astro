@@ -15,6 +15,7 @@ interface Props {
 const { title } = Astro.props;
 
 const formattedTitle = siteConfig.title.template.replace('%s', title);
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 
 // Health check API endpoint
 const HEALTH_CHECK_URL = 'https://api.shelterinastorm.org/api/v2/health';
@@ -95,7 +96,7 @@ try {
 		<meta property="og:description" content={siteConfig.description} />
 		<meta property="og:image" content={siteConfig.metadata.openGraph.image} />
 		<meta property="og:type" content="website" />
-		<meta property="og:url" content={Astro.url} />
+		<meta property="og:url" content={canonicalURL} />
 		
 		<meta name="twitter:card" content="summary_large_image" />
 		<meta name="twitter:title" content={formattedTitle} />
@@ -103,7 +104,7 @@ try {
 		<meta name="twitter:image" content={siteConfig.metadata.openGraph.image} />
 		
 		<meta name="robots" content="index, follow" />
-		<link rel="canonical" href={Astro.url} />
+		<link rel="canonical" href={canonicalURL} />
 		<link rel="icon" type="image/png" href={siteConfig.metadata.favicon} />
 		
 		{siteConfig.fonts.google.families.map(family => (
