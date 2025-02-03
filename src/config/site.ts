@@ -22,7 +22,7 @@ export const siteConfig = {
     author: "Helping Miller & Camden Counties",
     developer: {
         name: "Ben Trimmer",
-        url: "https://benji.services/",
+        url: "https://bentrimmer.com/",
         reportUrl: "/report"
     },
     metadata: {
@@ -204,7 +204,7 @@ export const siteConfig = {
             },
             {
                 name: "First Christian Church Eldon",
-                logo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS91ApfmDOjnlnsGHCdEA0PnMKaUetQQJ6i_g&s",
+                logo: "https://cdn.shelterinastorm.org/images/First%20Christian%20Church%20Eldon(15).png",
                 url: "http://www.eldonfirstchristian.com/"
             },
             {

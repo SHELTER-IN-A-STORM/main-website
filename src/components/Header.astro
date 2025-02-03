@@ -52,7 +52,13 @@ const notifications = [
         linkText: "Other Resources"
     }
 ];
+
+// Get logo URL for preloading
+const logoUrl = "https://cdn.shelterinastorm.org/images/SHELTER_IN_A_STORM_LOGO.png";
 ---
+
+<!-- Preload Logo -->
+<link rel="preload" href={logoUrl} as="image" />
 
 <header class="fixed w-full top-0 z-50">
     <div class="bg-white/95 backdrop-blur-sm border-b border-gray-100">
@@ -61,7 +67,7 @@ const notifications = [
                 <!-- Logo Section -->
                 <a href="/" class="flex items-center gap-3">
                     <img 
-                        src="https://cdn.shelterinastorm.org/images/SHELTER_IN_A_STORM_LOGO.png" 
+                        src={logoUrl}
                         alt="Shelter in a Storm Logo" 
                         class="h-12 w-auto"
                     />

@@ -3,7 +3,15 @@ import { siteConfig } from '../config/site';
 
 // Double the partners array to create a seamless scroll
 const partners = [...siteConfig.shelter.partners, ...siteConfig.shelter.partners];
+
+// Get unique image URLs for preloading (exclude null logos)
+const uniqueImageUrls = [...new Set(siteConfig.shelter.partners.map(p => p.logo).filter(Boolean))];
 ---
+
+<!-- Preload Images -->
+{uniqueImageUrls.map(url => (
+    <link rel="preload" href={url} as="image" />
+))}
 
 <div class="relative overflow-hidden bg-gray-50 py-12">
     <div class="flex space-x-8 animate-scroll hover:pause">
@@ -21,7 +29,9 @@ const partners = [...siteConfig.shelter.partners, ...siteConfig.shelter.partners
                                 src={partner.logo} 
                                 alt={`${partner.name} logo`} 
                                 class="max-h-[80px] w-full object-contain"
-                                loading="lazy"
+                                loading="eager"
+                                decoding="async"
+                                fetchpriority="high"
                             />
                         ) : (
                             <div class="text-center">
@@ -55,7 +65,9 @@ const partners = [...siteConfig.shelter.partners, ...siteConfig.shelter.partners
                                 src={partner.logo} 
                                 alt={`${partner.name} logo`} 
                                 class="max-h-[80px] w-full object-contain"
-                                loading="lazy"
+                                loading="eager"
+                                decoding="async"
+                                fetchpriority="high"
                             />
                         ) : (
                             <div class="text-center">

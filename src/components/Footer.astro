@@ -1,7 +1,13 @@
 ---
 import { siteConfig } from '../config/site';
 import { trackEvent } from '../utils/analytics';
+
+// Get logo URL for preloading
+const logoUrl = "https://cdn.shelterinastorm.org/images/SHELTER_IN_A_STORM_LOGO.png";
 ---
+
+<!-- Preload Logo -->
+<link rel="preload" href={logoUrl} as="image" />
 
 <!-- Footer Separator -->
 <div class="w-full h-16 bg-gradient-to-b from-gray-50 to-gray-100">
@@ -18,7 +24,7 @@ import { trackEvent } from '../utils/analytics';
             <div class="space-y-6 md:col-span-1">
                 <div class="flex items-center gap-3">
                     <img 
-                        src="https://cdn.shelterinastorm.org/images/SHELTER_IN_A_STORM_LOGO.png" 
+                        src={logoUrl}
                         alt="Shelter in a Storm Logo" 
                         class="h-16 w-auto"
                     />
@@ -115,7 +121,7 @@ import { trackEvent } from '../utils/analytics';
                 </div>
 
                 <!-- Copyright & Credits -->
-                <div class="flex flex-col items-center gap-3 text-center">
+                <div class="flex flex-col items-center gap-3 text-center pb-8">
                     <p class="text-sm text-gray-400">
                         © {new Date().getFullYear()} Shelter in a Storm. All rights reserved.
                     </p>
