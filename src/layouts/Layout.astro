@@ -143,7 +143,7 @@ try {
 				}
 			})
 			.then(response => response.json())
-			.then(health => console.log('Client-side API Health Status:', health))
+			// .then(health => console.log('Client-side API Health Status:', health))
 			.catch(error => console.error('Client-side health check failed:', error));
 
 			if (import.meta.env.DEV) {
