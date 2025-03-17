@@ -276,6 +276,8 @@ const { id = 'event-alert' } = Astro.props;
                 externalLinkEl.href = actionUrl;
             } else {
                 actionEl.href = actionUrl;
+                // Remove any existing click event listeners for non-external links
+                actionEl.replaceWith(actionEl.cloneNode(true));
             }
             
             imageEl.src = image;
@@ -301,6 +303,8 @@ const { id = 'event-alert' } = Astro.props;
                 mobileExternalLinkEl.href = actionUrl;
             } else {
                 mobileActionEl.href = actionUrl;
+                // Remove any existing click event listeners for non-external links
+                mobileActionEl.replaceWith(mobileActionEl.cloneNode(true));
             }
             
             mobileImageEl.src = image;
