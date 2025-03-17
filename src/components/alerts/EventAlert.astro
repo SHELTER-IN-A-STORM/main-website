@@ -1,91 +1,93 @@
-window.showEventAlert = function({ 
-    title, 
-    description, 
-    image,
-    badge = 'Upcoming Event',
-    actionText = 'Learn More',
-    actionUrl = '#',
-    isExternalLink = false
-}) {
-    // Desktop Elements
-    const alert = document.getElementById(id);
-    const titleEl = document.getElementById(`${id}-title`);
-    const descriptionEl = document.getElementById(`${id}-description`);
-    const badgeEl = document.getElementById(`${id}-badge`);
-    const actionEl = document.getElementById(`${id}-action`);
-    const imageEl = document.querySelector(`#${id}-image img`);
-    const externalLinkEl = document.getElementById(`${id}-external-link`);
-    
-    // Mobile Elements
-    const mobileAlert = document.getElementById(`${id}-mobile`);
-    const mobileTitleEl = document.getElementById(`${id}-mobile-title`);
-    const mobileDescriptionEl = document.getElementById(`${id}-mobile-description`);
-    const mobileBadgeEl = document.getElementById(`${id}-mobile-badge`);
-    const mobileActionEl = document.getElementById(`${id}-mobile-action`);
-    const mobileImageEl = document.querySelector(`#${id}-mobile-image img`);
-    const mobileExternalLinkEl = document.getElementById(`${id}-external-link-mobile`);
-    
-    // Update Desktop Version
-    if (alert && titleEl && descriptionEl && badgeEl && actionEl && imageEl && externalLinkEl) {
-        titleEl.textContent = title;
-        descriptionEl.textContent = description;
-        badgeEl.textContent = badge;
+<script define:vars={{ id }}>
+    window.showEventAlert = function({ 
+        title, 
+        description, 
+        image,
+        badge = 'Upcoming Event',
+        actionText = 'Learn More',
+        actionUrl = '#',
+        isExternalLink = false
+    }) {
+        // Desktop Elements
+        const alert = document.getElementById(id);
+        const titleEl = document.getElementById(`${id}-title`);
+        const descriptionEl = document.getElementById(`${id}-description`);
+        const badgeEl = document.getElementById(`${id}-badge`);
+        const actionEl = document.getElementById(`${id}-action`);
+        const imageEl = document.querySelector(`#${id}-image img`);
+        const externalLinkEl = document.getElementById(`${id}-external-link`);
         
-        const actionSpan = actionEl.querySelector('span');
-        if (actionSpan) actionSpan.textContent = actionText;
+        // Mobile Elements
+        const mobileAlert = document.getElementById(`${id}-mobile`);
+        const mobileTitleEl = document.getElementById(`${id}-mobile-title`);
+        const mobileDescriptionEl = document.getElementById(`${id}-mobile-description`);
+        const mobileBadgeEl = document.getElementById(`${id}-mobile-badge`);
+        const mobileActionEl = document.getElementById(`${id}-mobile-action`);
+        const mobileImageEl = document.querySelector(`#${id}-mobile-image img`);
+        const mobileExternalLinkEl = document.getElementById(`${id}-external-link-mobile`);
         
-        if (isExternalLink) {
-            actionEl.addEventListener('click', (e) => {
-                e.preventDefault();
-                document.getElementById(`${id}-warning-modal`).classList.remove('hidden');
-            });
-            externalLinkEl.href = actionUrl;
-            externalLinkEl.addEventListener('click', () => {
-                window.open(actionUrl, '_blank');
-            });
-        } else {
-            actionEl.href = actionUrl;
-            actionEl.addEventListener('click', (e) => {
-                e.preventDefault();
-                window.location.href = actionUrl; // Opens the link normally in the same window
-            });
+        // Update Desktop Version
+        if (alert && titleEl && descriptionEl && badgeEl && actionEl && imageEl && externalLinkEl) {
+            titleEl.textContent = title;
+            descriptionEl.textContent = description;
+            badgeEl.textContent = badge;
+            
+            const actionSpan = actionEl.querySelector('span');
+            if (actionSpan) actionSpan.textContent = actionText;
+            
+            if (isExternalLink) {
+                actionEl.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    document.getElementById(`${id}-warning-modal`).classList.remove('hidden');
+                });
+                externalLinkEl.href = actionUrl;
+                externalLinkEl.addEventListener('click', () => {
+                    window.open(actionUrl, '_blank');
+                });
+            } else {
+                actionEl.href = actionUrl;
+                actionEl.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    window.location.href = actionUrl; // Opens the link normally in the same window
+                });
+            }
+            
+            imageEl.src = image;
+            imageEl.alt = title;
+            
+            alert.style.transform = 'translateX(0)';
         }
         
-        imageEl.src = image;
-        imageEl.alt = title;
-        
-        alert.style.transform = 'translateX(0)';
-    }
-    
-    // Update Mobile Version
-    if (mobileAlert && mobileTitleEl && mobileDescriptionEl && mobileBadgeEl && mobileActionEl && mobileImageEl && mobileExternalLinkEl) {
-        mobileTitleEl.textContent = title;
-        mobileDescriptionEl.textContent = description;
-        mobileBadgeEl.textContent = badge;
-        
-        const mobileActionSpan = mobileActionEl.querySelector('span');
-        if (mobileActionSpan) mobileActionSpan.textContent = actionText;
-        
-        if (isExternalLink) {
-            mobileActionEl.addEventListener('click', (e) => {
-                e.preventDefault();
-                document.getElementById(`${id}-warning-modal-mobile`).classList.remove('hidden');
-            });
-            mobileExternalLinkEl.href = actionUrl;
-            mobileExternalLinkEl.addEventListener('click', () => {
-                window.open(actionUrl, '_blank');
-            });
-        } else {
-            mobileActionEl.href = actionUrl;
-            mobileActionEl.addEventListener('click', (e) => {
-                e.preventDefault();
-                window.location.href = actionUrl; // Opens the link normally in the same window
-            });
+        // Update Mobile Version
+        if (mobileAlert && mobileTitleEl && mobileDescriptionEl && mobileBadgeEl && mobileActionEl && mobileImageEl && mobileExternalLinkEl) {
+            mobileTitleEl.textContent = title;
+            mobileDescriptionEl.textContent = description;
+            mobileBadgeEl.textContent = badge;
+            
+            const mobileActionSpan = mobileActionEl.querySelector('span');
+            if (mobileActionSpan) mobileActionSpan.textContent = actionText;
+            
+            if (isExternalLink) {
+                mobileActionEl.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    document.getElementById(`${id}-warning-modal-mobile`).classList.remove('hidden');
+                });
+                mobileExternalLinkEl.href = actionUrl;
+                mobileExternalLinkEl.addEventListener('click', () => {
+                    window.open(actionUrl, '_blank');
+                });
+            } else {
+                mobileActionEl.href = actionUrl;
+                mobileActionEl.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    window.location.href = actionUrl; // Opens the link normally in the same window
+                });
+            }
+            
+            mobileImageEl.src = image;
+            mobileImageEl.alt = title;
+            
+            mobileAlert.style.transform = 'translateY(0)';
         }
-        
-        mobileImageEl.src = image;
-        mobileImageEl.alt = title;
-        
-        mobileAlert.style.transform = 'translateY(0)';
     }
-}
+</script>
