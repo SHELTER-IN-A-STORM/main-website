@@ -231,13 +231,42 @@ export const siteConfig = {
 
 
         team: [
-            {
-                name: "Audrey Tanner",
+               {
+                name: "Audrey",
                 role: "Director",
-                image: "https://cdn.shelterinastorm.org/team/coming-soon.jpg",
-                bio: "A bio for this team member is not yet available. Check back soon!"
+                image: "https://cdn.shelterinastorm.org/team/BioPic-Audrey.jpg",
+                bio: "Audrey is passionate about helping people with their emergency basic needs around the Lake.  She has over 25 years experience serving in the non-profit sector as well as professional experience in sales and planning and coordinating fundraising events.  Her background has given her skills to collaborate with local business donors and establish relationships with local partners to better serve our clients.  Through her own personal hardships and God-led healing, she is driven to share His love through helping people going through their own storms.  Her hope is that the services provided help to grow the relationship between the client and God.  Audrey is a wife, mother to 5, and grandmother to 2.  In her spare time, she enjoys being on the water, visiting her family, traveling, golfing, and doing a jigsaw puzzle on a rare quiet evening."
             },
-            // Add more team members
+                 {
+                name: "Gregg",
+                role: "Committee Member",
+                image: "https://cdn.shelterinastorm.org/team/BioPic-Gregg.jpg",
+                bio: "After vacationing at the Lake for nearly 25 years, Gregg and his wife, Debbie, became permanent residents in 2012.  He and his wife are parents of 3 adult children and proud grandparents of 6 grandchildren and 6 great grandchildren.  Both are active members of Lake Ozark Christian Church where they serve as Deacons.  Gregg's primary skill set is in management.  He is also an empathic listener----a skill he developed during his tenure at the UMKC School of Medicine where he was continually looking for ways to gain support or find a way forward to maintain viable partnerships.  Gregg is an avid golfer and also works part-time at an area golf course.  He has a Bachelor's Degree from Missouri Western and a Masters in Public Administration with an emphasis in Health Services from the University of Missouri."
+            },
+                             {
+                name: "Paula",
+                role: "Committee Member",
+                image: "https://cdn.shelterinastorm.org/team/BioPic-Paula.jpg",
+                bio: "Paula is a longtime member of Lake Ozark Christian Church.  She has served as deacon and on many church committees, along with the church council.  She is a retired registered nurse, having worked for a local public health department for more than 20 years.  Paula served as their WIC (Women, Infant, Children Supplemental Food Program) Coordinator and Communicable Disease Coordinator.  In her public health work, she was able to educate, refer, and get assistance for many clients in need.  Paula saw her career as a ministry to be able to help others."
+            },
+                             {
+                name: "Joe",
+                role: "Committee Member",
+                image: "https://cdn.shelterinastorm.org/team/BioPic-Joe.jpg",
+                bio: "Joe is a retired educator.  Receiving degrees from the University of Missouri and Oklahoma State University, he spent almost 40 years as a teacher and administrator at OSU and Cal State Fullerton.  He also served in the Navy with an air squadron aboard the USS Kitty Hawk and USS Saratoga.  After retiring, he and his wife Margaret became members of Lake Ozark Christian Church.  He has served on the Leadership Council and currently serves as an Elder, a 'Shelter in a Storm' committee member, helps teach the Adult Sunday School Bible Class, and serves on other church committees."
+            },
+                             {
+                name: "Katherine",
+                role: "Committee Member",
+                image: "https://cdn.shelterinastorm.org/team/BioPic-Katherine.jpeg",
+                bio: "Katherine has a passion for helping families in need. She joined the church in 2024 as a single mother of two and understands the hardships that we all face and the inherent need for support. She found this support at Lake Ozark Christian Church and immediately became involved with Shelter in a Storm so that she could offer support back to the same community that has supported and loved her. Katherine has a bachelor's degree in psychology and has experience in social work and teaching. She and her children have lived in Ohio, Texas, Washington and Missouri (but Missouri is by far their favorite). She loves keeping the emergency food pantry supplied with items that benefit those in need and helping the program and the community in any other way that she can."
+            },
+                             {
+                name: "Janell",
+                role: "Committee Member",
+                image: "https://cdn.shelterinastorm.org/team/BioPic-Janell.jpg",
+                bio: "Janell has been married to Mike for 59 years.  They have 3 sons, 11 grandchildren, 1 great granddaughter, and 1 on the way.  She is a former middle school teacher.  She volunteers at the Hope House in Miller County.  After learning about all the services 'Shelter in a Storm' offers her local community, she decided to be a part of this ministry to help others."
+            },
         ],
         ein: "43-1193150",
         impact: {
