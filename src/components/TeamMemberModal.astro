@@ -8,11 +8,11 @@ const { id } = Astro.props;
 
 <div 
     id={id}
-    class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4"
+    class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4 overflow-y-auto"
     role="dialog"
     aria-modal="true"
 >
-    <div class="bg-white rounded-2xl shadow-xl max-w-4xl w-full animate-scale-up">
+    <div class="bg-white rounded-2xl shadow-xl max-w-4xl w-full animate-scale-up my-8">
         <div class="p-6 md:p-8">
             <div class="flex justify-end">
                 <button 
