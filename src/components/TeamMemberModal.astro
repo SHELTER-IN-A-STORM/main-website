@@ -12,9 +12,9 @@ const { id } = Astro.props;
     role="dialog"
     aria-modal="true"
 >
-    <div class="bg-white rounded-2xl shadow-xl max-w-4xl w-full animate-scale-up my-8">
+    <div class="bg-white rounded-2xl shadow-xl max-w-4xl w-full animate-scale-up my-8 max-h-[90vh] overflow-y-auto">
         <div class="p-6 md:p-8">
-            <div class="flex justify-end">
+            <div class="flex justify-end sticky top-0 bg-white z-10 pb-2">
                 <button 
                     type="button"
                     onclick={`closeTeamModal('${id}')`}
@@ -61,6 +61,12 @@ const { id } = Astro.props;
     function openTeamModal(id, member) {
         const modal = document.getElementById(id);
         if (modal) {
+            // Scroll to top before showing modal
+            setTimeout(() => {
+                const modalContent = modal.querySelector('.bg-white');
+                if (modalContent) modalContent.scrollTop = 0;
+            }, 10);
+            
             modal.classList.remove('hidden');
             document.body.style.overflow = 'hidden';
             
@@ -88,6 +94,17 @@ const { id } = Astro.props;
                 closeTeamModal(modal.id);
             });
         }
+    });
+    
+    // Close modal when clicking outside the content
+    document.addEventListener('click', (e) => {
+        const modals = document.querySelectorAll('[role="dialog"]:not(.hidden)');
+        modals.forEach(modal => {
+            const modalContent = modal.querySelector('.bg-white');
+            if (modal === e.target && modalContent && !modalContent.contains(e.target)) {
+                closeTeamModal(modal.id);
+            }
+        });
     });
 </script>
 
