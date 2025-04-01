@@ -128,6 +128,11 @@ export const siteConfig = {
             }
         },
         donors: [
+            {
+                name: "Trackly",
+                logo: "https://trackly.works/images/ui/favicon.png",
+                url: "https://trackly.works"
+            },
             { 
                 name: "Dierbergs", 
                 logo: "https://mrcheckout.net/wp-content/uploads/2022/06/Dierbergs.png",

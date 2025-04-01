@@ -286,7 +286,10 @@ try {
 		}
 	}
 </style>
-
+<script>
+	import { checkAndSetReferral } from "../scripts/SetCookies";
+	checkAndSetReferral();
+</script>
 <script>
     function trackEvent(category: string, action: string, label?: string) {
         if (typeof window !== 'undefined' && (window as any).gtag) {
