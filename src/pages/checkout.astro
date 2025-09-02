@@ -461,6 +461,38 @@ const STRIPE_API_URL = 'https://api.shelterinastorm.org/api/v2/OtherProduct';
                             </div>
                         </div>
 
+                        <!-- Drawing Entries for Sponsors -->
+                        <div class="border border-gray-200 rounded-xl p-6 mb-6">
+                            <h3 class="text-lg font-semibold text-gray-900 mb-4">Drawing Entries (Optional)</h3>
+                            <p class="text-gray-600 mb-4">Participate in our prize drawings! Buy 3+ and save with our triple package deal.</p>
+                            
+                            <div class="space-y-4">
+                                <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                                    <div>
+                                        <div class="font-semibold text-gray-900">Drawing Entries</div>
+                                        <div class="text-sm text-gray-600">$10 each • Buy 3+ and save with our triple package deal!</div>
+                                    </div>
+                                    <div class="flex items-center gap-3">
+                                        <button type="button" class="quantity-btn w-8 h-8 bg-white hover:bg-gray-100 rounded-full flex items-center justify-center transition-colors font-bold" data-action="decrease" data-type="sponsor-raffle">-</button>
+                                        <span class="quantity-display w-12 text-center font-semibold min-w-[3rem]" data-type="sponsor-raffle">0</span>
+                                        <button type="button" class="quantity-btn w-8 h-8 bg-white hover:bg-gray-100 rounded-full flex items-center justify-center transition-colors font-bold" data-action="increase" data-type="sponsor-raffle">+</button>
+                                    </div>
+                                </div>
+                                
+                                <!-- Smart Pricing Display for Sponsors -->
+                                <div id="sponsor-raffle-pricing-breakdown" class="hidden bg-green-50 border border-green-200 rounded-lg p-4">
+                                    <div class="flex items-center gap-2 mb-2">
+                                        <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                        </svg>
+                                        <span class="font-semibold text-green-800">Smart Pricing Applied!</span>
+                                    </div>
+                                    <div id="sponsor-raffle-breakdown-text" class="text-sm text-green-700"></div>
+                                </div>
+                            </div>
+                            <p class="text-sm text-gray-600 mt-3">Maximum 50 drawing entries per person</p>
+                        </div>
+
                         <!-- Sponsor Benefits -->
                         <div class="bg-green-50 border border-green-200 rounded-xl p-6 mb-8">
                             <h3 class="text-lg font-semibold text-green-900 mb-4">Sponsor Benefits</h3>
@@ -647,6 +679,9 @@ const STRIPE_API_URL = 'https://api.shelterinastorm.org/api/v2/OtherProduct';
         raffleTotal: 0,
         raffleTriplePackages: 0,
         raffleSingleTickets: 0,
+        sponsorRaffleTotal: 0,
+        sponsorRaffleTriplePackages: 0,
+        sponsorRaffleSingleTickets: 0,
         bakeOffEntry: false,
         payProcessingFees: false,
         donationOnly: false,
@@ -893,6 +928,12 @@ const STRIPE_API_URL = 'https://api.shelterinastorm.org/api/v2/OtherProduct';
                     return;
                 }
             }
+            if (type === 'sponsor-raffle') {
+                if (orderState.sponsorRaffleTotal >= 50) {
+                    showError('Maximum 50 drawing entries per person');
+                    return;
+                }
+            }
             currentValue++;
         } else if (action === 'decrease' && currentValue > 0) {
             currentValue--;
@@ -916,6 +957,10 @@ const STRIPE_API_URL = 'https://api.shelterinastorm.org/api/v2/OtherProduct';
             case 'raffle-total':
                 orderState.raffleTotal = currentValue;
                 calculateOptimalRafflePricing();
+                break;
+            case 'sponsor-raffle':
+                orderState.sponsorRaffleTotal = currentValue;
+                calculateOptimalSponsorRafflePricing();
                 break;
         }
         
@@ -978,6 +1023,62 @@ const STRIPE_API_URL = 'https://api.shelterinastorm.org/api/v2/OtherProduct';
         }
     }
 
+    function calculateOptimalSponsorRafflePricing() {
+        const total = orderState.sponsorRaffleTotal;
+        
+        if (total === 0) {
+            orderState.sponsorRaffleTriplePackages = 0;
+            orderState.sponsorRaffleSingleTickets = 0;
+            hideSponsorRafflePricingBreakdown();
+            return;
+        }
+        
+        // Calculate optimal combination
+        const triplePackages = Math.floor(total / 3);
+        const remainingTickets = total % 3;
+        
+        orderState.sponsorRaffleTriplePackages = triplePackages;
+        orderState.sponsorRaffleSingleTickets = remainingTickets;
+        
+        // Show pricing breakdown if there are savings
+        if (triplePackages > 0) {
+            const savings = triplePackages * 10; // $10 saved per triple package
+            showSponsorRafflePricingBreakdown(total, triplePackages, remainingTickets, savings);
+        } else {
+            hideSponsorRafflePricingBreakdown();
+        }
+    }
+
+    function showSponsorRafflePricingBreakdown(total: number, triplePackages: number, singleTickets: number, savings: number) {
+        const breakdownElement = document.getElementById('sponsor-raffle-pricing-breakdown');
+        const breakdownText = document.getElementById('sponsor-raffle-breakdown-text');
+        
+        if (!breakdownElement || !breakdownText) return;
+        
+        let breakdown = `You're buying ${total} drawing entr${total > 1 ? 'ies' : 'y'}: `;
+        
+        if (triplePackages > 0) {
+            breakdown += `${triplePackages} triple package${triplePackages > 1 ? 's' : ''} (${triplePackages * 3} tickets)`;
+        }
+        
+        if (singleTickets > 0) {
+            if (triplePackages > 0) breakdown += ' + ';
+            breakdown += `${singleTickets} single ticket${singleTickets > 1 ? 's' : ''}`;
+        }
+        
+        breakdown += ` • You save $${savings}!`;
+        
+        breakdownText.textContent = breakdown;
+        breakdownElement.classList.remove('hidden');
+    }
+
+    function hideSponsorRafflePricingBreakdown() {
+        const breakdownElement = document.getElementById('sponsor-raffle-pricing-breakdown');
+        if (breakdownElement) {
+            breakdownElement.classList.add('hidden');
+        }
+    }
+
     function nextStep() {
         if (!validateCurrentForm()) return;
         
@@ -1030,8 +1131,9 @@ const STRIPE_API_URL = 'https://api.shelterinastorm.org/api/v2/OtherProduct';
         const hasSponsorPackage = orderState.sponsorPackage !== null;
         const hasSponsorExtraTickets = orderState.sponsorExtraTickets > 0;
         const hasRaffleTickets = orderState.raffleTotal > 0;
+        const hasSponsorRaffleTickets = orderState.sponsorRaffleTotal > 0;
 
-        if (!hasRegularTickets && !hasSponsorPackage && !hasSponsorExtraTickets && !hasRaffleTickets) {
+        if (!hasRegularTickets && !hasSponsorPackage && !hasSponsorExtraTickets && !hasRaffleTickets && !hasSponsorRaffleTickets) {
             showError('Please select at least one item to purchase');
             return false;
         }
@@ -1113,6 +1215,34 @@ const STRIPE_API_URL = 'https://api.shelterinastorm.org/api/v2/OtherProduct';
                 cost: raffleCost
             });
             total += raffleCost;
+        }
+
+        // Sponsor drawing entries (smart pricing)
+        if (orderState.sponsorRaffleTotal > 0) {
+            let sponsorRaffleCost = 0;
+            
+            if (orderState.sponsorRaffleTriplePackages > 0) {
+                sponsorRaffleCost += orderState.sponsorRaffleTriplePackages * pricing.raffleTriple;
+            }
+            
+            if (orderState.sponsorRaffleSingleTickets > 0) {
+                sponsorRaffleCost += orderState.sponsorRaffleSingleTickets * pricing.raffleSingle;
+            }
+            
+            // Calculate savings for display
+            const regularPrice = orderState.sponsorRaffleTotal * pricing.raffleSingle;
+            const savings = regularPrice - sponsorRaffleCost;
+            
+            let sponsorRaffleName = `${orderState.sponsorRaffleTotal} Drawing Entr${orderState.sponsorRaffleTotal > 1 ? 'ies' : 'y'}`;
+            if (savings > 0) {
+                sponsorRaffleName += ` (Save $${savings})`;
+            }
+            
+            items.push({
+                name: sponsorRaffleName,
+                cost: sponsorRaffleCost
+            });
+            total += sponsorRaffleCost;
         }
 
         // Donation
@@ -1263,6 +1393,37 @@ const STRIPE_API_URL = 'https://api.shelterinastorm.org/api/v2/OtherProduct';
                     type: 'prize_entry'
                 });
                 totalAmount += raffleCost;
+            }
+
+            // Sponsor drawing entries (smart pricing - single line item)
+            if (orderState.sponsorRaffleTotal > 0) {
+                let sponsorRaffleCost = 0;
+                
+                if (orderState.sponsorRaffleTriplePackages > 0) {
+                    sponsorRaffleCost += orderState.sponsorRaffleTriplePackages * pricing.raffleTriple;
+                }
+                
+                if (orderState.sponsorRaffleSingleTickets > 0) {
+                    sponsorRaffleCost += orderState.sponsorRaffleSingleTickets * pricing.raffleSingle;
+                }
+                
+                // Calculate savings for description
+                const regularPrice = orderState.sponsorRaffleTotal * pricing.raffleSingle;
+                const savings = regularPrice - sponsorRaffleCost;
+                
+                let description = `${orderState.sponsorRaffleTotal} drawing entr${orderState.sponsorRaffleTotal > 1 ? 'ies' : 'y'} for prize drawings`;
+                if (savings > 0) {
+                    description += ` (Smart pricing applied - Save $${savings}!)`;
+                }
+                
+                products.push({
+                    name: `${orderState.sponsorRaffleTotal} Drawing Entr${orderState.sponsorRaffleTotal > 1 ? 'ies' : 'y'}`,
+                    description: description,
+                    price: sponsorRaffleCost,
+                    quantity: 1,
+                    type: 'prize_entry'
+                });
+                totalAmount += sponsorRaffleCost;
             }
 
             // Donation
