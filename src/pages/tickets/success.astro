@@ -1,5 +1,9 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+
+// Get session_id from URL parameters
+const { url } = Astro;
+const sessionId = url.searchParams.get('session_id');
 ---
 
 <Layout title="Purchase Successful">
@@ -15,6 +19,18 @@ import Layout from '../../layouts/Layout.astro';
                 <p class="text-gray-600 mb-8">
                     Your ticket purchase was successful. You will receive a confirmation email shortly with your tickets.
                 </p>
+                
+                {sessionId && (
+                    <div class="bg-gray-50 rounded-lg p-4 mb-6 text-left">
+                        <h3 class="font-medium text-gray-900 mb-2">Purchase Details</h3>
+                        <p class="text-sm text-gray-600 mb-1">
+                            <span class="font-medium">Session ID:</span> <span id="session-id" class="font-mono text-xs">{sessionId}</span>
+                        </p>
+                        <p class="text-sm text-gray-600">
+                            <span class="font-medium">Status:</span> <span class="text-green-600 font-medium">Payment Successful</span>
+                        </p>
+                    </div>
+                )}
                 <div class="space-y-4">
                     <a 
                         href="/tickets"
@@ -32,4 +48,12 @@ import Layout from '../../layouts/Layout.astro';
             </div>
         </div>
     </div>
-</Layout> 
+</Layout>
+
+<script>
+    // Optional: You could add functionality here to fetch additional session details
+    // from your backend if needed, but the basic success page is complete
+    
+    // Add any additional success page functionality here
+    console.log('Ticket purchase successful!');
+</script> 
