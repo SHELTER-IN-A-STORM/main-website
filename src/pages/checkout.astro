@@ -295,10 +295,10 @@ const STRIPE_API_URL = 'https://api.shelterinastorm.org/api/v2/OtherProduct';
                                     <p class="text-gray-600 mb-2">Includes dinner, bake-off tasting, and all activities</p>
                                     <p class="text-2xl font-bold text-brand">$50 <span class="text-sm font-normal text-gray-600">per person</span></p>
                                 </div>
-                                <div class="flex items-center space-x-3">
-                                    <button type="button" class="quantity-btn w-12 h-12 bg-gray-100 hover:bg-gray-200 rounded-full flex items-center justify-center transition-colors text-xl" data-action="decrease" data-type="regular">-</button>
-                                    <span class="quantity-display w-16 text-center font-semibold text-2xl" data-type="regular">0</span>
-                                    <button type="button" class="quantity-btn w-12 h-12 bg-gray-100 hover:bg-gray-200 rounded-full flex items-center justify-center transition-colors text-xl" data-action="increase" data-type="regular">+</button>
+                                <div class="flex items-center gap-4">
+                                    <button type="button" class="quantity-btn w-12 h-12 bg-gray-100 hover:bg-gray-200 rounded-full flex items-center justify-center transition-colors text-xl font-bold" data-action="decrease" data-type="regular">-</button>
+                                    <span class="quantity-display w-16 text-center font-semibold text-2xl min-w-[4rem]" data-type="regular">0</span>
+                                    <button type="button" class="quantity-btn w-12 h-12 bg-gray-100 hover:bg-gray-200 rounded-full flex items-center justify-center transition-colors text-xl font-bold" data-action="increase" data-type="regular">+</button>
                                 </div>
                             </div>
                         </div>
@@ -330,10 +330,10 @@ const STRIPE_API_URL = 'https://api.shelterinastorm.org/api/v2/OtherProduct';
                                         <div class="font-semibold text-gray-900">Drawing Entries</div>
                                         <div class="text-sm text-gray-600">$10 each • Buy 3+ and save with our triple package deal!</div>
                                     </div>
-                                    <div class="flex items-center space-x-3">
-                                        <button type="button" class="quantity-btn w-8 h-8 bg-white hover:bg-gray-100 rounded-full flex items-center justify-center transition-colors" data-action="decrease" data-type="raffle-total">-</button>
-                                        <span class="quantity-display w-8 text-center font-semibold" data-type="raffle-total">0</span>
-                                        <button type="button" class="quantity-btn w-8 h-8 bg-white hover:bg-gray-100 rounded-full flex items-center justify-center transition-colors" data-action="increase" data-type="raffle-total">+</button>
+                                    <div class="flex items-center gap-3">
+                                        <button type="button" class="quantity-btn w-8 h-8 bg-white hover:bg-gray-100 rounded-full flex items-center justify-center transition-colors font-bold" data-action="decrease" data-type="raffle-total">-</button>
+                                        <span class="quantity-display w-12 text-center font-semibold min-w-[3rem]" data-type="raffle-total">0</span>
+                                        <button type="button" class="quantity-btn w-8 h-8 bg-white hover:bg-gray-100 rounded-full flex items-center justify-center transition-colors font-bold" data-action="increase" data-type="raffle-total">+</button>
                                     </div>
                                 </div>
                                 
@@ -440,6 +440,25 @@ const STRIPE_API_URL = 'https://api.shelterinastorm.org/api/v2/OtherProduct';
                                     <div class="text-xs text-gray-500">Premium visibility</div>
                                 </div>
                             </label>
+                        </div>
+
+                        <!-- Additional Tickets for Sponsors -->
+                        <div class="border border-gray-200 rounded-xl p-6 mb-6">
+                            <h3 class="text-lg font-semibold text-gray-900 mb-4">Additional Admission Tickets</h3>
+                            <p class="text-gray-600 mb-4">Need more tickets beyond your sponsor package? Add them here.</p>
+                            
+                            <div class="flex items-center justify-between">
+                                <div class="flex-1">
+                                    <div class="font-semibold text-gray-900 mb-1">Extra Admission Tickets</div>
+                                    <p class="text-gray-600 mb-2">Additional tickets for your team or guests</p>
+                                    <p class="text-2xl font-bold text-brand">$50 <span class="text-sm font-normal text-gray-600">per person</span></p>
+                                </div>
+                                <div class="flex items-center gap-4">
+                                    <button type="button" class="quantity-btn w-12 h-12 bg-gray-100 hover:bg-gray-200 rounded-full flex items-center justify-center transition-colors text-xl font-bold" data-action="decrease" data-type="sponsor-extra">-</button>
+                                    <span class="quantity-display w-16 text-center font-semibold text-2xl min-w-[4rem]" data-type="sponsor-extra">0</span>
+                                    <button type="button" class="quantity-btn w-12 h-12 bg-gray-100 hover:bg-gray-200 rounded-full flex items-center justify-center transition-colors text-xl font-bold" data-action="increase" data-type="sponsor-extra">+</button>
+                                </div>
+                            </div>
                         </div>
 
                         <!-- Sponsor Benefits -->
@@ -624,6 +643,7 @@ const STRIPE_API_URL = 'https://api.shelterinastorm.org/api/v2/OtherProduct';
         phone: '',
         regularTickets: 0,
         sponsorPackage: null as string | null,
+        sponsorExtraTickets: 0,
         raffleTotal: 0,
         raffleTriplePackages: 0,
         raffleSingleTickets: 0,
@@ -680,6 +700,8 @@ const STRIPE_API_URL = 'https://api.shelterinastorm.org/api/v2/OtherProduct';
         // Form inputs
         const emailInput = document.getElementById('email') as HTMLInputElement;
         const phoneInput = document.getElementById('phone') as HTMLInputElement;
+        const sponsorEmailInput = document.getElementById('sponsor-email') as HTMLInputElement;
+        const sponsorPhoneInput = document.getElementById('sponsor-phone') as HTMLInputElement;
         
         if (emailInput) {
             emailInput.addEventListener('input', (e) => {
@@ -689,6 +711,18 @@ const STRIPE_API_URL = 'https://api.shelterinastorm.org/api/v2/OtherProduct';
 
         if (phoneInput) {
             phoneInput.addEventListener('input', (e) => {
+                orderState.phone = (e.target as HTMLInputElement).value;
+            });
+        }
+
+        if (sponsorEmailInput) {
+            sponsorEmailInput.addEventListener('input', (e) => {
+                orderState.email = (e.target as HTMLInputElement).value;
+            });
+        }
+
+        if (sponsorPhoneInput) {
+            sponsorPhoneInput.addEventListener('input', (e) => {
                 orderState.phone = (e.target as HTMLInputElement).value;
             });
         }
@@ -787,6 +821,27 @@ const STRIPE_API_URL = 'https://api.shelterinastorm.org/api/v2/OtherProduct';
         if (targetSection) {
             targetSection.classList.remove('hidden');
         }
+        
+        // Sync contact information between forms
+        syncContactInfo();
+    }
+    
+    function syncContactInfo() {
+        const emailInput = document.getElementById('email') as HTMLInputElement;
+        const phoneInput = document.getElementById('phone') as HTMLInputElement;
+        const sponsorEmailInput = document.getElementById('sponsor-email') as HTMLInputElement;
+        const sponsorPhoneInput = document.getElementById('sponsor-phone') as HTMLInputElement;
+        
+        // If we have email/phone in state, populate both forms
+        if (orderState.email && emailInput && sponsorEmailInput) {
+            emailInput.value = orderState.email;
+            sponsorEmailInput.value = orderState.email;
+        }
+        
+        if (orderState.phone && phoneInput && sponsorPhoneInput) {
+            phoneInput.value = orderState.phone;
+            sponsorPhoneInput.value = orderState.phone;
+        }
     }
 
     function switchToSponsorFlow() {
@@ -819,9 +874,14 @@ const STRIPE_API_URL = 'https://api.shelterinastorm.org/api/v2/OtherProduct';
         const target = e.target as HTMLElement;
         const action = target.dataset.action;
         const type = target.dataset.type;
-        const display = document.querySelector(`[data-type="${type}"]`) as HTMLElement;
+        const display = document.querySelector(`.quantity-display[data-type="${type}"]`) as HTMLElement;
         
-        if (!display) return;
+        console.log('Quantity change:', { action, type, display, target });
+        
+        if (!display) {
+            console.error('Display element not found for type:', type);
+            return;
+        }
         
         let currentValue = parseInt(display.textContent || '0') || 0;
         
@@ -838,12 +898,20 @@ const STRIPE_API_URL = 'https://api.shelterinastorm.org/api/v2/OtherProduct';
             currentValue--;
         }
         
-        display.textContent = currentValue.toString();
+        // Only update if this is actually a quantity display element
+        if (display.classList.contains('quantity-display')) {
+            display.textContent = currentValue.toString();
+        } else {
+            console.error('Target element is not a quantity display:', display);
+        }
         
         // Update state
         switch (type) {
             case 'regular':
                 orderState.regularTickets = currentValue;
+                break;
+            case 'sponsor-extra':
+                orderState.sponsorExtraTickets = currentValue;
                 break;
             case 'raffle-total':
                 orderState.raffleTotal = currentValue;
@@ -941,8 +1009,17 @@ const STRIPE_API_URL = 'https://api.shelterinastorm.org/api/v2/OtherProduct';
     }
 
     function validateCurrentForm() {
-        // Validate email
-        const email = orderState.email.trim();
+        // Validate email - check both regular and sponsor email fields
+        let email = orderState.email.trim();
+        
+        // If no email in state, try to get it from the visible form
+        if (!email) {
+            const visibleEmailInput = document.querySelector('input[type="email"]:not([style*="display: none"])') as HTMLInputElement;
+            if (visibleEmailInput) {
+                email = visibleEmailInput.value.trim();
+            }
+        }
+        
         if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
             showError('Please enter a valid email address');
             return false;
@@ -951,9 +1028,10 @@ const STRIPE_API_URL = 'https://api.shelterinastorm.org/api/v2/OtherProduct';
         // Validate that at least one item is selected
         const hasRegularTickets = orderState.regularTickets > 0;
         const hasSponsorPackage = orderState.sponsorPackage !== null;
+        const hasSponsorExtraTickets = orderState.sponsorExtraTickets > 0;
         const hasRaffleTickets = orderState.raffleTotal > 0;
 
-        if (!hasRegularTickets && !hasSponsorPackage && !hasRaffleTickets) {
+        if (!hasRegularTickets && !hasSponsorPackage && !hasSponsorExtraTickets && !hasRaffleTickets) {
             showError('Please select at least one item to purchase');
             return false;
         }
@@ -972,6 +1050,16 @@ const STRIPE_API_URL = 'https://api.shelterinastorm.org/api/v2/OtherProduct';
             const cost = orderState.regularTickets * pricing.regularTicket;
             items.push({
                 name: `Regular Admission Ticket${orderState.regularTickets > 1 ? 's' : ''}`,
+                cost: cost
+            });
+            total += cost;
+        }
+
+        // Sponsor extra tickets
+        if (orderState.sponsorExtraTickets > 0) {
+            const cost = orderState.sponsorExtraTickets * pricing.regularTicket;
+            items.push({
+                name: `Additional Admission Ticket${orderState.sponsorExtraTickets > 1 ? 's' : ''}`,
                 cost: cost
             });
             total += cost;
@@ -1098,6 +1186,18 @@ const STRIPE_API_URL = 'https://api.shelterinastorm.org/api/v2/OtherProduct';
                     type: 'admission'
                 });
                 totalAmount += orderState.regularTickets * pricing.regularTicket;
+            }
+
+            // Sponsor extra tickets
+            if (orderState.sponsorExtraTickets > 0) {
+                products.push({
+                    name: `Additional Admission Ticket${orderState.sponsorExtraTickets > 1 ? 's' : ''}`,
+                    description: `Additional admission tickets beyond sponsor package for ${orderState.sponsorExtraTickets} ${orderState.sponsorExtraTickets > 1 ? 'people' : 'person'}`,
+                    price: pricing.regularTicket,
+                    quantity: orderState.sponsorExtraTickets,
+                    type: 'admission'
+                });
+                totalAmount += orderState.sponsorExtraTickets * pricing.regularTicket;
             }
 
             // Sponsor packages
@@ -1315,6 +1415,7 @@ const STRIPE_API_URL = 'https://api.shelterinastorm.org/api/v2/OtherProduct';
     
     .quantity-btn {
         transition: all 0.2s ease;
+        flex-shrink: 0;
     }
     
     .quantity-btn:hover {
@@ -1323,6 +1424,13 @@ const STRIPE_API_URL = 'https://api.shelterinastorm.org/api/v2/OtherProduct';
     
     .quantity-btn:active {
         transform: scale(0.95);
+    }
+    
+    .quantity-display {
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
     
     /* Loading animation */
