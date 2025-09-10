@@ -1,3 +1,9 @@
+/**
+ * @Author: BensonByte
+ * @Date:   08/24/25 07:29:00 C8T
+ * @Last Modified by:   BensonByte
+ * @Last Modified time: 09/09/25 19:29:27 C9T
+ */
 export const siteConfig = {
     theme: {
         colors: {

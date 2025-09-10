@@ -122,24 +122,14 @@ const logoUrl = "https://cdn.shelterinastorm.org/images/SHELTER_IN_A_STORM_LOGO.
 
                 <!-- Copyright & Credits -->
                 <div class="flex flex-col items-center gap-3 text-center pb-8">
-                    <p class="text-sm text-gray-400">
-                        © {new Date().getFullYear()} Shelter in a Storm. All rights reserved.
-                    </p>
-                    <a 
-                        href={siteConfig.developer.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        onclick="trackEvent('Footer', 'Click', 'Developer Link')"
-                        class="inline-flex items-center gap-2 text-sm text-gray-400 hover:text-brand transition-all duration-300 group relative"
-                    >
-                        <span class="font-handwriting animate-glow-soft relative">
-                            Designed & hosted with ❤️ by {siteConfig.developer.name}
-                            <span class="absolute inset-0 bg-brand/5 blur-xl group-hover:bg-brand/10 transition-colors duration-300"></span>
-                        </span>
-                        <svg class="w-4 h-4 transform group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
-                        </svg>
-                    </a>
+                    <div class="text-center mb-8">
+                        <p class="text-gray-600 text-sm font-medium">
+                            © 2025 <a href="https://trackly.works" class="text-gray-600 hover:text-brand transition-colors">PixelPulse Creations, LLC</a> under exclusive license to Lake Ozark Christian Church, Inc. All rights reserved.
+                        </p>
+                        <p class="text-gray-500 text-xs mt-2">
+                            Lake Ozark Christian Church, Inc. is a registered 501(c)(3) nonprofit organization (EIN 43-1193150).
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>
