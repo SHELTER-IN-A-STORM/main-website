@@ -2,118 +2,376 @@
 import Layout from '../layouts/Layout.astro';
 import { siteConfig } from '../config/site';
 import DonationForm from '../components/donation/DonationForm.astro';
-import { fade } from 'astro:transitions';
+
+const heroImage = {
+  url: siteConfig.metadata.openGraph.image,
+  alt: "Support Shelter in a Storm"
+};
+
+const givingMethods = [
+  {
+    title: "Online Giving",
+    description: "Secure online donations with one-time or recurring giving options.",
+    icon: `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />`
+  },
+  {
+    title: "Mail Your Gift",
+    description: "Send your contribution to Lake Ozark Christian Church, P.O. Box 194, Lake Ozark, MO 65049.",
+    icon: `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />`
+  },
+  {
+    title: "Donate Items",
+    description: "Drop off food and supplies at our 24/7 food pantry on the west side of the church.",
+    icon: `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />`
+  }
+];
+
+const impactAreas = [
+  {
+    amount: "$25",
+    description: "Provides a week of groceries for a family in need"
+  },
+  {
+    amount: "$50",
+    description: "Helps cover utility bills for someone facing a crisis"
+  },
+  {
+    amount: "$100",
+    description: "Provides emergency housing assistance"
+  },
+  {
+    amount: "$250",
+    description: "Supports a family through a month of hardship"
+  }
+];
 ---
 
 <Layout title="Donate">
-    <!-- Hero Section -->
-    <section class="relative min-h-screen flex items-center justify-center">
-        <div class="absolute inset-0">
-            <img 
-                src={siteConfig.metadata.openGraph.image}
-                alt="Shelter from a Storm"
-                class="w-full h-full object-cover"
-            />
-            <div class="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/60"></div>
-        </div>
+  <!-- Preload hero image for faster LCP -->
+  <link rel="preload" href={heroImage.url} as="image" fetchpriority="high" slot="head" />
 
-        <div class="relative container mx-auto px-6 pt-20">
-            <div class="max-w-4xl mx-auto text-center text-white space-y-8">
-                <h1 
-                    class="text-5xl md:text-7xl font-bold mb-6 animate-fade-in"
-                    style="text-wrap: balance;"
-                >
-                    Support Our Mission
-                </h1>
-                <p 
-                    class="text-xl md:text-2xl text-gray-200 mb-12 animate-slide-up-delay-1 max-w-2xl mx-auto"
-                    style="text-wrap: balance;"
-                >
-                    Your generosity helps us provide emergency assistance and support to those in need 
-                    around our community.
-                </p>
-                <div class="flex flex-wrap gap-6 justify-center animate-slide-up-delay-2">
-                    <a
-                        href="#donate-form"
-                        class="group inline-flex items-center px-8 py-4 text-lg font-medium transition-all duration-300
-                            bg-brand hover:bg-brand-dark text-white hover:shadow-lg rounded-lg
-                            shadow-sm hover:shadow-md"
-                    >
-                        <span>Make a Donation</span>
-                        <svg 
-                            class="w-5 h-5 ml-2 transform group-hover:translate-x-1 transition-transform" 
-                            fill="none" 
-                            stroke="currentColor" 
-                            viewBox="0 0 24 24"
-                        >
-                            <path 
-                                stroke-linecap="round" 
-                                stroke-linejoin="round" 
-                                stroke-width="2" 
-                                d="M17 8l4 4m0 0l-4 4m4-4H3"
-                            />
-                        </svg>
-                    </a>
+  <!-- Hero Section -->
+  <section class="relative overflow-hidden bg-white">
+    <div class="absolute inset-0">
+      <img 
+        src={heroImage.url} 
+        alt={heroImage.alt}
+        class="w-full h-full object-cover"
+        fetchpriority="high"
+        loading="eager"
+        decoding="async"
+      />
+      <div class="absolute inset-0 bg-black/50"></div>
+    </div>
+
+    <div class="relative container mx-auto px-6 py-24 md:py-32">
+      <div class="max-w-3xl">
+        <p class="text-sm font-semibold text-white/80 uppercase tracking-wider mb-4">
+          Support Our Mission
+        </p>
+        <h1 class="text-4xl md:text-5xl font-semibold text-white mb-6 leading-tight">
+          Make a Difference Today
+        </h1>
+        <p class="text-lg text-white/80 mb-8 max-w-2xl leading-relaxed">
+          Your generosity helps us provide emergency assistance, food, and vital resources 
+          to families in need throughout Miller and Camden Counties.
+        </p>
+        
+        <div class="flex flex-col sm:flex-row gap-3">
+          <a 
+            href="#donate" 
+            class="inline-flex items-center justify-center px-6 py-3 bg-brand hover:bg-brand-dark text-white font-medium rounded transition-colors"
+          >
+            Give Now
+          </a>
+          <a 
+            href="#ways-to-give" 
+            class="inline-flex items-center justify-center px-6 py-3 bg-white/10 backdrop-blur border border-white/30 text-white hover:bg-white/20 font-medium rounded transition-colors"
+          >
+            Other Ways to Give
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Online Donation Form -->
+  <section id="donate" class="py-20 bg-white">
+    <div class="container mx-auto px-6">
+      <div class="max-w-7xl mx-auto">
+        <div class="grid lg:grid-cols-2 gap-16 items-start">
+          <!-- Left Column - Content -->
+          <div class="lg:sticky lg:top-24">
+            <p class="text-sm font-semibold text-brand uppercase tracking-wider mb-4">Online Giving</p>
+            <h2 class="text-3xl lg:text-4xl font-semibold text-gray-900 mb-6">
+              Give Online
+            </h2>
+            <p class="text-gray-600 mb-8 leading-relaxed">
+              Make a secure donation with flexible giving options. Your generosity helps us continue 
+              our mission to serve those in need in our community.
+            </p>
+            
+            <div class="space-y-4 mb-8">
+              <div class="flex items-start gap-3">
+                <div class="w-8 h-8 rounded-lg bg-brand/10 flex items-center justify-center flex-shrink-0">
+                  <svg class="w-4 h-4 text-brand" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                  </svg>
                 </div>
-            </div>
-        </div>
-
-        <!-- Scroll Indicator -->
-    </section>
-
-    <section id="donate-form" class="py-24">
-        <div class="container mx-auto px-6">
-            <div class="max-w-3xl mx-auto">
-                <DonationForm donationsEnabled={true} />
-
-                <!-- Most Needed Items Section -->
-                <div class="mt-12">
-                    <div class="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
-                        <div class="p-8">
-                            <div class="flex items-start gap-3">
-                                <div class="p-2 bg-brand/10 rounded-lg">
-                                    <svg class="w-5 h-5 text-brand" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                                            d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
-                                        />
-                                    </svg>
-                                </div>
-                                <div>
-                                    <h4 class="text-sm font-medium text-gray-900">Most Needed This Month</h4>
-                                    <div class="flex flex-wrap gap-4 mt-3">
-                                        <div class="flex items-center gap-2">
-                                            <span class="w-2 h-2 rounded-full bg-brand"></span>
-                                            <span class="text-sm text-gray-600">Mac & Cheese</span>
-                                        </div>
-                                        <div class="flex items-center gap-2">
-                                            <span class="w-2 h-2 rounded-full bg-brand"></span>
-                                            <span class="text-sm text-gray-600">Body Wash</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                <div>
+                  <p class="font-medium text-gray-900">Secure & Encrypted</p>
+                  <p class="text-sm text-gray-500">All donations processed securely through Stripe</p>
                 </div>
+              </div>
+              <div class="flex items-start gap-3">
+                <div class="w-8 h-8 rounded-lg bg-brand/10 flex items-center justify-center flex-shrink-0">
+                  <svg class="w-4 h-4 text-brand" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 14l6-6m-5.5.5h.01m4.99 5h.01M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16l3.5-2 3.5 2 3.5-2 3.5 2zM10 8.5a.5.5 0 11-1 0 .5.5 0 011 0zm5 5a.5.5 0 11-1 0 .5.5 0 011 0z"/>
+                  </svg>
+                </div>
+                <div>
+                  <p class="font-medium text-gray-900">Tax Deductible</p>
+                  <p class="text-sm text-gray-500">Receive an official receipt for your records</p>
+                </div>
+              </div>
+              <div class="flex items-start gap-3">
+                <div class="w-8 h-8 rounded-lg bg-brand/10 flex items-center justify-center flex-shrink-0">
+                  <svg class="w-4 h-4 text-brand" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                  </svg>
+                </div>
+                <div>
+                  <p class="font-medium text-gray-900">Cancel Anytime</p>
+                  <p class="text-sm text-gray-500">Easily manage recurring gifts</p>
+                </div>
+              </div>
             </div>
+
+            <!-- Your Impact -->
+            <div class="bg-gray-50 rounded-xl p-6 border border-gray-100">
+              <h3 class="font-semibold text-gray-900 mb-4">Your Impact</h3>
+              <div class="space-y-3">
+                {impactAreas.map(item => (
+                  <div class="flex items-center gap-3">
+                    <span class="text-brand font-bold text-lg w-16">{item.amount}</span>
+                    <span class="text-sm text-gray-600">{item.description}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+          
+          <!-- Right Column - Form -->
+          <div>
+            <DonationForm id="donate" showHeader={true} />
+          </div>
         </div>
-    </section>
+      </div>
+    </div>
+  </section>
+
+  <!-- Ways to Give -->
+  <section id="ways-to-give" class="py-20 bg-gray-50">
+    <div class="container mx-auto px-6">
+      <div class="max-w-6xl mx-auto">
+        <div class="text-center mb-12">
+          <p class="text-sm font-semibold text-brand uppercase tracking-wider mb-4">Giving Options</p>
+          <h2 class="text-3xl lg:text-4xl font-semibold text-gray-900 mb-4">Other Ways to Give</h2>
+          <p class="text-gray-600 max-w-2xl mx-auto">
+            Choose the giving method that works best for you
+          </p>
+        </div>
+        
+        <div class="grid md:grid-cols-3 gap-6">
+          {givingMethods.map(method => (
+            <div class="bg-white p-6 rounded-lg border border-gray-200 hover:border-gray-300 transition-all hover:shadow-sm">
+              <div class="w-10 h-10 bg-brand/10 rounded-lg flex items-center justify-center mb-4">
+                <svg class="w-5 h-5 text-brand" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <Fragment set:html={method.icon} />
+                </svg>
+              </div>
+              <h3 class="text-lg font-semibold mb-2 text-gray-900">{method.title}</h3>
+              <p class="text-sm text-gray-600 leading-relaxed">{method.description}</p>
+            </div>
+          ))}
+        </div>
+
+        <!-- Most Needed Items -->
+        <div class="mt-12 bg-white rounded-xl p-8 border border-gray-200">
+          <div class="flex flex-col md:flex-row md:items-center gap-6">
+            <div class="flex-shrink-0">
+              <div class="w-12 h-12 bg-brand/10 rounded-xl flex items-center justify-center">
+                <svg class="w-6 h-6 text-brand" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                </svg>
+              </div>
+            </div>
+            <div class="flex-1">
+              <h3 class="font-semibold text-gray-900 mb-2">Most Needed Items This Month</h3>
+              <div class="flex flex-wrap gap-3">
+                <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-brand/5 text-brand text-sm rounded-full">
+                  <span class="w-1.5 h-1.5 rounded-full bg-brand"></span>
+                  Mac & Cheese
+                </span>
+                <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-brand/5 text-brand text-sm rounded-full">
+                  <span class="w-1.5 h-1.5 rounded-full bg-brand"></span>
+                  Body Wash
+                </span>
+                <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-brand/5 text-brand text-sm rounded-full">
+                  <span class="w-1.5 h-1.5 rounded-full bg-brand"></span>
+                  Canned Vegetables
+                </span>
+                <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-brand/5 text-brand text-sm rounded-full">
+                  <span class="w-1.5 h-1.5 rounded-full bg-brand"></span>
+                  Laundry Detergent
+                </span>
+              </div>
+            </div>
+            <div class="flex-shrink-0">
+              <a href="/services/food-pantry" class="inline-flex items-center gap-2 text-brand font-medium hover:underline">
+                Learn more
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                </svg>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Questions Section -->
+  <section class="py-20 bg-white border-t border-gray-100">
+    <div class="container mx-auto px-6">
+      <div class="max-w-3xl mx-auto text-center">
+        <p class="text-sm font-semibold text-brand uppercase tracking-wider mb-4">Need Help?</p>
+        <h2 class="text-3xl lg:text-4xl font-semibold text-gray-900 mb-6">
+          Questions About Giving?
+        </h2>
+        <p class="text-gray-600 mb-8 leading-relaxed">
+          We're here to help. Contact us for any questions about giving or to learn more about how your donations make a difference.
+        </p>
+        
+        <div class="flex flex-col sm:flex-row gap-3 justify-center">
+          <a 
+            href="mailto:info@shelterinastorm.org" 
+            class="inline-flex items-center justify-center gap-2 bg-brand text-white px-6 py-3 rounded hover:bg-brand-dark transition-colors font-medium"
+          >
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+            </svg>
+            Send Email
+          </a>
+          <a 
+            href="/volunteer" 
+            class="inline-flex items-center justify-center gap-2 border border-gray-300 bg-white text-gray-700 px-6 py-3 rounded hover:bg-gray-50 transition-colors font-medium"
+          >
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
+            </svg>
+            Volunteer Instead
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Toast Container -->
+  <div id="toast-container" class="fixed top-4 right-4 z-[150] space-y-2"></div>
+
+  <style>
+    /* Toast animations */
+    @keyframes slideInFromRight {
+      from {
+        transform: translateX(100%);
+        opacity: 0;
+      }
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+
+    @keyframes slideOutToRight {
+      from {
+        transform: translateX(0);
+        opacity: 1;
+      }
+      to {
+        transform: translateX(100%);
+        opacity: 0;
+      }
+    }
+
+    .toast-enter {
+      animation: slideInFromRight 0.3s ease-out;
+    }
+
+    .toast-exit {
+      animation: slideOutToRight 0.3s ease-in;
+    }
+  </style>
+
+  <script>
+    // Toast notification functions
+    function showToast(message: string, type: 'success' | 'error' | 'info' | 'warning' = 'info', duration: number = 5000): string {
+      const container = document.getElementById('toast-container');
+      if (!container) return '';
+
+      const toastId = `toast-${Date.now()}`;
+      const iconMap = {
+        success: `<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>`,
+        error: `<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>`,
+        warning: `<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.996-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"></path></svg>`,
+        info: `<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>`
+      };
+
+      const colorMap = {
+        success: 'bg-green-50 border-green-200 text-green-800',
+        error: 'bg-red-50 border-red-200 text-red-800', 
+        warning: 'bg-yellow-50 border-yellow-200 text-yellow-800',
+        info: 'bg-blue-50 border-blue-200 text-blue-800'
+      };
+
+      const toast = document.createElement('div');
+      toast.id = toastId;
+      toast.className = `${colorMap[type]} border rounded-lg p-4 shadow-lg max-w-sm toast-enter flex items-center gap-3`;
+      toast.innerHTML = `
+        <div class="flex-shrink-0">${iconMap[type]}</div>
+        <div class="flex-1 text-sm font-medium">${message}</div>
+        <button onclick="removeToast('${toastId}')" class="flex-shrink-0 hover:opacity-70 transition-opacity">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+          </svg>
+        </button>
+      `;
+
+      container.appendChild(toast);
+
+      if (duration > 0) {
+        setTimeout(() => removeToast(toastId), duration);
+      }
+
+      return toastId;
+    }
+
+    function removeToast(toastId: string) {
+      const toast = document.getElementById(toastId);
+      if (!toast) return;
+
+      toast.classList.remove('toast-enter');
+      toast.classList.add('toast-exit');
+      
+      setTimeout(() => {
+        if (toast.parentNode) {
+          toast.parentNode.removeChild(toast);
+        }
+      }, 300);
+    }
+
+    // Make toast functions globally available
+    (window as any).showToast = showToast;
+    (window as any).removeToast = removeToast;
+  </script>
 </Layout>
-
-
-<style>
-    /* Active state styles for donation type buttons */
-    .donation-type-btn.active {
-        position: relative;
-    }
-    
-    .donation-type-btn.active::after {
-        content: '';
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        height: 2px;
-        background-color: var(--color-brand);
-    }
-</style> 

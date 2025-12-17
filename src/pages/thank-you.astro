@@ -3,70 +3,132 @@ import Layout from '../layouts/Layout.astro';
 import { siteConfig } from '../config/site';
 ---
 
-<Layout title="Thank You">
-    <section class="min-h-screen flex items-center justify-center bg-gradient-to-b from-white to-gray-50">
-        <div class="container mx-auto px-6">
-            <div class="max-w-4xl mx-auto text-center space-y-8">
-                <div class="flex justify-center mb-8">
-                    <div class="w-20 h-20 bg-brand/10 rounded-full flex items-center justify-center animate-scale-in">
-                        <svg class="w-10 h-10 text-brand" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                        </svg>
-                    </div>
-                </div>
-                <h1 
-                    class="text-4xl md:text-5xl font-bold text-gray-900 mb-6 animate-fade-in"
-                    style="text-wrap: balance;"
-                >
-                    Request Received
-                </h1> 
-                <p 
-                    class="text-xl text-gray-600 mb-12 animate-slide-up-delay-1 max-w-2xl mx-auto leading-relaxed"
-                    style="text-wrap: balance;"
-                >
-                    Your assistance request has been successfully submitted. Our team will contact you 
-                    within 2-3 business days. If you don't hear from us by then, please submit another request.
-                </p>
-                <div class="animate-slide-up-delay-2 bg-brand/5 rounded-2xl p-6 max-w-2xl mx-auto">
-                    <p class="text-gray-600">
-                        Need food assistance right away? Our food pantry is open 24/7 at the west side of the church. 
-                        No appointment needed.
-                    </p>
-                </div>
-                <div class="flex flex-wrap gap-6 justify-center animate-slide-up-delay-2">
-                    <a
-                        href="/"
-                        class="group inline-flex items-center px-8 py-4 rounded-full text-lg font-medium transition-all duration-300
-                            bg-brand hover:bg-brand-dark text-white
-                            shadow-lg hover:shadow-xl transform hover:-translate-y-1 animate-pulse-subtle"
-                    >
-                        <span>Return Home</span>
-                        <svg class="w-5 h-5 ml-2 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
-                        </svg>
-                    </a>
-                </div>
+<Layout title="Request Received">
+  <section class="min-h-screen flex items-center justify-center py-20 bg-gray-50">
+    <div class="container mx-auto px-6">
+      <div class="max-w-2xl mx-auto">
+        <!-- Success Card -->
+        <div class="bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden">
+          <!-- Header -->
+          <div class="bg-green-50 border-b border-green-100 px-6 py-8 text-center">
+            <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+              </svg>
             </div>
+            <h1 class="text-2xl md:text-3xl font-semibold text-gray-900 mb-2">
+              Request Received
+            </h1>
+            <p class="text-gray-600">
+              Your assistance request has been submitted successfully.
+            </p>
+          </div>
+          
+          <!-- Content -->
+          <div class="p-6 space-y-6">
+            <!-- What Happens Next -->
+            <div>
+              <h2 class="text-sm font-semibold text-gray-900 uppercase tracking-wider mb-4">What Happens Next</h2>
+              <div class="space-y-4">
+                <div class="flex items-start gap-3">
+                  <div class="w-6 h-6 bg-brand/10 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <span class="text-xs font-semibold text-brand">1</span>
+                  </div>
+                  <div>
+                    <p class="font-medium text-gray-900">Review</p>
+                    <p class="text-sm text-gray-500">Our team will review your request within 24-48 hours.</p>
+                  </div>
+                </div>
+                <div class="flex items-start gap-3">
+                  <div class="w-6 h-6 bg-brand/10 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <span class="text-xs font-semibold text-brand">2</span>
+                  </div>
+                  <div>
+                    <p class="font-medium text-gray-900">Contact</p>
+                    <p class="text-sm text-gray-500">We'll call or text you to discuss how we can help.</p>
+                  </div>
+                </div>
+                <div class="flex items-start gap-3">
+                  <div class="w-6 h-6 bg-brand/10 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <span class="text-xs font-semibold text-brand">3</span>
+                  </div>
+                  <div>
+                    <p class="font-medium text-gray-900">Assistance</p>
+                    <p class="text-sm text-gray-500">We'll work with you to provide the support you need.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Divider -->
+            <div class="border-t border-gray-100"></div>
+
+            <!-- Important Note -->
+            <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
+              <div class="flex items-start gap-3">
+                <div class="p-1.5 bg-blue-100 rounded flex-shrink-0">
+                  <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                  </svg>
+                </div>
+                <div>
+                  <p class="font-medium text-blue-900 text-sm">Please Note</p>
+                  <p class="text-sm text-blue-700 mt-1">
+                    We are unable to provide support over the phone. Once your form has been reviewed, <strong>we will reach out to you</strong> via phone or text.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Need Immediate Help -->
+            <div class="bg-amber-50 border border-amber-200 rounded-lg p-4">
+              <div class="flex items-start gap-3">
+                <div class="p-1.5 bg-amber-100 rounded flex-shrink-0">
+                  <svg class="w-4 h-4 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                  </svg>
+                </div>
+                <div>
+                  <p class="font-medium text-amber-900 text-sm">Need Immediate Help?</p>
+                  <p class="text-sm text-amber-700 mt-1">
+                    <strong>Food Pantry:</strong> Open 24/7 at Lake Ozark Christian Church (west side). No appointment needed.
+                  </p>
+                  <p class="text-sm text-amber-700 mt-2">
+                    <strong>Church Office:</strong> Available during office hours. Staff can take a message or help you fill out a request form.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Footer -->
+          <div class="bg-gray-50 border-t border-gray-100 px-6 py-4 flex flex-col sm:flex-row gap-3 sm:items-center sm:justify-between">
+            <a 
+              href="/"
+              class="inline-flex items-center justify-center gap-2 text-gray-600 hover:text-gray-900 font-medium text-sm"
+            >
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+              </svg>
+              Return Home
+            </a>
+            <a 
+              href="/services"
+              class="inline-flex items-center justify-center gap-2 bg-brand hover:bg-brand-dark text-white px-4 py-2 rounded font-medium text-sm transition-colors"
+            >
+              View Our Services
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+              </svg>
+            </a>
+          </div>
         </div>
-    </section>
+
+        <!-- Additional Info -->
+        <p class="text-center text-xs text-gray-400 mt-6">
+          Shelter in a Storm is a 501(c)(3) nonprofit organization.
+        </p>
+      </div>
+    </div>
+  </section>
 </Layout>
-
-<style>
-    @keyframes scaleIn {
-        from { transform: scale(0.8); opacity: 0; }
-        to { transform: scale(1); opacity: 1; }
-    }
-
-    @keyframes pulseSubtle {
-        0%, 100% { transform: scale(1); }
-        50% { transform: scale(1.02); }
-    }
-
-    .animate-scale-in {
-        animation: scaleIn 0.6s cubic-bezier(0.23, 1, 0.32, 1) both;
-    }
-
-    .animate-pulse-subtle {
-        animation: pulseSubtle 3s ease-in-out infinite;
-    }
-</style> 

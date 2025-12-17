@@ -1,241 +1,847 @@
 ---
 import { siteConfig } from '../config/site';
-import NotificationBanner from './NotificationBanner.astro';
 import EventAlert from './alerts/EventAlert.astro';
 import FullScreenAlert from './alerts/FullScreenAlert.astro';
 
 const { pathname } = Astro.url;
 const isHomePage = pathname === '/';
 
-const navigation = [
-    { 
-        name: 'Home', 
-        href: isHomePage ? '#hero' : '/',
-        isAnchor: true,
-        section: 'hero'
-    },
-    { 
-        name: 'About', 
-        href: '/about',
-        isAnchor: false 
-    },
-    { 
-        name: 'Services', 
-        href: isHomePage ? '#services' : '/#services',
-        isAnchor: true,
-        section: 'services'
-    },
-    { 
-        name: 'Events', 
-        href: '/events',
-        isAnchor: false 
-    },
-    { 
-        name: 'Donate', 
-        href: '/donate',
-        isAnchor: false 
-    },
-    { 
-        name: 'Get Help', 
-        href: '/get-help',
-        isAnchor: false 
-    },
+// Helper to check if a nav item is active
+function isActive(href: string): boolean {
+    if (href === '/' || href === '#hero') return isHomePage;
+    if (href.startsWith('#') || href.startsWith('/#')) return false;
+    return pathname.startsWith(href);
+}
+
+const primaryLinks = [
+    { href: '/', label: 'Home' },
+    { href: '/about', label: 'About' },
+    { href: '/services/food-pantry', label: 'Food Pantry' },
+    { href: '/events', label: 'Events' },
 ];
 
-// You can control bann ers through siteConfig or a CMS
-const notifications = [
-    {
-        enabled: false,
-        message: "For general medical, fire, police emergencies, dial 911. We do not provide first responder services",
-        variant: "info",
-        link: "/resources",
-        linkText: "Other Resources"
-    },
-    {
-        enabled: true,
-        message: "Join us for our Fall Fundraiser on November 1, 2025 featuring dinner, Live Music and silent auction",
-        variant: "info", 
-        link: "/checkout",
-        linkText: "View Event"
-    }
+const resourceLinks = [
+    { href: '/resources', label: 'Community Resources', desc: 'Find help in our community.' },
+    { href: '/volunteer', label: 'Volunteer', desc: 'Join our team of dedicated helpers.' },
+    { href: '/services/food-pantry', label: 'Food Pantry', desc: 'Access our 24/7 food pantry.' },
 ];
 
-// Get logo URL for preloading
+const connectLinks = [
+    { href: '/donate', label: 'Donate', desc: 'Support our mission financially.' },
+    { href: 'https://lakeozarkdisciples.org', label: 'Lake Ozark Christian Church', desc: 'Visit our parent church.', external: true },
+];
+
 const logoUrl = "https://cdn.shelterinastorm.org/images/SHELTER_IN_A_STORM_LOGO.png";
 ---
 
-<!-- Preload Logo -->
-<link rel="preload" href={logoUrl} as="image" />
+<!-- Top Bar -->
+<div class="top-bar">
+    <div class="top-bar-inner">
+        <div class="top-bar-left">
+            <span class="top-bar-text">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                    <circle cx="12" cy="10" r="3"/>
+                </svg>
+                Lake Ozark Christian Church, 1560 Bagnell Dam Blvd.
+            </span>
+        </div>
+        <div class="top-bar-right">
+            <span class="top-bar-text">24/7 Food Pantry Available</span>
+        </div>
+    </div>
+</div>
 
-<header class="fixed w-full top-0 z-50">
-    <div class="bg-white/95 backdrop-blur-sm border-b border-gray-100">
-        <div class="container mx-auto px-4">
-            <div class="flex items-center justify-between h-20">
-                <!-- Logo Section -->
-                <a href="/" class="flex items-center gap-3">
-                    <img 
-                        src={logoUrl}
-                        alt="Shelter in a Storm Logo" 
-                        class="h-12 w-auto"
-                    />
-                    <div class="flex flex-col">
-                        <span class="text-lg font-bold text-gray-900 leading-tight">
-                            SHELTER IN A STORM
-                        </span>
-                        <span class="text-xs text-gray-500 font-medium">
-                            Miller & Camden Counties, Missouri
-                        </span>
-                    </div>
-                </a>
+<!-- Main Header -->
+<header class="main-header">
+    <div class="header-inner">
+        <!-- Logo -->
+        <a href="/" class="logo-section">
+            <img 
+                src={logoUrl}
+                alt="Shelter in a Storm" 
+                class="logo-img"
+            />
+            <div class="logo-text">
+                <span class="logo-title">SHELTER IN A STORM</span>
+                <span class="logo-subtitle">Miller & Camden Counties</span>
+            </div>
+        </a>
 
-                <!-- Desktop Navigation -->
-                <nav class="hidden md:flex items-center space-x-1">
-                  
-                    {navigation.map((item) => (
-                        <a
-                            href={item.href}
-                            class={`px-4 py-2 text-sm font-medium rounded-lg transition-colors
-                                ${item.name === 'Get Help' 
-                                    ? 'text-white bg-brand hover:bg-brand-dark' 
-                                    : 'text-gray-700 hover:bg-gray-50'
-                                }`}
-                            {...(item.isAnchor && isHomePage ? {
-                                'data-scroll': true,
-                                'onclick': 'scrollToSection(event, this)'
-                            } : {})}
-                        >
-                            {item.name}
-                        </a>
-                    ))}
-                </nav>
-
-                <!-- Mobile Menu Button -->
-                <button 
-                    type="button" 
-                    class="md:hidden inline-flex items-center justify-center p-2 rounded-lg text-gray-700 hover:bg-gray-50" 
-                    aria-expanded="false"
-                    id="mobile-menu-button"
+        <!-- Desktop Navigation -->
+        <nav class="main-nav">
+            {primaryLinks.map(link => (
+                <a 
+                    href={link.href} 
+                    class={`nav-item ${isActive(link.href) ? 'active' : ''}`}
+                    aria-current={isActive(link.href) ? 'page' : undefined}
                 >
-                    <span class="sr-only">Open main menu</span>
-                    <svg 
-                        class="block h-6 w-6" 
-                        id="menu-open-icon"
-                        fill="none" 
-                        viewBox="0 0 24 24" 
-                        stroke="currentColor"
-                    >
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-                    </svg>
-                    <svg 
-                        class="hidden h-6 w-6" 
-                        id="menu-close-icon"
-                        fill="none" 
-                        viewBox="0 0 24 24" 
-                        stroke="currentColor"
-                    >
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    {link.label}
+                </a>
+            ))}
+            
+            <!-- Resources Mega Menu -->
+            <div class="mega-dropdown">
+                <button class="nav-item has-dropdown">
+                    Resources
+                    <svg width="10" height="10" viewBox="0 0 10 10" fill="currentColor" aria-hidden="true">
+                        <path d="M2 3.5L5 6.5L8 3.5" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/>
                     </svg>
                 </button>
-            </div>
-
-            <!-- Mobile Menu -->
-            <div 
-                class="hidden md:hidden" 
-                id="mobile-menu"
-            >
-                <div class="px-2 pt-2 pb-3 space-y-1">
-                    {navigation.map((item) => (
-                        <a
-                            href={item.href}
-                            class={`block px-3 py-2 text-base font-medium rounded-lg transition-colors
-                                ${item.name === 'Get Help' 
-                                    ? 'text-white bg-brand hover:bg-brand-dark' 
-                                    : 'text-gray-700 hover:bg-gray-50'
-                                }`}
-                            {...(item.isAnchor && isHomePage ? {
-                                'data-scroll': true,
-                                'onclick': 'scrollToSection(event, this)'
-                            } : {})}
-                        >
-                            {item.name}
-                        </a>
-                    ))}
+                <div class="mega-menu">
+                    <div class="mega-menu-inner">
+                        <div class="mega-column">
+                            <h4 class="mega-heading">Resources</h4>
+                            {resourceLinks.map(link => (
+                                <a href={link.href} class="mega-link">
+                                    <span class="mega-link-title">{link.label}</span>
+                                    <span class="mega-link-desc">{link.desc}</span>
+                                </a>
+                            ))}
+                        </div>
+                        <div class="mega-column">
+                            <h4 class="mega-heading">Get Involved</h4>
+                            {connectLinks.map(link => (
+                                <a 
+                                    href={link.href}
+                                    class="mega-link"
+                                    target={link.external ? '_blank' : undefined}
+                                    rel={link.external ? 'noopener noreferrer' : undefined}
+                                >
+                                    <span class="mega-link-title">
+                                        {link.label}
+                                        {link.external && (
+                                            <svg class="external-icon" width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                                <path d="M12 8.5V13a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h4.5"/>
+                                                <path d="M10 2h4v4"/>
+                                                <path d="M14 2L7.5 8.5"/>
+                                            </svg>
+                                        )}
+                                    </span>
+                                    <span class="mega-link-desc">{link.desc}</span>
+                                </a>
+                            ))}
+                        </div>
+                        <div class="mega-featured">
+                            <div class="mega-featured-content">
+                                <span class="mega-featured-label">Need Help?</span>
+                                <h3 class="mega-featured-title">Request Assistance</h3>
+                                <p class="mega-featured-desc">We're here to help with emergency needs in our community.</p>
+                                <a href="/get-help" class="mega-featured-btn">Get Help Now</a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+            </div>
+        </nav>
+
+        <!-- CTA -->
+        <div class="header-actions">
+            <a href="/get-help" class="header-cta-btn">
+                Get Help
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M5 12h14M12 5l7 7-7 7"/>
+                </svg>
+            </a>
+        </div>
+
+        <!-- Mobile Menu Button -->
+        <button class="mobile-btn" id="menuBtn" aria-label="Open navigation menu" aria-expanded="false">
+            <span class="hamburger">
+                <span></span>
+                <span></span>
+            </span>
+        </button>
+    </div>
+</header>
+
+<!-- Mobile Menu Overlay -->
+<div class="mobile-overlay" id="mobileOverlay">
+    <div class="mobile-panel" id="mobileMenu">
+        <div class="mobile-header">
+            <span class="mobile-title">Menu</span>
+            <button class="mobile-close" id="closeBtn" aria-label="Close navigation menu">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                    <path d="M18 6L6 18M6 6l12 12"/>
+                </svg>
+            </button>
+        </div>
+
+        <nav class="mobile-nav">
+            {primaryLinks.map(link => (
+                <a 
+                    href={link.href} 
+                    class={`mobile-link ${isActive(link.href) ? 'active' : ''}`}
+                    aria-current={isActive(link.href) ? 'page' : undefined}
+                >
+                    {link.label}
+                </a>
+            ))}
+            
+            <div class="mobile-divider"></div>
+            <span class="mobile-section-label">Resources</span>
+            
+            {resourceLinks.map(link => (
+                <a href={link.href} class="mobile-link sub">
+                    {link.label}
+                </a>
+            ))}
+            
+            <div class="mobile-divider"></div>
+            <span class="mobile-section-label">Get Involved</span>
+            
+            {connectLinks.map(link => (
+                <a 
+                    href={link.href}
+                    class="mobile-link sub"
+                    target={link.external ? '_blank' : undefined}
+                    rel={link.external ? 'noopener noreferrer' : undefined}
+                >
+                    {link.label}
+                    {link.external && (
+                        <svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor" style="opacity: 0.4;" aria-hidden="true">
+                            <path d="M10.5 1.5H7.5M10.5 1.5V4.5M10.5 1.5L6 6M5 2H2.5C1.94772 2 1.5 2.44772 1.5 3V9.5C1.5 10.0523 1.94772 10.5 2.5 10.5H9C9.55228 10.5 10 10.0523 10 9.5V7"/>
+                        </svg>
+                    )}
+                </a>
+            ))}
+        </nav>
+
+        <div class="mobile-footer">
+            <a href="/get-help" class="mobile-cta-btn">
+                Request Assistance
+            </a>
+            <div class="mobile-contact">
+                <span>24/7 Food Pantry</span>
+                <span>•</span>
+                <a href="/donate">Donate</a>
             </div>
         </div>
     </div>
-    {notifications.map(notification => (
-        notification.enabled && (
-            <NotificationBanner
-                enabled={notification.enabled}
-                message={notification.message}
-                link={notification.link}
-                linkText={notification.linkText}
-                variant={notification.variant as "info" | "warning" | "success" | undefined}
-            />
-        )
-    ))}
-</header>
+</div>
 
-<!-- Add spacer div to prevent content from being hidden under fixed header -->
-<div class="h-[4rem] md:h-[calc(5rem+1px)]"></div>
-<!-- End spacer div to prevent content from being hidden under fixed header -->
+<EventAlert id="event-alert" />
+<FullScreenAlert id="site-alert" />
 
-<script>
-    // Handle mobile menu
-    const mobileMenuButton = document.getElementById('mobile-menu-button');
-    const mobileMenu = document.getElementById('mobile-menu');
-    const menuOpenIcon = document.getElementById('menu-open-icon');
-    const menuCloseIcon = document.getElementById('menu-close-icon');
-
-    if (mobileMenuButton && mobileMenu && menuOpenIcon && menuCloseIcon) {
-        mobileMenuButton.addEventListener('click', () => {
-            const isExpanded = mobileMenuButton.getAttribute('aria-expanded') === 'true';
-            
-            mobileMenuButton.setAttribute('aria-expanded', (!isExpanded).toString());
-            mobileMenu.classList.toggle('hidden');
-            menuOpenIcon.classList.toggle('hidden');
-            menuCloseIcon.classList.toggle('hidden');
-        });
+<style>
+    /* ========== Variables ========== */
+    :root {
+        --brand: #666ed8;
+        --brand-dark: #5059c8;
+        --brand-light: #f3f4fb;
+        --text: #1a1a1a;
+        --text-muted: #666666;
+        --text-light: #888888;
+        --bg: #ffffff;
+        --bg-subtle: #f8f9fa;
+        --border: #e8e8e8;
+        --shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        --shadow-lg: 0 8px 40px rgba(0, 0, 0, 0.12);
     }
 
-    // Updated smooth scroll function with better offset handling
-    function scrollToSection(event: Event, element: HTMLAnchorElement) {
-        if (!element.dataset.scroll) return;
-        
-        event.preventDefault();
-        const href = element.getAttribute('href');
-        if (!href) return;
-        
-        const targetId = href.slice(1);
-        const targetElement = document.getElementById(targetId);
-        
-        if (targetElement) {
-            const headerHeight = document.querySelector('header')?.offsetHeight || 80;
-            const elementPosition = targetElement.getBoundingClientRect().top;
-            const offsetPosition = elementPosition + window.pageYOffset - headerHeight;
+    /* ========== Top Bar ========== */
+    .top-bar {
+        display: none;
+        background: var(--bg-subtle);
+        border-bottom: 1px solid var(--border);
+        font-size: 0.8125rem;
+    }
 
-            window.scrollTo({
-                top: offsetPosition,
-                behavior: 'smooth'
-            });
-
-            // Close mobile menu if open
-            if (mobileMenu && !mobileMenu.classList.contains('hidden')) {
-                mobileMenu.classList.add('hidden');
-                menuOpenIcon?.classList.remove('hidden');
-                menuCloseIcon?.classList.add('hidden');
-                mobileMenuButton?.setAttribute('aria-expanded', 'false');
-            }
+    @media (min-width: 1024px) {
+        .top-bar {
+            display: block;
         }
     }
 
-    // Make scrollToSection available globally
-    window.scrollToSection = scrollToSection;
+    .top-bar-inner {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        max-width: 1280px;
+        margin: 0 auto;
+        padding: 0.5rem 2rem;
+    }
 
-    // Add scroll padding to account for fixed header
-    document.documentElement.style.scrollPaddingTop = 
-        (document.querySelector('header')?.offsetHeight || 80) + 'px';
+    .top-bar-left {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .top-bar-text {
+        display: flex;
+        align-items: center;
+        gap: 0.375rem;
+        color: var(--text-muted);
+    }
+
+    .top-bar-text svg {
+        color: var(--brand);
+    }
+
+    .top-bar-right {
+        color: var(--text-muted);
+        font-weight: 500;
+    }
+
+    /* ========== Main Header ========== */
+    .main-header {
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        background: var(--bg);
+        border-bottom: 1px solid var(--border);
+    }
+
+    .header-inner {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        max-width: 1280px;
+        margin: 0 auto;
+        padding: 0 1.5rem;
+        height: 72px;
+    }
+
+    @media (min-width: 1024px) {
+        .header-inner {
+            padding: 0 2rem;
+            height: 80px;
+        }
+    }
+
+    /* ========== Logo ========== */
+    .logo-section {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        text-decoration: none;
+    }
+
+    .logo-img {
+        height: 44px;
+        width: auto;
+        border-radius: 6px;
+    }
+
+    @media (min-width: 1024px) {
+        .logo-img {
+            height: 52px;
+        }
+    }
+
+    .logo-text {
+        display: none;
+        flex-direction: column;
+    }
+
+    @media (min-width: 640px) {
+        .logo-text {
+            display: flex;
+        }
+    }
+
+    .logo-title {
+        font-size: 1rem;
+        font-weight: 700;
+        color: var(--text);
+        line-height: 1.2;
+    }
+
+    .logo-subtitle {
+        font-size: 0.75rem;
+        color: var(--text-muted);
+    }
+
+    /* ========== Main Navigation ========== */
+    .main-nav {
+        display: none;
+        align-items: center;
+        gap: 0.25rem;
+    }
+
+    @media (min-width: 1024px) {
+        .main-nav {
+            display: flex;
+        }
+    }
+
+    .nav-item {
+        display: flex;
+        align-items: center;
+        gap: 0.375rem;
+        padding: 0.625rem 1rem;
+        font-size: 0.9375rem;
+        font-weight: 500;
+        color: var(--text);
+        text-decoration: none;
+        border: none;
+        background: none;
+        cursor: pointer;
+        border-radius: 6px;
+        transition: all 0.15s ease;
+    }
+
+    .nav-item:hover {
+        color: var(--brand);
+        background: var(--brand-light);
+    }
+
+    .nav-item.active {
+        color: var(--brand);
+        background: var(--brand-light);
+    }
+
+    .nav-item.has-dropdown svg {
+        transition: transform 0.2s ease;
+    }
+
+    /* ========== Mega Dropdown ========== */
+    .mega-dropdown {
+        position: relative;
+    }
+
+    .mega-menu {
+        position: absolute;
+        top: 100%;
+        right: -100px;
+        padding-top: 0.75rem;
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(-4px);
+        transition: all 0.2s ease;
+    }
+
+    .mega-dropdown:hover .mega-menu {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+    }
+
+    .mega-dropdown:hover .nav-item svg {
+        transform: rotate(180deg);
+    }
+
+    .mega-menu-inner {
+        display: grid;
+        grid-template-columns: 1fr 1fr 200px;
+        gap: 0;
+        width: 640px;
+        background: var(--bg);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        box-shadow: var(--shadow-lg);
+        overflow: hidden;
+    }
+
+    .mega-column {
+        padding: 1.5rem;
+        border-right: 1px solid var(--border);
+    }
+
+    .mega-column:last-of-type {
+        border-right: none;
+    }
+
+    .mega-heading {
+        font-size: 0.6875rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: var(--text-light);
+        margin-bottom: 1rem;
+    }
+
+    .mega-link {
+        display: block;
+        padding: 0.75rem;
+        margin: 0 -0.75rem;
+        text-decoration: none;
+        border-radius: 8px;
+        transition: all 0.15s ease;
+    }
+
+    .mega-link:hover {
+        background: var(--bg-subtle);
+    }
+
+    .mega-link-title {
+        display: flex;
+        align-items: center;
+        gap: 0.375rem;
+        font-size: 0.9375rem;
+        font-weight: 500;
+        color: var(--text);
+        margin-bottom: 0.125rem;
+    }
+
+    .external-icon {
+        flex-shrink: 0;
+        opacity: 0.4;
+        transition: all 0.2s ease;
+    }
+
+    .mega-link:hover .external-icon {
+        opacity: 0.7;
+        color: var(--brand);
+        transform: translate(1px, -1px);
+    }
+
+    .mega-link-desc {
+        font-size: 0.8125rem;
+        color: var(--text-muted);
+    }
+
+    /* Mega Featured */
+    .mega-featured {
+        background: var(--brand);
+        padding: 1.5rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .mega-featured-label {
+        font-size: 0.6875rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: rgba(255, 255, 255, 0.7);
+        margin-bottom: 0.5rem;
+    }
+
+    .mega-featured-title {
+        font-size: 1.125rem;
+        font-weight: 700;
+        color: white;
+        margin-bottom: 0.5rem;
+    }
+
+    .mega-featured-desc {
+        font-size: 0.8125rem;
+        color: rgba(255, 255, 255, 0.85);
+        margin-bottom: 1rem;
+        line-height: 1.5;
+    }
+
+    .mega-featured-btn {
+        display: inline-block;
+        padding: 0.625rem 1rem;
+        font-size: 0.8125rem;
+        font-weight: 600;
+        color: var(--brand);
+        background: white;
+        border-radius: 6px;
+        text-decoration: none;
+        transition: all 0.15s ease;
+    }
+
+    .mega-featured-btn:hover {
+        background: var(--bg-subtle);
+        transform: translateY(-1px);
+    }
+
+    /* ========== Header Actions ========== */
+    .header-actions {
+        display: none;
+    }
+
+    @media (min-width: 1024px) {
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+    }
+
+    .header-cta-btn {
+        display: flex;
+        align-items: center;
+        gap: 0.375rem;
+        padding: 0.625rem 1.25rem;
+        font-size: 0.9375rem;
+        font-weight: 600;
+        color: white;
+        background: var(--brand);
+        text-decoration: none;
+        border-radius: 8px;
+        transition: all 0.15s ease;
+    }
+
+    .header-cta-btn:hover {
+        background: var(--brand-dark);
+    }
+
+    .header-cta-btn svg {
+        transition: transform 0.15s ease;
+    }
+
+    .header-cta-btn:hover svg {
+        transform: translateX(2px);
+    }
+
+    /* ========== Mobile Button ========== */
+    .mobile-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 44px;
+        height: 44px;
+        background: none;
+        border: none;
+        cursor: pointer;
+        border-radius: 8px;
+        transition: background 0.15s ease;
+    }
+
+    .mobile-btn:hover {
+        background: var(--bg-subtle);
+    }
+
+    @media (min-width: 1024px) {
+        .mobile-btn {
+            display: none;
+        }
+    }
+
+    .hamburger {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        width: 22px;
+    }
+
+    .hamburger span {
+        display: block;
+        height: 2px;
+        background: var(--text);
+        border-radius: 2px;
+        transition: all 0.3s ease;
+    }
+
+    .hamburger span:first-child { width: 100%; }
+    .hamburger span:last-child { width: 65%; }
+
+    .mobile-btn[aria-expanded="true"] .hamburger span:first-child {
+        transform: translateY(4px) rotate(45deg);
+    }
+
+    .mobile-btn[aria-expanded="true"] .hamburger span:last-child {
+        width: 100%;
+        transform: translateY(-4px) rotate(-45deg);
+    }
+
+    /* ========== Mobile Overlay ========== */
+    .mobile-overlay {
+        position: fixed;
+        inset: 0;
+        z-index: 200;
+        background: rgba(0, 0, 0, 0.4);
+        backdrop-filter: blur(4px);
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s ease;
+    }
+
+    .mobile-overlay.is-open {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    @media (min-width: 1024px) {
+        .mobile-overlay {
+            display: none;
+        }
+    }
+
+    .mobile-panel {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        width: 100%;
+        max-width: 340px;
+        background: var(--bg);
+        display: flex;
+        flex-direction: column;
+        transform: translateX(100%);
+        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .mobile-overlay.is-open .mobile-panel {
+        transform: translateX(0);
+    }
+
+    .mobile-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 1.25rem;
+        height: 64px;
+        border-bottom: 1px solid var(--border);
+    }
+
+    .mobile-title {
+        font-size: 1rem;
+        font-weight: 600;
+        color: var(--text);
+    }
+
+    .mobile-close {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        background: none;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        color: var(--text-muted);
+        transition: all 0.15s ease;
+    }
+
+    .mobile-close:hover {
+        background: var(--bg-subtle);
+        color: var(--text);
+    }
+
+    .mobile-nav {
+        flex: 1;
+        overflow-y: auto;
+        padding: 1rem 1.25rem;
+    }
+
+    .mobile-link {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0.875rem 0;
+        font-size: 1rem;
+        font-weight: 500;
+        color: var(--text);
+        text-decoration: none;
+        border-bottom: 1px solid var(--border);
+        transition: color 0.15s ease;
+    }
+
+    .mobile-link:last-child {
+        border-bottom: none;
+    }
+
+    .mobile-link:hover,
+    .mobile-link:active {
+        color: var(--brand);
+    }
+
+    .mobile-link.active {
+        color: var(--brand);
+    }
+
+    .mobile-link.sub {
+        font-size: 0.9375rem;
+        color: var(--text-muted);
+        padding: 0.75rem 0;
+    }
+
+    .mobile-link.sub:hover {
+        color: var(--brand);
+    }
+
+    .mobile-divider {
+        height: 1px;
+        background: var(--border);
+        margin: 0.75rem 0;
+    }
+
+    .mobile-section-label {
+        display: block;
+        font-size: 0.6875rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: var(--text-light);
+        padding: 0.5rem 0;
+    }
+
+    .mobile-footer {
+        padding: 1.25rem;
+        border-top: 1px solid var(--border);
+        background: var(--bg-subtle);
+    }
+
+    .mobile-cta-btn {
+        display: block;
+        width: 100%;
+        padding: 0.875rem;
+        font-size: 0.9375rem;
+        font-weight: 600;
+        color: white;
+        background: var(--brand);
+        border-radius: 10px;
+        text-align: center;
+        text-decoration: none;
+        transition: all 0.15s ease;
+        margin-bottom: 1rem;
+    }
+
+    .mobile-cta-btn:hover,
+    .mobile-cta-btn:active {
+        background: var(--brand-dark);
+    }
+
+    .mobile-contact {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        font-size: 0.8125rem;
+        color: var(--text-muted);
+    }
+
+    .mobile-contact a {
+        color: var(--brand);
+        text-decoration: none;
+        font-weight: 500;
+    }
+
+    :global(body.menu-open) {
+        overflow: hidden;
+    }
+</style>
+
+<script>
+    const menuBtn = document.getElementById('menuBtn');
+    const closeBtn = document.getElementById('closeBtn');
+    const overlay = document.getElementById('mobileOverlay');
+    const menu = document.getElementById('mobileMenu');
+
+    function openMenu() {
+        overlay?.classList.add('is-open');
+        menuBtn?.setAttribute('aria-expanded', 'true');
+        document.body.classList.add('menu-open');
+    }
+
+    function closeMenu() {
+        overlay?.classList.remove('is-open');
+        menuBtn?.setAttribute('aria-expanded', 'false');
+        document.body.classList.remove('menu-open');
+    }
+
+    menuBtn?.addEventListener('click', openMenu);
+    closeBtn?.addEventListener('click', closeMenu);
+    
+    overlay?.addEventListener('click', (e) => {
+        if (e.target === overlay) closeMenu();
+    });
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') closeMenu();
+    });
+
+    menu?.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', closeMenu);
+    });
 </script>
 
 <script>
@@ -250,10 +856,6 @@ declare global {
             actionUrl: string;
             isExternalLink?: boolean;
         }) => void;
-        scrollToSection: (event: Event, element: HTMLAnchorElement) => void;
     }
 }
 </script>
-
-<EventAlert id="event-alert" />
-<FullScreenAlert id="site-alert" />

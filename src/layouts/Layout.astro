@@ -146,20 +146,7 @@ try {
 			// .then(health => console.log('Client-side API Health Status:', health))
 			.catch(error => console.error('Client-side health check failed:', error));
 
-			// Show Fall Fundraiser Event Alert
-			setTimeout(() => {
-				window.showEventAlert({
-					title: '2nd Annual Fall Fundraiser',
-					description: 'Join us November 1st for dinner, live music, and a bake-off competition!',
-					image: 'https://cdn.shelterinastorm.org/images/2025Fundraiser-WebsitePhoto.jpeg',
-					badge: 'UPCOMING EVENT',
-					actionText: 'Get Tickets',
-					actionUrl: '/checkout#tickets',
-					isExternalLink: false
-				});
-			}, 2000);
-
-			if (import.meta.env.DEV) {
+				if (import.meta.env.DEV) {
 				setTimeout(() => {
 					window.showEventAlert({
 						title: 'Development Mode Test Alert',
