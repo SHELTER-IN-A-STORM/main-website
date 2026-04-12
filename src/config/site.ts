@@ -135,9 +135,9 @@ export const siteConfig = {
         },
         donors: [
             {
-                name: "Trackly",
-                logo: "https://trackly.works/images/ui/favicon.png",
-                url: "https://trackly.works"
+                name: "TownHall",
+                logo: "https://cdn.townhall.gg/TownHall/da46fc5a-9428-4076-a741-5e7871b9ca8d/47d26eaf-1855-4dd8-bf7b-d1a04ee2cf61/c2989029-608b-4ea0-b209-c7d1e9117330.svg",
+                url: "https://townhall.gg"
             },
             { 
                 name: "Dierbergs", 

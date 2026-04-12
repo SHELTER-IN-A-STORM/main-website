@@ -412,6 +412,8 @@ const formId = `${id}-form`;
         return;
       }
 
+      let initialized = false;
+
       function showStep(n) {
         const current = form.querySelector(`.wizard-step:not(.hidden)`);
         if (current) {
@@ -452,8 +454,10 @@ const formId = `${id}-form`;
         if (nextBtn) nextBtn.classList.toggle('hidden', n === totalSteps);
         if (submitBtn) submitBtn.classList.toggle('hidden', n !== totalSteps);
 
-        // Scroll form into view
-        form.closest('div')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        // Only scroll when navigating between steps, not on initial load
+        if (initialized) {
+          form.closest('div')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
       }
 
       function validateStep(n) {
@@ -708,6 +712,7 @@ const formId = `${id}-form`;
 
       // Initialize step 1
       showStep(1);
+      initialized = true;
     }
 
     if (document.readyState === 'loading') {
