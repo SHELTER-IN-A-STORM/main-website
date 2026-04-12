@@ -1,287 +1,188 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import { siteConfig } from '../config/site';
-import RequestForm from '../components/RequestForm.astro';
 import PartnersSection from '../components/DonorSection.astro';
 import Testimonials from '../components/Testimonials.astro';
+import { getImpactStats } from '../lib/api';
+
+const stats = await getImpactStats();
 ---
 
 <Layout title="Home">
-  <!-- Hero Section -->
-  <section class="relative min-h-[90vh] flex items-center justify-center">
+
+  <!-- Hero -->
+  <section class="relative flex items-center justify-center overflow-hidden hero-home">
     <div class="absolute inset-0">
-      <img 
+      <img
         src={siteConfig.metadata.openGraph.image}
-        alt="Helping our community"
+        alt=""
         class="w-full h-full object-cover"
         fetchpriority="high"
         loading="eager"
         decoding="async"
       />
-      <div class="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/60"></div>
+      <div class="absolute inset-0 bg-black/55"></div>
     </div>
+    <div class="relative w-full max-w-3xl mx-auto px-6 text-center">
+      <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-[1.1] tracking-tight mb-6">
+        Emergency assistance when you need it most.
+      </h1>
+      <p class="text-white/60 text-lg max-w-xl mx-auto mb-10 leading-relaxed">
+        Food, financial relief, and compassionate support for families in Miller &amp; Camden Counties.
+      </p>
+      <div class="flex flex-wrap gap-3 justify-center">
+        <a href="/get-help" class="px-7 py-3.5 bg-white text-black font-semibold text-sm rounded-lg hover:bg-gray-100 transition-colors">
+          Get Help
+        </a>
+        <a href="/donate" class="px-7 py-3.5 border border-white/25 text-white font-semibold text-sm rounded-lg hover:bg-white/10 transition-colors">
+          Donate
+        </a>
+      </div>
+    </div>
+  </section>
 
-    <div class="relative container mx-auto px-6 py-20">
-      <div class="max-w-4xl mx-auto text-center text-white">
-        <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
-          {siteConfig.shelter.hero.title}
-        </h1>
-        <p class="text-xl md:text-2xl text-gray-200 mb-10 max-w-2xl mx-auto leading-relaxed">
-          {siteConfig.shelter.hero.subtitle}
+  <style>
+    .hero-home {
+      min-height: 100vh;
+    }
+  </style>
+
+  <!-- Stats -->
+  <section class="border-b border-gray-100">
+    <div class="max-w-5xl mx-auto px-6 py-16 grid grid-cols-2 lg:grid-cols-4 gap-10">
+      <div class="text-center">
+        <p class="text-3xl lg:text-4xl font-bold text-black tracking-tight">
+          <span class="stat-counter" data-target={stats.individualsHelped}>0</span>+
         </p>
-        
-        <div class="flex flex-col sm:flex-row gap-4 justify-center">
-          <a 
-            href="/get-help" 
-            class="inline-flex items-center justify-center gap-2 px-8 py-4 bg-brand hover:bg-brand-dark text-white font-medium rounded-lg transition-colors text-lg"
-          >
-            Get Help
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
-            </svg>
-          </a>
-          <a 
-            href="/donate" 
-            class="inline-flex items-center justify-center gap-2 px-8 py-4 bg-white/10 backdrop-blur border border-white/30 text-white hover:bg-white/20 font-medium rounded-lg transition-colors text-lg"
-          >
-            Support Our Mission
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
-            </svg>
-          </a>
-        </div>
+        <p class="text-sm text-gray-400 mt-1">Individuals helped</p>
+      </div>
+      <div class="text-center">
+        <p class="text-3xl lg:text-4xl font-bold text-black tracking-tight">
+          <span class="stat-counter" data-target={stats.pantryItemsTaken}>0</span>+
+        </p>
+        <p class="text-sm text-gray-400 mt-1">Pantry items given</p>
+      </div>
+      <div class="text-center">
+        <p class="text-3xl lg:text-4xl font-bold text-black tracking-tight">
+          $<span class="stat-counter" data-target={stats.donationsUsed}>0</span>
+        </p>
+        <p class="text-sm text-gray-400 mt-1">In direct assistance</p>
+      </div>
+      <div class="text-center">
+        <p class="text-3xl lg:text-4xl font-bold text-black tracking-tight">24/7</p>
+        <p class="text-sm text-gray-400 mt-1">Food pantry access</p>
       </div>
     </div>
   </section>
 
-  <!-- Mission Section -->
-  <section class="py-20 bg-white">
-    <div class="container mx-auto px-6">
-      <div class="max-w-6xl mx-auto">
-        <div class="grid lg:grid-cols-2 gap-12 items-center">
-          <div>
-            <p class="text-sm font-semibold text-brand uppercase tracking-wider mb-4">Our Story</p>
-            <h2 class="text-3xl lg:text-4xl font-bold text-gray-900 mb-6 leading-tight">
-              A simple act of kindness sparked a movement
-            </h2>
-            <p class="text-gray-600 mb-6 leading-relaxed">
-              What began as offering shelter from the cold to a single individual during a Bible study has grown 
-              into a dedicated mission to serve our Lake Ozark community. Today, we provide 24/7 emergency food assistance 
-              and connect those in need with vital resources.
-            </p>
-            <a 
-              href="/about" 
-              class="inline-flex items-center gap-2 px-6 py-3 bg-brand hover:bg-brand-dark text-white font-medium rounded-lg transition-colors"
-            >
-              Learn More About Us
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
-              </svg>
-            </a>
-          </div>
-          <div class="relative">
-            <div class="absolute inset-0 bg-brand/10 rounded-2xl transform rotate-3"></div>
-            <img 
-              src="https://images.squarespace-cdn.com/content/v1/53c68a2de4b0929c16dd9bf2/1623779915649-KOGVC81NLQDLR632328M/ribbon-cutting+photo+best.jpg?format=2500w" 
-              alt="Shelter in a Storm ribbon cutting" 
-              class="relative rounded-2xl shadow-lg w-full"
-            />
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
+  <!-- Services -->
+  <section class="py-24 lg:py-32">
+    <div class="max-w-6xl mx-auto px-6">
+      <p class="text-sm text-gray-400 font-medium uppercase tracking-wide mb-4">What we do</p>
+      <h2 class="text-3xl lg:text-4xl font-bold text-black tracking-tight mb-16 max-w-lg">
+        Two ways we can help you today.
+      </h2>
 
-  <!-- Services Section -->
-  <section class="py-20 bg-gray-50">
-    <div class="container mx-auto px-6">
-      <div class="max-w-6xl mx-auto">
-        <div class="text-center mb-12">
-          <p class="text-sm font-semibold text-brand uppercase tracking-wider mb-4">How We Help</p>
-          <h2 class="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">Our Services</h2>
-        </div>
-        
-        <div class="grid md:grid-cols-2 gap-8">
-          {siteConfig.shelter.services.map((service) => (
-            <a 
-              href={service.link}
-              class="group bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-all border border-gray-100"
-            >
-              <div class="relative h-48 overflow-hidden">
-                <img 
-                  src={service.image}
-                  alt={service.title}
-                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                />
-                <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
-              </div>
-              <div class="p-6">
-                <h3 class="text-xl font-semibold text-gray-900 mb-2">{service.title}</h3>
-                <p class="text-gray-600 mb-4 leading-relaxed">{service.description}</p>
-                <span class="inline-flex items-center gap-2 text-brand font-medium group-hover:gap-3 transition-all">
-                  Learn More
-                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
-                  </svg>
-                </span>
-              </div>
-            </a>
-          ))}
-        </div>
-
-        <!-- More Resources Card -->
-        <div class="mt-12 bg-white rounded-2xl p-8 border border-gray-100 shadow-sm text-center">
-          <p class="text-gray-900 font-semibold text-lg mb-2">Don't see what you're looking for?</p>
-          <p class="text-gray-600 mb-6 max-w-xl mx-auto">We maintain a directory of local emergency services and support organizations.</p>
-          <a 
-            href="/resources" 
-            class="inline-flex items-center gap-2 px-6 py-3 bg-brand hover:bg-brand-dark text-white font-medium rounded-lg transition-colors"
-          >
-            Find More Resources
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
-            </svg>
-          </a>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Request Form Section -->
-  <section id="request-form" class="py-20 bg-white">
-    <div class="container mx-auto px-6">
-      <div class="max-w-7xl mx-auto">
-        <div class="grid lg:grid-cols-5 gap-12 items-start">
-          <!-- Left Column - Info -->
-          <div class="lg:col-span-2 lg:sticky lg:top-24">
-            <p class="text-sm font-semibold text-brand uppercase tracking-wider mb-4">Request Assistance</p>
-            <h2 class="text-3xl lg:text-4xl font-bold text-gray-900 mb-6 leading-tight">
-              How Can We Help You?
-            </h2>
-            <p class="text-gray-600 mb-8 leading-relaxed">
-              Fill out this form and our team will respond within 2-3 business days. All information is kept confidential.
-            </p>
-            
-            <div class="space-y-6 mb-8">
-              <div class="flex items-start gap-4">
-                <div class="p-3 bg-brand/10 rounded-xl flex-shrink-0">
-                  <svg class="w-6 h-6 text-brand" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                  </svg>
-                </div>
-                <div>
-                  <h3 class="font-semibold text-gray-900">Online Form</h3>
-                  <p class="text-gray-600 text-sm">Submit your request and we'll reach out within 2-3 days</p>
-                </div>
-              </div>
-
-              <div class="flex items-start gap-4">
-                <div class="p-3 bg-brand/10 rounded-xl flex-shrink-0">
-                  <svg class="w-6 h-6 text-brand" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
-                  </svg>
-                </div>
-                <div>
-                  <h3 class="font-semibold text-gray-900">24/7 Food Pantry</h3>
-                  <p class="text-gray-600 text-sm">Access our pantry anytime on the west side of the church</p>
-                </div>
-              </div>
-
-              <div class="flex items-start gap-4">
-                <div class="p-3 bg-brand/10 rounded-xl flex-shrink-0">
-                  <svg class="w-6 h-6 text-brand" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
-                  </svg>
-                </div>
-                <div>
-                  <h3 class="font-semibold text-gray-900">Church Office</h3>
-                  <p class="text-gray-600 text-sm">Visit during office hours for in-person assistance</p>
-                </div>
-              </div>
+      <div class="grid md:grid-cols-2 gap-8">
+        {siteConfig.shelter.services.map((service) => (
+          <a href={service.link} class="group block">
+            <div class="aspect-[16/10] rounded-xl overflow-hidden mb-5">
+              <img
+                src={service.image}
+                alt={service.title}
+                class="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-500"
+              />
             </div>
-
-            <!-- Location Card -->
-            <div class="bg-gray-50 rounded-xl p-6 border border-gray-100">
-              <h3 class="font-semibold text-gray-900 mb-3">Our Location</h3>
-              <p class="text-gray-600 text-sm mb-1">Lake Ozark Christian Church</p>
-              <p class="text-gray-600 text-sm mb-4">1560 Bagnell Dam Blvd, Lake Ozark, MO</p>
-              <a 
-                href="https://www.google.com/maps/dir//Lake+Ozark+Christian+Church" 
-                target="_blank"
-                rel="noopener noreferrer"
-                class="inline-flex items-center gap-2 text-brand font-medium text-sm hover:underline"
-              >
-                Get Directions
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
-                </svg>
-              </a>
-            </div>
-          </div>
-          
-          <!-- Right Column - Form -->
-          <div class="lg:col-span-3">
-            <RequestForm showHeader={true} />
-          </div>
-        </div>
+            <h3 class="text-xl font-semibold text-black mb-2 group-hover:text-brand transition-colors">{service.title}</h3>
+            <p class="text-gray-500 leading-relaxed mb-3">{service.description}</p>
+            <span class="text-sm font-semibold text-brand">Learn more &rarr;</span>
+          </a>
+        ))}
       </div>
     </div>
   </section>
-
-  <!-- Testimonials -->
-  <Testimonials />
 
   <!-- Partners -->
   <PartnersSection />
 
-  <!-- Support CTA -->
-  <section class="py-20 bg-brand">
-    <div class="container mx-auto px-6">
-      <div class="max-w-3xl mx-auto text-center">
-        <h2 class="text-3xl lg:text-4xl font-bold text-white mb-6">
-          Help Us Help Others
-        </h2>
-        <p class="text-white/80 text-lg mb-8 leading-relaxed">
-          Your generous donation helps us provide food, prevent homelessness, and support families in crisis throughout the Lake Ozark area.
-        </p>
-        
-        <div class="flex flex-col sm:flex-row gap-4 justify-center">
-          <a 
-            href="/donate" 
-            class="inline-flex items-center justify-center gap-2 px-8 py-4 bg-white text-brand hover:bg-gray-100 font-medium rounded-lg transition-colors text-lg"
-          >
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
-            </svg>
-            Donate Now
-          </a>
-          <a 
-            href="/volunteer" 
-            class="inline-flex items-center justify-center gap-2 px-8 py-4 bg-white/10 border border-white/30 text-white hover:bg-white/20 font-medium rounded-lg transition-colors text-lg"
-          >
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/>
-            </svg>
-            Volunteer
-          </a>
+  <!-- Testimonials -->
+  <Testimonials />
+
+  <!-- Mission -->
+  <section class="py-24 lg:py-32 border-t border-gray-100">
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="grid lg:grid-cols-2 gap-16 items-center">
+        <div>
+          <p class="text-sm text-gray-400 font-medium uppercase tracking-wide mb-4">Our story</p>
+          <h2 class="text-3xl lg:text-4xl font-bold text-black tracking-tight leading-tight mb-6">
+            A single act of compassion became a community movement.
+          </h2>
+          <p class="text-gray-500 leading-relaxed mb-6">
+            {siteConfig.shelter.mission.description}
+          </p>
+          <p class="text-gray-500 leading-relaxed mb-8">
+            What began as offering shelter from the cold during a Bible study has grown into a dedicated mission serving hundreds of families across Miller and Camden Counties.
+          </p>
+          <a href="/about" class="text-sm font-semibold text-brand">Read our full story &rarr;</a>
+        </div>
+        <div class="rounded-xl overflow-hidden">
+          <img
+            src="https://images.squarespace-cdn.com/content/v1/53c68a2de4b0929c16dd9bf2/1623779915649-KOGVC81NLQDLR632328M/ribbon-cutting+photo+best.jpg?format=2500w"
+            alt="Shelter in a Storm team"
+            class="w-full"
+          />
         </div>
       </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="py-24 lg:py-32 border-t border-gray-100">
+    <div class="max-w-2xl mx-auto px-6 text-center">
+      <p class="text-sm text-gray-400 font-medium uppercase tracking-wide mb-4">Support our mission</p>
+      <h2 class="text-3xl lg:text-4xl font-bold text-black tracking-tight mb-5">
+        Every dollar goes directly to families in need.
+      </h2>
+      <p class="text-gray-400 leading-relaxed mb-10">
+        Emergency food, utility assistance, and crisis support &mdash; funded entirely by people like you.
+      </p>
+      <a href="/donate" class="inline-block px-8 py-3.5 bg-black text-white font-semibold text-sm rounded-lg hover:bg-gray-900 transition-colors">
+        Donate now
+      </a>
+      <p class="text-gray-300 text-xs mt-8">501(c)(3) &middot; EIN {siteConfig.shelter.ein}</p>
     </div>
   </section>
 </Layout>
 
 <script>
-  // Smooth scroll for anchor links
+  function animateValue(el: HTMLElement, start: number, end: number, duration: number) {
+    let startTs: number | null = null;
+    const step = (ts: number) => {
+      if (!startTs) startTs = ts;
+      const progress = Math.min((ts - startTs) / duration, 1);
+      el.innerText = Math.floor(progress * (end - start) + start).toLocaleString();
+      if (progress < 1) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+  }
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const el = entry.target as HTMLElement;
+        animateValue(el, 0, parseInt(el.dataset.target || '0'), 2000);
+        observer.unobserve(el);
+      }
+    });
+  }, { threshold: 0.2 });
+
+  document.querySelectorAll('.stat-counter[data-target]').forEach(el => observer.observe(el));
+
   document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (this: HTMLAnchorElement, e) {
       e.preventDefault();
       const href = this.getAttribute('href');
-      if (href) {
-        document.querySelector(href)?.scrollIntoView({
-          behavior: 'smooth',
-          block: 'start'
-        });
-      }
+      if (href) document.querySelector(href)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
     });
   });
 </script>

@@ -1,251 +1,268 @@
 ---
 import Layout from '../../layouts/Layout.astro';
-import { siteConfig } from '../../config/site';
 ---
 
 <Layout title="Terms of Use">
-    <!-- Hero Section -->
-    <section class="relative min-h-screen flex items-center justify-center">
-        <div class="absolute inset-0">
-            <img 
-                src={siteConfig.metadata.openGraph.image}
-                alt="Terms of Use"
-                class="w-full h-full object-cover"
-            />
-            <div class="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/60"></div>
-        </div>
+  <main>
 
-        <div class="relative container mx-auto px-6 z-10">
-            <div class="max-w-4xl mx-auto text-center text-white space-y-8">
-                <h1 
-                    class="text-5xl md:text-7xl font-bold mb-6 animate-fade-in"
-                    style="text-wrap: balance;"
-                >
-                    Terms of Use
-                </h1>
-                <p 
-                    class="text-xl md:text-2xl text-gray-200 mb-12 animate-slide-up-delay-1 max-w-2xl mx-auto"
-                    style="text-wrap: balance;"
-                >
-                    Last Updated: {new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
-                </p>
-            </div>
-        </div>
-
+    <!-- Header -->
+    <section class="pt-40 pb-16 lg:pt-48 lg:pb-20">
+      <div class="max-w-3xl mx-auto px-6">
+        <p class="text-sm text-gray-400 font-medium uppercase tracking-wide mb-4">Legal</p>
+        <h1 class="text-4xl md:text-5xl font-bold text-black leading-[1.1] tracking-tight mb-6" style="text-wrap: balance;">
+          Terms of Use
+        </h1>
+        <p class="text-gray-400 text-lg leading-relaxed">
+          These Terms of Use constitute a legally binding agreement. Please read them carefully before using our website or services.
+        </p>
+      </div>
     </section>
 
-    <!-- Main Content -->
-    <section id="content" class="py-16 md:py-24">
-        <div class="container mx-auto px-4">
-            <div class="max-w-3xl mx-auto prose prose-lg prose-gray">
-                <div class="space-y-12">
-                    <!-- Definitions -->
-                    <div>
-                        <h2>Definitions</h2>
-                        <ul>
-                            <li><strong>"Website"</strong> refers to Shelter in a Storm's online platform, including all pages and services available through it.</li>
-                            <li><strong>"User"</strong> refers to any individual accessing or interacting with the website.</li>
-                            <li><strong>"Services"</strong> refers to all assistance programs, volunteer opportunities, and other resources provided through our website.</li>
-                        </ul>
-                    </div>
+    <!-- Content -->
+    <section class="pb-24 lg:pb-32">
+      <div class="max-w-3xl mx-auto px-6">
+        <div class="prose prose-gray max-w-none prose-headings:font-bold prose-headings:tracking-tight prose-h2:text-xl prose-h2:mt-14 prose-h2:mb-4 prose-h3:text-base prose-h3:mt-8 prose-h3:mb-3 prose-p:text-gray-500 prose-p:leading-relaxed prose-li:text-gray-500 prose-strong:text-black prose-a:text-black prose-a:underline prose-a:decoration-gray-300 hover:prose-a:decoration-black">
 
-                    <!-- Introduction -->
-                    <div>
-                        <p>
-                            Welcome to Shelter in a Storm. By accessing and using our website, you agree to comply with and be bound by these Terms of Use. Please read these terms carefully before using our services.
-                        </p>
-                    </div>
+          <h2>1. Definitions</h2>
+          <p>For the purposes of these Terms of Use, the following definitions apply:</p>
+          <ul>
+            <li><strong>"Organization," "we," "us," or "our"</strong> refers to Lake Ozark Christian Church, Inc., doing business as Shelter in a Storm, a 501(c)(3) nonprofit organization registered in the State of Missouri.</li>
+            <li><strong>"Website"</strong> refers to the website located at shelterinastorm.org, including all subdomains, pages, features, and services accessible through it.</li>
+            <li><strong>"Platform Provider"</strong> refers to DonorKit, Inc., doing business as townhall ("Townhall"), which hosts, develops, and maintains the Website on behalf of the Organization.</li>
+            <li><strong>"User," "you," or "your"</strong> refers to any individual or entity accessing, browsing, or otherwise using the Website.</li>
+            <li><strong>"Services"</strong> refers to all features, resources, assistance programs, volunteer opportunities, donation processing, and other functionality provided through the Website.</li>
+            <li><strong>"Content"</strong> refers to all text, images, graphics, videos, data, and other materials displayed on or transmitted through the Website.</li>
+            <li><strong>"User Content"</strong> refers to any information, data, or materials submitted by Users through the Website, including but not limited to form submissions, applications, feedback, and testimonials.</li>
+          </ul>
 
-                    <!-- Acceptance of Terms -->
-                    <div>
-                        <h2>1. Acceptance of Terms</h2>
-                        <p>
-                            By accessing or using our website, you acknowledge that you have read, understood, and agree to be bound by these Terms of Use, our Privacy Policy, and any other policies referenced herein.
-                        </p>
-                    </div>
+          <h2>2. Acceptance of Terms</h2>
+          <p>
+            By accessing or using this Website, you acknowledge that you have read, understood, and agree to be bound by these Terms of Use, our <a href="/legal/privacy">Privacy Policy</a>, and any additional terms, conditions, or policies referenced herein or published on the Website (collectively, the "Agreement"). If you do not agree to any part of this Agreement, you must immediately discontinue use of the Website.
+          </p>
+          <p>
+            This Website is hosted and operated by our Platform Provider, Townhall (DonorKit, Inc.). Your use of this Website is also subject to <a href="https://townhall.gg/legal/terms" target="_blank" rel="noopener noreferrer">Townhall's Terms of Service</a> and <a href="https://townhall.gg/legal/privacy" target="_blank" rel="noopener noreferrer">Townhall's Privacy Policy</a>, which govern the underlying platform infrastructure. In the event of a conflict between these Terms and Townhall's Terms, these Terms shall control with respect to the Services provided by Shelter in a Storm.
+          </p>
+          <p>
+            We reserve the right to update or modify this Agreement at any time without prior notice. Your continued use of the Website following any such changes constitutes your acceptance of the revised terms. It is your responsibility to review this Agreement periodically.
+          </p>
 
-                    <!-- Use of Services -->
-                    <div>
-                        <h2>2. Use of Services</h2>
-                        <p>
-                            Our services are intended to provide support and assistance to those in need. You agree to use our services only for their intended purposes and in compliance with all applicable laws and regulations.
-                        </p>
-                        <h3>2.1 Prohibited Activities</h3>
-                        <p>You agree not to:</p>
-                        <ul>
-                            <li>Use our services for any unlawful purpose</li>
-                            <li>Harass, abuse, or harm others</li>
-                            <li>Submit false or misleading information</li>
-                            <li>Attempt to gain unauthorized access to our systems</li>
-                            <li>Interfere with the proper functioning of the website</li>
-                            <li>Use automated tools, bots, or scraping technologies to access or interact with our website</li>
-                        </ul>
-                        <h3>2.2 User Account Responsibility</h3>
-                        <p>
-                            If our website allows for user accounts, you are responsible for maintaining the confidentiality of your account credentials and all activities under your account. Notify us immediately of any unauthorized use or security breach of your account.
-                        </p>
-                        <h3>2.3 Eligibility</h3>
-                        <p>
-                            Our website and services are intended for users 18 years of age or older. If you are under 18, you may use our services only with the involvement of a parent or guardian.
-                        </p>
-                    </div>
+          <h2>3. Eligibility</h2>
+          <p>
+            You must be at least eighteen (18) years of age, or the age of legal majority in your jurisdiction, to use this Website and its Services. If you are under 18, you may only use this Website with the involvement and consent of a parent or legal guardian, who agrees to be bound by this Agreement on your behalf.
+          </p>
+          <p>
+            By using the Website, you represent and warrant that you meet the eligibility requirements set forth in this section and that you have the legal capacity to enter into this Agreement.
+          </p>
 
-                    <!-- User Information -->
-                    <div>
-                        <h2>3. User Information</h2>
-                        <p>
-                            When using our services, you agree to provide accurate, current, and complete information. We handle your information in accordance with our Privacy Policy and in compliance with the Missouri Personal Privacy Protection Act.
-                        </p>
-                        <h3>3.1 Privacy Notice</h3>
-                        <p>
-                            Your use of our website and services is also governed by our <a href="/legal/privacy" class="text-brand hover:text-brand-dark">Privacy Policy</a>. Please review it to understand how we collect, use, and protect your information.
-                        </p>
-                        <h3>3.2 Compliance with Legal Requests</h3>
-                        <p>
-                            We are committed to maintaining the confidentiality of your information. However, we may be required to disclose your information to law enforcement agencies if we receive a valid legal request, such as a court order, subpoena, or warrant. We will only comply with such requests when legally obligated to do so and will take steps to ensure the request is legitimate. We will notify you of any such requests for your information unless we are explicitly prohibited from doing so by the terms of a court order or other legal instrument.
-                        </p>
-                    </div>
+          <h2>4. Use of Services</h2>
+          <p>
+            The Services offered through this Website are intended to facilitate access to community assistance programs, volunteer coordination, donation processing, and related nonprofit activities. You agree to use the Services solely for their intended purposes, in good faith, and in compliance with all applicable local, state, and federal laws and regulations.
+          </p>
 
-                    <!-- Intellectual Property -->
-                    <div>
-                        <h2>4. Intellectual Property</h2>
-                        <p>
-                            The Shelter in a Storm name, logo, branding, and original content are the property of Shelter in a Storm and are protected by copyright and other intellectual property laws. Some images and other content on this website are used under license from third parties. For detailed attribution and licensing information, please visit our <a href="/legal/license" class="text-brand hover:text-brand-dark">License</a> page.
-                        </p>
-                        <h3>4.1 User-Generated Content</h3>
-                        <p>
-                            User-generated content includes, but is not limited to, testimonials, comments, reviews, feedback submissions, volunteer applications, assistance requests, or any other content submitted via forms, emails, or other communication channels on our website. By submitting such content, you grant Shelter in a Storm a non-exclusive, royalty-free, perpetual, irrevocable, and worldwide license to use, reproduce, modify, and distribute such content for operational or promotional purposes. You are responsible for ensuring any content you submit complies with applicable copyright laws.
-                        </p>
-                        <h3>4.2 Third-Party Services</h3>
-                        <p>
-                            Our website may contain links to third-party websites or services. Shelter in a Storm is not responsible for the content, accuracy, or practices of such third-party entities. Your use of third-party services is subject to their respective terms and policies.
-                        </p>
-                    </div>
+          <h3>4.1 Prohibited Conduct</h3>
+          <p>You expressly agree not to:</p>
+          <ul>
+            <li>Use the Website or Services for any unlawful, fraudulent, or malicious purpose</li>
+            <li>Submit false, misleading, incomplete, or deliberately inaccurate information on any form or application</li>
+            <li>Impersonate any person or entity, or misrepresent your affiliation with any person or entity</li>
+            <li>Harass, threaten, defame, abuse, or otherwise cause harm to any individual, including our staff, volunteers, and other Users</li>
+            <li>Attempt to gain unauthorized access to any portion of the Website, its servers, databases, or any systems or networks connected to it</li>
+            <li>Introduce viruses, trojans, worms, logic bombs, or other material that is malicious or technologically harmful</li>
+            <li>Use automated scripts, bots, crawlers, scrapers, or similar tools to access, extract, or interact with the Website, except through officially provided APIs</li>
+            <li>Interfere with, disrupt, or place an unreasonable burden on the Website's infrastructure or the networks connected to it</li>
+            <li>Reproduce, distribute, modify, create derivative works of, publicly display, or publicly perform any Content from the Website without prior written authorization</li>
+            <li>Use the Website to collect, harvest, or aggregate personal data of other Users without their explicit consent</li>
+            <li>Circumvent, disable, or otherwise interfere with any security-related features of the Website</li>
+          </ul>
 
-                    <!-- Disclaimer -->
-                    <div>
-                        <h2>5. Disclaimer</h2>
-                        <p>
-                            Our services are provided "as is" without any warranties, expressed or implied. We do not guarantee the accuracy, completeness, or reliability of any content or services provided on our website, including content from third-party sources.
-                        </p>
-                    </div>
+          <h3>4.2 Account Responsibility</h3>
+          <p>
+            Where the Website provides account-based functionality, you are solely responsible for maintaining the confidentiality of your account credentials and for all activities that occur under your account. You agree to notify us immediately at <a href="mailto:compliance@donork.it">compliance@donork.it</a> of any unauthorized use of your account or any other breach of security.
+          </p>
 
-                    <!-- Limitation of Liability -->
-                    <div>
-                        <h2>6. Limitation of Liability</h2>
-                        <p>
-                            To the fullest extent permitted by law, Shelter in a Storm shall not be liable for any indirect, incidental, special, consequential, or punitive damages arising from or related to your use of our services.
-                        </p>
-                        <h3>6.1 Indemnification</h3>
-                        <p>
-                            You agree to indemnify, defend, and hold harmless Shelter in a Storm, its affiliates, directors, officers, employees, and agents from any claims, damages, liabilities, costs, and expenses (including reasonable attorney fees) arising out of your use of our website or services, violation of these Terms of Use, or infringement of any third-party rights.
-                        </p>
-                        <h3>6.2 Security Responsibility</h3>
-                        <p>
-                            While we take reasonable measures to safeguard your information, you acknowledge that no method of electronic transmission or storage is completely secure. You agree to take reasonable precautions, such as using secure passwords and avoiding public Wi-Fi when accessing your account.
-                        </p>
-                    </div>
+          <h2>5. User Information &amp; Data</h2>
+          <p>
+            When submitting information through the Website, you agree to provide accurate, current, and complete information. You acknowledge and agree that the Organization may use, store, and process your information in accordance with our <a href="/legal/privacy">Privacy Policy</a>.
+          </p>
 
-                    <!-- Changes to Terms -->
-                    <div>
-                        <h2>7. Changes to Terms</h2>
-                        <p>
-                            We reserve the right to modify these Terms of Use at any time. We will notify users of any material changes by posting the updated terms on our website. Your continued use of our services after such changes constitutes acceptance of the modified terms.
-                        </p>
-                        <h3>7.1 Termination of Access</h3>
-                        <p>
-                            We reserve the right to terminate or suspend your access to our website or services at any time, with or without cause, and without prior notice, for conduct that we believe violates these Terms of Use or is otherwise harmful to our organization or users.
-                        </p>
-                    </div>
+          <h3>5.1 Third-Party Data Processing</h3>
+          <p>
+            You acknowledge that certain data submitted through the Website may be processed by third-party service providers on our behalf, including but not limited to:
+          </p>
+          <ul>
+            <li><strong>DonorKit, Inc. (d.b.a. Townhall)</strong> &mdash; Platform hosting, backend infrastructure, and data storage</li>
+            <li><strong>Formspree, Inc.</strong> &mdash; Form submission processing and delivery</li>
+            <li><strong>Stripe, Inc.</strong> &mdash; Payment and donation processing</li>
+            <li><strong>Google LLC</strong> &mdash; Analytics, fonts, and embedded maps</li>
+          </ul>
+          <p>
+            Each third-party processor is bound by their own terms of service and privacy policies. We encourage you to review the applicable policies, which are linked in our <a href="/legal/privacy">Privacy Policy</a>. We are not responsible for the data practices of third-party service providers beyond the scope of our contractual agreements with them.
+          </p>
 
-                    <!-- Governing Law -->
-                    <div>
-                        <h2>8. Governing Law</h2>
-                        <p>
-                            These Terms of Use shall be governed by and construed in accordance with the laws of the State of Missouri, without regard to its conflict of law provisions.
-                        </p>
-                        <h3>8.1 Dispute Resolution</h3>
-                        <p>
-                            Any disputes arising from these Terms of Use shall first be attempted to be resolved through informal negotiations. If unresolved, disputes shall be settled through binding arbitration in accordance with the rules of the American Arbitration Association, to be held in Missouri.
-                        </p>
-                    </div>
+          <h3>5.2 Compliance with Legal Requests</h3>
+          <p>
+            We may be compelled to disclose your information in response to a valid legal process, including but not limited to court orders, subpoenas, warrants, or regulatory requests. We will endeavor to notify you of any such request unless we are legally prohibited from doing so or where the request relates to an emergency involving danger of death or serious physical injury.
+          </p>
 
-                    <!-- Contact Information -->
-                    <div>
-                        <h2>9. Contact Information</h2>
-                        <p>
-                            If you have any questions about these Terms of Use, please contact us at:
-                        </p>
-                        <div class="mt-4">
-                            <a 
-                                href="mailto:compliance@shelterinastorm.org"
-                                class="text-brand hover:text-brand-dark transition-colors"
-                            >
-                                compliance@shelterinastorm.org
-                            </a>
-                        </div>
-                        <h3>9.1 Force Majeure</h3>
-                        <p>
-                            Shelter in a Storm shall not be held liable for any failure or delay in performance due to circumstances beyond our reasonable control, including acts of God, natural disasters, pandemics, government actions, or other events of force majeure.
-                        </p>
-                    </div>
+          <h3>5.3 Data Retention &amp; Deletion</h3>
+          <p>
+            We retain User data in accordance with the retention periods described in our <a href="/legal/privacy">Privacy Policy</a>. You may request the deletion of your personal information at any time by contacting <a href="mailto:compliance@donork.it">compliance@donork.it</a>. Upon receiving a valid deletion request, we will remove your data within thirty (30) days, except where retention is required by law or for legitimate compliance purposes.
+          </p>
 
-                    <!-- Severability -->
-                    <div>
-                        <h2>10. Severability</h2>
-                        <p>
-                            If any provision of these Terms of Use is found to be invalid or unenforceable, the remaining provisions shall remain in full force and effect.
-                        </p>
-                    </div>
+          <h2>6. Donations</h2>
+          <p>
+            All monetary donations made through the Website are processed by Stripe, Inc. on behalf of Shelter in a Storm. By making a donation, you acknowledge and agree to the following:
+          </p>
+          <ul>
+            <li>All donations are voluntary and made without expectation of goods or services in return, unless explicitly stated otherwise</li>
+            <li>All donations are final and non-refundable, except where required by applicable law or at our sole discretion</li>
+            <li>Recurring donations will continue at the selected frequency until cancelled by you through the provided cancellation mechanism or by contacting us directly</li>
+            <li>Shelter in a Storm is a registered 501(c)(3) organization (EIN 43-1193150), and donations may be tax-deductible to the extent permitted by law; consult your tax advisor for guidance</li>
+            <li>We reserve the right to decline or refund any donation at our sole discretion, including donations that we reasonably believe to be fraudulent, made with stolen payment instruments, or otherwise not aligned with our organizational mission</li>
+          </ul>
+          <p>
+            Your payment information is transmitted directly to Stripe and is not stored on our servers. Stripe's processing of your payment information is governed by <a href="https://stripe.com/privacy" target="_blank" rel="noopener noreferrer">Stripe's Privacy Policy</a> and <a href="https://stripe.com/legal/end-users" target="_blank" rel="noopener noreferrer">Stripe's Terms of Service</a>.
+          </p>
 
-                    <!-- Accessibility -->
-                    <div>
-                        <h2>11. Accessibility</h2>
-                        <p>
-                            We strive to make our website accessible to all users, including those with disabilities. If you experience any issues accessing our website, please contact us at <a href="mailto:compliance@shelterinastorm.org" class="text-brand hover:text-brand-dark">compliance@shelterinastorm.org</a> so we can assist you. For more details, visit our <a href="/legal/accessibility" class="text-brand hover:text-brand-dark">Accessibility Statement</a>.
-                        </p>
-                    </div>
+          <h2>7. Volunteer &amp; Assistance Programs</h2>
+          <p>
+            By submitting a volunteer application or assistance request through the Website, you represent and warrant that all information provided is truthful, accurate, and complete to the best of your knowledge. You understand that:
+          </p>
+          <ul>
+            <li>Submission of an application or request does not guarantee acceptance into any program or the provision of any services</li>
+            <li>The Organization reserves the right to verify any information provided and to deny or revoke participation at its sole discretion</li>
+            <li>Deliberate misrepresentation or abuse of assistance programs may result in permanent disqualification from future services and may be reported to the appropriate authorities</li>
+            <li>Assistance is provided on a case-by-case basis subject to available resources and organizational guidelines</li>
+          </ul>
 
-                    <!-- Volunteer and Assistance Programs -->
-                    <div>
-                        <h2>12. Volunteer and Assistance Programs</h2>
-                        <p>
-                            By submitting a volunteer application or assistance request, you confirm that the information provided is accurate to the best of your knowledge. Misrepresentation or misuse of these programs may result in suspension from future participation.
-                        </p>
-                    </div>
+          <h2>8. Intellectual Property</h2>
 
-                    <!-- Donations -->
-                    <div>
-                        <h2>13. Donations</h2>
-                        <p>
-                            By making a donation, you agree that all contributions are final and non-refundable unless required by law. We reserve the right to decline or refund donations that do not align with our mission or values.
-                        </p>
-                    </div>
+          <h3>8.1 Our Intellectual Property</h3>
+          <p>
+            The Website, including its design, layout, text, graphics, logos, icons, images, audio clips, software, and all other Content (collectively, "Proprietary Materials"), is the property of Shelter in a Storm and/or its licensors and is protected by United States and international copyright, trademark, trade dress, patent, and other intellectual property laws. The Shelter in a Storm name, logo, and all related marks are trademarks of the Organization. Some images and content are used under license from third parties; see our <a href="/legal/license">License &amp; Attribution</a> page for details.
+          </p>
+          <p>
+            You may not reproduce, distribute, modify, create derivative works of, publicly display, publicly perform, republish, download, store, or transmit any Proprietary Materials without our prior written consent, except as follows: (a) your browser may temporarily store copies of materials in RAM incidental to your accessing and viewing them; (b) you may store files that are automatically cached by your browser for display enhancement purposes; and (c) you may print or download one copy of a reasonable number of pages for your own personal, non-commercial use.
+          </p>
 
-                    <!-- Updates to Terms -->
-                    <div>
-                        <h2>14. Updates to Terms</h2>
-                        <p>
-                            We may update these Terms of Use periodically to reflect changes in our practices or legal requirements. Any updates will be posted on this page with the revised date. Your continued use of the Website after changes take effect constitutes acceptance of the updated terms.
-                        </p>
-                    </div>
+          <h3>8.2 User-Generated Content</h3>
+          <p>
+            By submitting User Content through the Website (including but not limited to testimonials, reviews, feedback, volunteer applications, assistance requests, comments, or any other content submitted via forms, emails, or other communication channels), you grant Shelter in a Storm a non-exclusive, royalty-free, perpetual, irrevocable, transferable, sub-licensable, and worldwide license to use, reproduce, modify, adapt, publish, translate, distribute, and display such User Content in any media or format for operational, promotional, or charitable purposes.
+          </p>
+          <p>
+            You represent and warrant that you own or have the necessary rights to submit all User Content, and that such content does not violate the rights of any third party, including intellectual property rights, privacy rights, or publicity rights.
+          </p>
 
-                    <!-- Contact Us -->
-                    <div>
-                        <h2>15. Contact Us</h2>
-                        <p>
-                            If you have any questions about these Terms of Use or would like to request changes to your information, please contact us at <a href="mailto:compliance@shelterinastorm.org" class="text-brand hover:text-brand-dark">compliance@shelterinastorm.org</a>.
-                        </p>
-                    </div>
-                </div>
+          <h3>8.3 Feedback</h3>
+          <p>
+            If you provide suggestions, ideas, recommendations, or other feedback regarding the Website or Services ("Feedback"), you acknowledge that such Feedback is non-confidential and you grant us a royalty-free, worldwide, perpetual, irrevocable license to use and incorporate such Feedback without any obligation or compensation to you.
+          </p>
 
-                <!-- Last Updated -->
-                <div class="mt-16 pt-8 border-t border-gray-200">
-                    <p class="text-sm text-gray-600">
-                        These Terms of Use were last updated on {new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}.
-                    </p>
-                </div>
-            </div>
+          <h2>9. Third-Party Services &amp; Links</h2>
+          <p>
+            The Website may contain links to, integrations with, or embedded content from third-party websites, platforms, and services that are not owned or controlled by Shelter in a Storm. We are not responsible for the content, privacy practices, terms of service, or availability of any third-party services. The inclusion of any link or integration does not imply our endorsement of the linked site or service.
+          </p>
+          <p>
+            Your interactions with any third-party services, including any transactions or data shared, are solely between you and the third party. We strongly encourage you to review the terms and privacy policies of any third-party services you access through our Website. For a complete list of third-party processors we use, see our <a href="/legal/privacy">Privacy Policy</a>.
+          </p>
+
+          <h2>10. Disclaimer of Warranties</h2>
+          <p>
+            THE WEBSITE AND ALL SERVICES, CONTENT, AND MATERIALS PROVIDED THROUGH IT ARE PROVIDED ON AN "AS IS" AND "AS AVAILABLE" BASIS WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR IMPLIED. TO THE FULLEST EXTENT PERMISSIBLE UNDER APPLICABLE LAW, SHELTER IN A STORM, ITS PLATFORM PROVIDER (DONORKIT, INC.), AND THEIR RESPECTIVE DIRECTORS, OFFICERS, EMPLOYEES, AGENTS, AND AFFILIATES DISCLAIM ALL WARRANTIES, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, TITLE, NON-INFRINGEMENT, AND ACCURACY.
+          </p>
+          <p>
+            WE DO NOT WARRANT THAT: (A) THE WEBSITE WILL BE UNINTERRUPTED, TIMELY, SECURE, OR ERROR-FREE; (B) THE RESULTS OBTAINED FROM USE OF THE WEBSITE WILL BE ACCURATE OR RELIABLE; (C) THE QUALITY OF ANY SERVICES, INFORMATION, OR OTHER MATERIALS OBTAINED THROUGH THE WEBSITE WILL MEET YOUR EXPECTATIONS; OR (D) ANY ERRORS IN THE WEBSITE WILL BE CORRECTED.
+          </p>
+
+          <h2>11. Limitation of Liability</h2>
+          <p>
+            TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, IN NO EVENT SHALL SHELTER IN A STORM, ITS PLATFORM PROVIDER (DONORKIT, INC.), OR THEIR RESPECTIVE DIRECTORS, OFFICERS, EMPLOYEES, AGENTS, OR AFFILIATES BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, EXEMPLARY, OR PUNITIVE DAMAGES, OR ANY LOSS OF PROFITS, REVENUES, DATA, USE, GOODWILL, OR OTHER INTANGIBLE LOSSES, WHETHER INCURRED DIRECTLY OR INDIRECTLY, ARISING OUT OF OR IN CONNECTION WITH: (A) YOUR ACCESS TO OR USE OF, OR INABILITY TO ACCESS OR USE, THE WEBSITE OR SERVICES; (B) ANY CONDUCT OR CONTENT OF ANY THIRD PARTY ON THE WEBSITE; (C) ANY CONTENT OBTAINED FROM THE WEBSITE; OR (D) UNAUTHORIZED ACCESS, USE, OR ALTERATION OF YOUR TRANSMISSIONS OR CONTENT.
+          </p>
+          <p>
+            IN NO EVENT SHALL OUR AGGREGATE LIABILITY TO YOU FOR ALL CLAIMS ARISING OUT OF OR RELATING TO THE USE OF THE WEBSITE OR SERVICES EXCEED ONE HUNDRED UNITED STATES DOLLARS ($100.00).
+          </p>
+          <p>
+            THE LIMITATIONS OF LIABILITY SET FORTH ABOVE ARE FUNDAMENTAL ELEMENTS OF THE BASIS OF THE BARGAIN BETWEEN US AND YOU. SOME JURISDICTIONS DO NOT ALLOW THE EXCLUSION OR LIMITATION OF LIABILITY FOR CONSEQUENTIAL OR INCIDENTAL DAMAGES, SO THE ABOVE LIMITATIONS MAY NOT APPLY TO YOU IN FULL.
+          </p>
+
+          <h2>12. Indemnification</h2>
+          <p>
+            You agree to indemnify, defend, and hold harmless Shelter in a Storm, DonorKit, Inc. (d.b.a. Townhall), and their respective officers, directors, employees, agents, licensors, and affiliates from and against any and all claims, liabilities, damages, judgments, awards, losses, costs, expenses, and fees (including reasonable attorneys' fees) arising out of or relating to: (a) your use of the Website or Services; (b) your violation of these Terms; (c) your violation of any rights of a third party, including without limitation any intellectual property right, publicity right, confidentiality right, property right, or privacy right; or (d) any User Content you submit through the Website.
+          </p>
+
+          <h2>13. Termination</h2>
+          <p>
+            We reserve the right to terminate, suspend, or restrict your access to the Website and Services immediately, without prior notice or liability, for any reason whatsoever, including but not limited to a breach of these Terms. Upon termination, your right to use the Website shall immediately cease.
+          </p>
+          <p>
+            You may discontinue your use of the Website at any time. Termination of your access does not relieve you of any obligations or liabilities incurred prior to termination, and all provisions of these Terms which by their nature should survive termination shall survive, including without limitation ownership provisions, warranty disclaimers, indemnification obligations, and limitations of liability.
+          </p>
+
+          <h2>14. Dispute Resolution</h2>
+
+          <h3>14.1 Informal Resolution</h3>
+          <p>
+            Before initiating any formal legal proceeding, you agree to first contact us at <a href="mailto:compliance@donork.it">compliance@donork.it</a> and attempt to resolve the dispute informally for a period of at least thirty (30) days. Most concerns can be resolved informally in this manner.
+          </p>
+
+          <h3>14.2 Binding Arbitration</h3>
+          <p>
+            Any dispute, controversy, or claim arising out of or relating to these Terms or the breach, termination, or invalidity thereof that cannot be resolved through informal negotiations shall be settled by binding arbitration in accordance with the Commercial Arbitration Rules of the American Arbitration Association. The arbitration shall be conducted in the English language and shall take place in the State of Missouri, United States, or remotely at the discretion of the arbitrator. The arbitrator's decision shall be final and binding and may be entered as a judgment in any court of competent jurisdiction.
+          </p>
+
+          <h3>14.3 Class Action Waiver</h3>
+          <p>
+            YOU AND SHELTER IN A STORM AGREE THAT EACH MAY BRING CLAIMS AGAINST THE OTHER ONLY IN YOUR OR ITS INDIVIDUAL CAPACITY, AND NOT AS A PLAINTIFF OR CLASS MEMBER IN ANY PURPORTED CLASS, CONSOLIDATED, OR REPRESENTATIVE ACTION. Unless both parties agree otherwise, the arbitrator may not consolidate or join more than one person's or party's claims and may not otherwise preside over any form of a consolidated, representative, or class proceeding.
+          </p>
+
+          <h2>15. Governing Law &amp; Jurisdiction</h2>
+          <p>
+            These Terms shall be governed by and construed in accordance with the laws of the State of Missouri, United States, without regard to its conflict of law provisions. Any legal action or proceeding not subject to arbitration as set forth in Section 14 shall be brought exclusively in the state or federal courts located in Missouri, and you hereby consent to the personal jurisdiction of such courts.
+          </p>
+
+          <h2>16. Force Majeure</h2>
+          <p>
+            Neither Shelter in a Storm nor its Platform Provider shall be held liable for any failure or delay in performance of its obligations under these Terms where such failure or delay results from circumstances beyond the reasonable control of the affected party, including but not limited to acts of God, natural disasters, epidemics or pandemics, war, terrorism, riots, government actions or orders, labor disputes, power failures, Internet disturbances, or cyberattacks.
+          </p>
+
+          <h2>17. Accessibility</h2>
+          <p>
+            We are committed to ensuring that our Website is accessible to all Users, including those with disabilities. We strive to conform to the Web Content Accessibility Guidelines (WCAG) 2.1 Level AA standards. If you experience any accessibility barriers, please contact us at <a href="mailto:compliance@donork.it">compliance@donork.it</a> or visit our <a href="/legal/accessibility">Accessibility Statement</a>.
+          </p>
+
+          <h2>18. Severability</h2>
+          <p>
+            If any provision of these Terms is found by a court or arbitrator of competent jurisdiction to be invalid, illegal, or unenforceable for any reason, such provision shall be modified to the minimum extent necessary to make it valid, legal, and enforceable, or if modification is not possible, shall be severed from these Terms. The invalidity or unenforceability of any provision shall not affect the validity or enforceability of the remaining provisions, which shall remain in full force and effect.
+          </p>
+
+          <h2>19. Entire Agreement</h2>
+          <p>
+            These Terms, together with our <a href="/legal/privacy">Privacy Policy</a>, <a href="/legal/license">License &amp; Attribution</a> page, <a href="/legal/accessibility">Accessibility Statement</a>, and any other legal notices or policies published on the Website, constitute the entire agreement between you and Shelter in a Storm regarding your use of the Website and Services, and supersede all prior and contemporaneous agreements, understandings, negotiations, and discussions, whether oral or written.
+          </p>
+
+          <h2>20. Waiver</h2>
+          <p>
+            No waiver of any term or condition set forth in these Terms shall be deemed a further or continuing waiver of such term or any other term, and any failure to assert a right or provision under these Terms shall not constitute a waiver of such right or provision.
+          </p>
+
+          <h2>21. Contact Information</h2>
+          <p>
+            If you have any questions, concerns, or requests regarding these Terms of Use, please contact us at:
+          </p>
+          <ul>
+            <li><strong>Email:</strong> <a href="mailto:compliance@donork.it">compliance@donork.it</a></li>
+            <li><strong>Mail:</strong> Shelter in a Storm, 1560 Bagnell Dam Blvd., P.O. Box 194, Lake Ozark, MO 65049</li>
+            <li><strong>Platform Provider:</strong> DonorKit, Inc. (d.b.a. Townhall) &mdash; <a href="https://townhall.gg/legal/terms" target="_blank" rel="noopener noreferrer">townhall.gg</a></li>
+          </ul>
         </div>
+
+        <div class="mt-14 pt-6 border-t border-gray-100">
+          <p class="text-xs text-gray-300">
+            Last updated {new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}.
+          </p>
+        </div>
+      </div>
     </section>
-</Layout> 
+
+  </main>
+</Layout>

@@ -1,6 +1,4 @@
 ---
-import { siteConfig } from '../config/site';
-
 interface Props {
   id?: string;
   showHeader?: boolean;
@@ -10,16 +8,28 @@ const { id = 'request', showHeader = true } = Astro.props;
 const formId = `${id}-form`;
 ---
 
-<div class="bg-white border border-gray-200 rounded-lg overflow-hidden">
+<div>
   {showHeader && (
-    <div class="bg-gray-50 px-6 py-4 border-b border-gray-200">
-      <h3 class="font-semibold text-gray-900">Request Assistance</h3>
-      <p class="text-sm text-gray-500 mt-1">All fields marked with * are required</p>
+    <div class="mb-8 pb-6 border-b border-gray-100">
+      <h3 class="text-lg font-semibold text-black">Request Assistance</h3>
+      <p class="text-sm text-gray-400 mt-1">We'll walk you through a few quick questions.</p>
     </div>
   )}
-  
-  <form id={formId} class="p-6 space-y-6">
-    <!-- Hidden UTM and Referral Fields -->
+
+  <!-- Progress -->
+  <div class="mb-8">
+    <div class="flex items-center justify-between mb-3">
+      <p class="step-label text-xs text-gray-400 font-medium uppercase tracking-wide">Step 1 of 4</p>
+    </div>
+    <div class="flex gap-1.5">
+      <div class="progress-segment h-1 rounded-full flex-1 bg-black" data-seg="1"></div>
+      <div class="progress-segment h-1 rounded-full flex-1 bg-gray-200" data-seg="2"></div>
+      <div class="progress-segment h-1 rounded-full flex-1 bg-gray-200" data-seg="3"></div>
+      <div class="progress-segment h-1 rounded-full flex-1 bg-gray-200" data-seg="4"></div>
+    </div>
+  </div>
+
+  <form id={formId} class="wizard-form" novalidate>
     <input type="hidden" name="utm_source" id="utm_source" />
     <input type="hidden" name="utm_medium" id="utm_medium" />
     <input type="hidden" name="utm_campaign" id="utm_campaign" />
@@ -27,393 +37,365 @@ const formId = `${id}-form`;
     <input type="hidden" name="utm_content" id="utm_content" />
     <input type="hidden" name="referral" id="referral" />
 
-    <!-- Type of Assistance -->
-    <div>
-      <label class="block text-sm font-medium text-gray-700 mb-2">What do you need help with? *</label>
+    <!-- Step 1 -->
+    <div class="wizard-step border border-gray-200 rounded-xl p-6" data-step="1">
+      <h4 class="text-lg font-semibold text-black mb-1">What do you need help with?</h4>
+      <p class="text-sm text-gray-400 mb-6">Choose the option that best describes your situation.</p>
+
       <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-        <label class="relative">
+        <label class="relative cursor-pointer">
           <input type="radio" name="assistance" value="foodbox" class="peer sr-only" required />
-          <div class="px-4 py-3 border border-gray-300 bg-white cursor-pointer peer-checked:border-brand peer-checked:ring-1 peer-checked:ring-brand transition-all text-center rounded">
-            <svg class="w-5 h-5 mx-auto mb-1 text-gray-400 peer-checked:text-brand" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
-            </svg>
-            <span class="font-medium text-gray-900 text-sm">Food Box</span>
+          <div class="px-4 py-3.5 border border-gray-200 bg-white text-center rounded-lg peer-checked:border-black peer-checked:bg-black peer-checked:text-white transition-all">
+            <span class="font-medium text-sm">Food Box</span>
           </div>
         </label>
-        <label class="relative">
+        <label class="relative cursor-pointer">
           <input type="radio" name="assistance" value="homelessness" class="peer sr-only" />
-          <div class="px-4 py-3 border border-gray-300 bg-white cursor-pointer peer-checked:border-brand peer-checked:ring-1 peer-checked:ring-brand transition-all text-center rounded">
-            <svg class="w-5 h-5 mx-auto mb-1 text-gray-400 peer-checked:text-brand" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-            </svg>
-            <span class="font-medium text-gray-900 text-sm">Housing Help</span>
+          <div class="px-4 py-3.5 border border-gray-200 bg-white text-center rounded-lg peer-checked:border-black peer-checked:bg-black peer-checked:text-white transition-all">
+            <span class="font-medium text-sm">Housing Help</span>
           </div>
         </label>
-        <label class="relative">
+        <label class="relative cursor-pointer">
           <input type="radio" name="assistance" value="other" class="peer sr-only" />
-          <div class="px-4 py-3 border border-gray-300 bg-white cursor-pointer peer-checked:border-brand peer-checked:ring-1 peer-checked:ring-brand transition-all text-center rounded">
-            <svg class="w-5 h-5 mx-auto mb-1 text-gray-400 peer-checked:text-brand" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z" />
-            </svg>
-            <span class="font-medium text-gray-900 text-sm">Other</span>
+          <div class="px-4 py-3.5 border border-gray-200 bg-white text-center rounded-lg peer-checked:border-black peer-checked:bg-black peer-checked:text-white transition-all">
+            <span class="font-medium text-sm">Other</span>
           </div>
         </label>
       </div>
-    </div>
 
-    <!-- Other Support Description (only shown if 'other' is selected) -->
-    <div id="otherSupportDetails" class="hidden">
-      <label class="block text-sm font-medium text-gray-700 mb-2">Please describe what you need *</label>
-      <textarea 
-        id="otherSupportDescription" 
-        name="otherSupportDescription" 
-        rows="3"
-        placeholder="Tell us how we can help you..."
-        class="w-full px-3 py-2.5 border border-gray-300 rounded bg-white focus:border-brand focus:ring-1 focus:ring-brand focus:outline-none resize-none"
-      ></textarea>
-    </div>
+      <div id="foodOptions" class="hidden mt-5">
+        <label class="block text-sm font-medium text-black mb-3">Dietary restrictions (optional)</label>
+        <div class="flex flex-wrap gap-2">
+          <label class="cursor-pointer">
+            <input type="checkbox" name="dietary[]" value="vegetarian" class="sr-only peer" />
+            <span class="inline-flex items-center px-3 py-1.5 border border-gray-200 rounded-full text-sm peer-checked:border-black peer-checked:bg-black peer-checked:text-white transition-all">Vegetarian</span>
+          </label>
+          <label class="cursor-pointer">
+            <input type="checkbox" name="dietary[]" value="gluten-free" class="sr-only peer" />
+            <span class="inline-flex items-center px-3 py-1.5 border border-gray-200 rounded-full text-sm peer-checked:border-black peer-checked:bg-black peer-checked:text-white transition-all">Gluten-Free</span>
+          </label>
+          <label class="cursor-pointer">
+            <input type="checkbox" name="dietary[]" value="dairy-free" class="sr-only peer" />
+            <span class="inline-flex items-center px-3 py-1.5 border border-gray-200 rounded-full text-sm peer-checked:border-black peer-checked:bg-black peer-checked:text-white transition-all">Dairy-Free</span>
+          </label>
+        </div>
+      </div>
 
-    <!-- Dietary Restrictions (only shown if 'foodbox' is selected) -->
-    <div id="foodOptions" class="hidden">
-      <label class="block text-sm font-medium text-gray-700 mb-2">Dietary Restrictions (optional)</label>
-      <div class="flex flex-wrap gap-2">
-        <label class="dietary-option">
-          <input type="checkbox" name="dietary[]" value="vegetarian" class="sr-only peer" />
-          <span class="inline-flex items-center px-3 py-1.5 border border-gray-300 rounded-full text-sm cursor-pointer peer-checked:border-brand peer-checked:bg-brand/5 peer-checked:text-brand transition-all">
-            Vegetarian
-          </span>
-        </label>
-        <label class="dietary-option">
-          <input type="checkbox" name="dietary[]" value="gluten-free" class="sr-only peer" />
-          <span class="inline-flex items-center px-3 py-1.5 border border-gray-300 rounded-full text-sm cursor-pointer peer-checked:border-brand peer-checked:bg-brand/5 peer-checked:text-brand transition-all">
-            Gluten-Free
-          </span>
-        </label>
-        <label class="dietary-option">
-          <input type="checkbox" name="dietary[]" value="dairy-free" class="sr-only peer" />
-          <span class="inline-flex items-center px-3 py-1.5 border border-gray-300 rounded-full text-sm cursor-pointer peer-checked:border-brand peer-checked:bg-brand/5 peer-checked:text-brand transition-all">
-            Dairy-Free
-          </span>
-        </label>
+      <div id="otherSupportDetails" class="hidden mt-5">
+        <label class="block text-sm font-medium text-black mb-2">Please describe what you need *</label>
+        <textarea
+          id="otherSupportDescription"
+          name="otherSupportDescription"
+          rows="3"
+          placeholder="Tell us how we can help you..."
+          class="form-field resize-none"
+        ></textarea>
       </div>
     </div>
 
-    <!-- Divider -->
-    <div class="border-t border-gray-200 pt-6">
-      <p class="text-sm font-medium text-gray-700 mb-4">Your Information</p>
-    </div>
+    <!-- Step 2 -->
+    <div class="wizard-step border border-gray-200 rounded-xl p-6 hidden" data-step="2">
+      <h4 class="text-lg font-semibold text-black mb-1">Tell us about yourself</h4>
+      <p class="text-sm text-gray-400 mb-6">So we can get back to you.</p>
 
-    <!-- Name Fields -->
-    <div class="grid grid-cols-2 gap-3">
-      <div>
-        <label class="block text-sm font-medium text-gray-700 mb-2">First Name *</label>
-        <input 
-          type="text" 
-          name="firstName" 
-          required
-          placeholder="John"
-          class="w-full px-3 py-2.5 border border-gray-300 rounded bg-white focus:border-brand focus:ring-1 focus:ring-brand focus:outline-none"
-        />
-      </div>
-      <div>
-        <label class="block text-sm font-medium text-gray-700 mb-2">Last Name *</label>
-        <input 
-          type="text" 
-          name="lastName" 
-          required
-          placeholder="Doe"
-          class="w-full px-3 py-2.5 border border-gray-300 rounded bg-white focus:border-brand focus:ring-1 focus:ring-brand focus:outline-none"
-        />
-      </div>
-    </div>
+      <div class="space-y-5">
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="block text-sm font-medium text-black mb-2">First Name *</label>
+            <input type="text" name="firstName" required placeholder="John" class="form-field" />
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-black mb-2">Last Name *</label>
+            <input type="text" name="lastName" required placeholder="Doe" class="form-field" />
+          </div>
+        </div>
 
-    <!-- Contact Info -->
-    <div>
-      <label class="block text-sm font-medium text-gray-700 mb-2">Phone Number *</label>
-      <input 
-        type="tel" 
-        id="phone"
-        name="phone" 
-        required
-        placeholder="(555) 123-4567"
-        class="w-full px-3 py-2.5 border border-gray-300 rounded bg-white focus:border-brand focus:ring-1 focus:ring-brand focus:outline-none"
-      />
-      <p class="text-xs text-gray-500 mt-1">We'll call or text to follow up on your request.</p>
-    </div>
+        <div>
+          <label class="block text-sm font-medium text-black mb-2">Phone Number *</label>
+          <input type="tel" id="phone" name="phone" required placeholder="(555) 123-4567" class="form-field" />
+          <label class="inline-flex items-center gap-1.5 mt-2 cursor-pointer">
+            <input type="checkbox" class="no-phone-check h-3.5 w-3.5 accent-black rounded border-gray-300 cursor-pointer" />
+            <span class="text-xs text-gray-400">I don't have a phone number</span>
+          </label>
+        </div>
 
-    <div>
-      <label class="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
-      <input 
-        type="email" 
-        name="email"
-        placeholder="you@example.com"
-        class="w-full px-3 py-2.5 border border-gray-300 rounded bg-white focus:border-brand focus:ring-1 focus:ring-brand focus:outline-none"
-      />
-    </div>
-
-    <!-- Divider -->
-    <div class="border-t border-gray-200 pt-6">
-      <p class="text-sm font-medium text-gray-700 mb-4">Household Information</p>
-    </div>
-
-    <!-- Household Size -->
-    <div class="grid grid-cols-2 gap-3">
-      <div>
-        <label class="block text-sm font-medium text-gray-700 mb-2">Household Size *</label>
-        <select 
-          name="householdSize" 
-          required
-          class="w-full px-3 py-2.5 border border-gray-300 rounded bg-white focus:border-brand focus:ring-1 focus:ring-brand focus:outline-none"
-        >
-          <option value="">Select...</option>
-          <option value="1">1 person</option>
-          <option value="2">2 people</option>
-          <option value="3">3 people</option>
-          <option value="4">4 people</option>
-          <option value="5">5 people</option>
-          <option value="6">6 people</option>
-          <option value="7">7 people</option>
-          <option value="8+">8+ people</option>
-        </select>
-      </div>
-      <div>
-        <label class="block text-sm font-medium text-gray-700 mb-2">Children Under 18 *</label>
-        <select 
-          name="minorsCount" 
-          required
-          class="w-full px-3 py-2.5 border border-gray-300 rounded bg-white focus:border-brand focus:ring-1 focus:ring-brand focus:outline-none"
-        >
-          <option value="">Select...</option>
-          <option value="0">None</option>
-          <option value="1">1 child</option>
-          <option value="2">2 children</option>
-          <option value="3">3 children</option>
-          <option value="4">4 children</option>
-          <option value="5+">5+ children</option>
-        </select>
+        <div>
+          <label class="block text-sm font-medium text-black mb-2">Email Address</label>
+          <input type="email" name="email" placeholder="you@example.com" class="form-field" />
+          <label class="inline-flex items-center gap-1.5 mt-2 cursor-pointer">
+            <input type="checkbox" class="no-email-check h-3.5 w-3.5 accent-black rounded border-gray-300 cursor-pointer" />
+            <span class="text-xs text-gray-400">I don't have an email</span>
+          </label>
+        </div>
       </div>
     </div>
 
-    <!-- Address -->
-    <div>
-      <label class="block text-sm font-medium text-gray-700 mb-2">Street Address *</label>
-      <input 
-        type="text" 
-        name="street" 
-        required
-        placeholder="123 Main Street"
-        class="w-full px-3 py-2.5 border border-gray-300 rounded bg-white focus:border-brand focus:ring-1 focus:ring-brand focus:outline-none"
-      />
-    </div>
+    <!-- Step 3 -->
+    <div class="wizard-step border border-gray-200 rounded-xl p-6 hidden" data-step="3">
+      <h4 class="text-lg font-semibold text-black mb-1">Where do you live?</h4>
+      <p class="text-sm text-gray-400 mb-6">We primarily serve Miller and Camden Counties.</p>
 
-    <div class="grid grid-cols-5 gap-3">
-      <div class="col-span-2">
-        <label class="block text-sm font-medium text-gray-700 mb-2">City *</label>
-        <input 
-          type="text" 
-          name="city" 
-          required
-          placeholder="Lake Ozark"
-          class="w-full px-3 py-2.5 border border-gray-300 rounded bg-white focus:border-brand focus:ring-1 focus:ring-brand focus:outline-none"
-        />
-      </div>
-      <div class="col-span-1">
-        <label class="block text-sm font-medium text-gray-700 mb-2">State *</label>
-        <input 
-          type="text" 
-          name="state" 
-          required
-          value="MO"
-          maxlength="2"
-          class="w-full px-3 py-2.5 border border-gray-300 rounded bg-white focus:border-brand focus:ring-1 focus:ring-brand focus:outline-none"
-        />
-      </div>
-      <div class="col-span-2">
-        <label class="block text-sm font-medium text-gray-700 mb-2">ZIP Code *</label>
-        <input 
-          type="text" 
-          name="zipcode" 
-          required
-          placeholder="65049"
-          maxlength="10"
-          class="w-full px-3 py-2.5 border border-gray-300 rounded bg-white focus:border-brand focus:ring-1 focus:ring-brand focus:outline-none"
-        />
-      </div>
-    </div>
+      <div class="space-y-5">
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="block text-sm font-medium text-black mb-2">Household Size *</label>
+            <select name="householdSize" required class="form-field">
+              <option value="">Select...</option>
+              <option value="1">1 person</option>
+              <option value="2">2 people</option>
+              <option value="3">3 people</option>
+              <option value="4">4 people</option>
+              <option value="5">5 people</option>
+              <option value="6">6 people</option>
+              <option value="7">7 people</option>
+              <option value="8+">8+ people</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-black mb-2">Children Under 18 *</label>
+            <select name="minorsCount" required class="form-field">
+              <option value="">Select...</option>
+              <option value="0">None</option>
+              <option value="1">1 child</option>
+              <option value="2">2 children</option>
+              <option value="3">3 children</option>
+              <option value="4">4 children</option>
+              <option value="5+">5+ children</option>
+            </select>
+          </div>
+        </div>
 
-    <!-- Monthly Income -->
-    <div>
-      <label class="block text-sm font-medium text-gray-700 mb-2">Approximate Monthly Household Income *</label>
-      <select 
-        name="householdIncome" 
-        required
-        class="w-full px-3 py-2.5 border border-gray-300 rounded bg-white focus:border-brand focus:ring-1 focus:ring-brand focus:outline-none"
-      >
-        <option value="">Select range...</option>
-        <option value="0-500">$0 - $500</option>
-        <option value="500-1000">$500 - $1,000</option>
-        <option value="1000-1500">$1,000 - $1,500</option>
-        <option value="1500-2000">$1,500 - $2,000</option>
-        <option value="2000-2500">$2,000 - $2,500</option>
-        <option value="2500-3000">$2,500 - $3,000</option>
-        <option value="3000+">$3,000+</option>
-      </select>
-    </div>
+        <div class="address-block">
+          <div class="mb-5">
+            <label class="block text-sm font-medium text-black mb-2">Street Address *</label>
+            <input type="text" name="street" required placeholder="123 Main Street" class="form-field address-field" />
+          </div>
 
-    <!-- Additional Info -->
-    <div>
-      <label class="block text-sm font-medium text-gray-700 mb-2">Anything else we should know?</label>
-      <textarea 
-        name="additionalInfo" 
-        rows="3"
-        placeholder="Share any additional details that might help us assist you better..."
-        class="w-full px-3 py-2.5 border border-gray-300 rounded bg-white focus:border-brand focus:ring-1 focus:ring-brand focus:outline-none resize-none"
-      ></textarea>
-    </div>
+          <div class="grid grid-cols-5 gap-3">
+            <div class="col-span-2">
+              <label class="block text-sm font-medium text-black mb-2">City *</label>
+              <input type="text" name="city" required placeholder="Lake Ozark" class="form-field address-field" />
+            </div>
+            <div class="col-span-1">
+              <label class="block text-sm font-medium text-black mb-2">State *</label>
+              <input type="text" name="state" required value="MO" maxlength="2" class="form-field address-field" />
+            </div>
+            <div class="col-span-2">
+              <label class="block text-sm font-medium text-black mb-2">ZIP Code *</label>
+              <input type="text" name="zipcode" required placeholder="65049" maxlength="10" class="form-field address-field" />
+            </div>
+          </div>
 
-    <!-- Terms Agreement -->
-    <div class="flex items-start gap-3 py-4 border-t border-b border-gray-200">
-      <label class="custom-checkbox-wrapper">
-        <input 
-          type="checkbox" 
-          name="termsAgreement"
-          id="termsAgreement"
-          required
-          class="terms-checkbox sr-only"
-        />
-        <span class="custom-checkbox" aria-hidden="true">
-          <svg class="checkmark" viewBox="0 0 12 10" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <path d="M1 5L4.5 8.5L11 1" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </span>
-      </label>
-      <label for="termsAgreement" class="cursor-pointer flex-1">
-        <span class="text-sm text-gray-600">
-          I agree to the <a href="/legal/terms" class="text-brand hover:underline" target="_blank">Terms of Service</a> 
-          and <a href="/legal/privacy" class="text-brand hover:underline" target="_blank">Privacy Policy</a>. 
-          I understand my information will be used to process my assistance request. *
-        </span>
-      </label>
-    </div>
+          <label class="inline-flex items-center gap-1.5 mt-2 cursor-pointer">
+            <input type="checkbox" class="no-address-check h-3.5 w-3.5 accent-black rounded border-gray-300 cursor-pointer" />
+            <span class="text-xs text-gray-400">I don't have a permanent address</span>
+          </label>
+        </div>
 
-    <!-- Submit Button -->
-    <button 
-      type="submit"
-      class="submit-btn w-full bg-brand hover:bg-brand-dark text-white font-medium py-3 rounded transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-    >
-      <span class="btn-text">Submit Request</span>
-      <span class="btn-loading hidden">Submitting...</span>
-    </button>
-
-    <!-- Response Time Note -->
-    <div class="flex items-center gap-3 p-4 bg-gray-50 rounded-lg border border-gray-100">
-      <div class="p-2 bg-brand/10 rounded-lg flex-shrink-0">
-        <svg class="w-5 h-5 text-brand" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
-        </svg>
-      </div>
-      <div>
-        <span class="text-sm font-medium text-gray-900">Response Time</span>
-        <span class="block text-xs text-gray-500">We'll respond within 2-3 business days. For immediate food needs, visit our 24/7 pantry.</span>
+        <div>
+          <label class="block text-sm font-medium text-black mb-2">Monthly Household Income *</label>
+          <select name="householdIncome" required class="form-field">
+            <option value="">Select range...</option>
+            <option value="0-500">$0 - $500</option>
+            <option value="500-1000">$500 - $1,000</option>
+            <option value="1000-1500">$1,000 - $1,500</option>
+            <option value="1500-2000">$1,500 - $2,000</option>
+            <option value="2000-2500">$2,000 - $2,500</option>
+            <option value="2500-3000">$2,500 - $3,000</option>
+            <option value="3000+">$3,000+</option>
+          </select>
+        </div>
       </div>
     </div>
 
-    <!-- Security Note -->
-    <div class="flex items-center justify-center gap-1.5 text-xs text-gray-400 pt-2">
-      <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
-      </svg>
-      <span>Your information is kept confidential</span>
+    <!-- Step 4 -->
+    <div class="wizard-step border border-gray-200 rounded-xl p-6 hidden" data-step="4">
+      <h4 class="text-lg font-semibold text-black mb-1">Almost done</h4>
+      <p class="text-sm text-gray-400 mb-6">Help us understand your situation so we can best assist you.</p>
+
+      <div class="space-y-5">
+        <!-- Dynamic question based on assistance type -->
+        <div class="situation-question" data-for="foodbox">
+          <label class="block text-sm font-medium text-black mb-2">Tell us about your food situation *</label>
+          <textarea
+            name="situationFood"
+            rows="4"
+            placeholder="How many people are you feeding? How long have you been without adequate food? Any other details that help us prepare your box..."
+            class="form-field resize-none situation-field"
+            required
+          ></textarea>
+        </div>
+
+        <div class="situation-question hidden" data-for="homelessness">
+          <label class="block text-sm font-medium text-black mb-2">Tell us about your housing situation *</label>
+          <textarea
+            name="situationHousing"
+            rows="4"
+            placeholder="What bills are you behind on? Are you facing eviction? When is your deadline? Any details that help us understand your situation..."
+            class="form-field resize-none situation-field"
+          ></textarea>
+        </div>
+
+        <div class="situation-question hidden" data-for="other">
+          <label class="block text-sm font-medium text-black mb-2">Describe your situation *</label>
+          <textarea
+            name="situationOther"
+            rows="4"
+            placeholder="What's going on? How can we help? The more detail you share, the better we can assist you..."
+            class="form-field resize-none situation-field"
+          ></textarea>
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-black mb-2">Anything else we should know?</label>
+          <textarea
+            name="additionalInfo"
+            rows="2"
+            placeholder="Optional — any extra details..."
+            class="form-field resize-none"
+          ></textarea>
+        </div>
+
+        <div class="space-y-3 rounded-xl border border-gray-200 bg-gray-50 p-5">
+          <p class="text-sm font-semibold text-black">Before you submit, please review:</p>
+
+          <ul class="space-y-2.5 text-sm leading-relaxed text-gray-500">
+            <li class="flex gap-2">
+              <span class="mt-0.5 shrink-0 text-gray-400">&bull;</span>
+              <span>A valid <strong class="text-black">government-issued photo ID</strong> is required when picking up goods or receiving any services or assistance.</span>
+            </li>
+            <li class="flex gap-2">
+              <span class="mt-0.5 shrink-0 text-gray-400">&bull;</span>
+              <span>You may be asked to provide <strong class="text-black">proof of residency</strong> in Miller or Camden County (e.g., a utility bill, lease agreement, or recent mail).</span>
+            </li>
+            <li class="flex gap-2">
+              <span class="mt-0.5 shrink-0 text-gray-400">&bull;</span>
+              <span>All assistance is <strong class="text-black">subject to availability</strong> and current funding. Submitting a request does not guarantee services will be provided.</span>
+            </li>
+            <li class="flex gap-2">
+              <span class="mt-0.5 shrink-0 text-gray-400">&bull;</span>
+              <span>SIAS reserves the right to <strong class="text-black">verify any information</strong> you provide. Submitting false or misleading information may result in denial of services.</span>
+            </li>
+            <li class="flex gap-2">
+              <span class="mt-0.5 shrink-0 text-gray-400">&bull;</span>
+              <span>By submitting this form you <strong class="text-black">consent to be contacted</strong> by SIAS staff via phone, email, or mail regarding your request.</span>
+            </li>
+          </ul>
+        </div>
+
+        <div class="flex items-start gap-3 py-4 border-t border-gray-100">
+          <input
+            type="checkbox"
+            name="termsAgreement"
+            id="termsAgreement"
+            required
+            class="terms-checkbox mt-0.5 h-4 w-4 rounded border-gray-300 accent-black cursor-pointer"
+          />
+          <label for="termsAgreement" class="cursor-pointer text-sm text-gray-400 leading-relaxed">
+            I certify that the information I have provided is true and accurate to the best of my knowledge.
+            I agree to the <a href="/legal/terms" class="text-black hover:underline" target="_blank">Terms of Service</a>
+            and <a href="/legal/privacy" class="text-black hover:underline" target="_blank">Privacy Policy</a>.
+            I understand my information will be used to process my assistance request,
+            that a valid photo ID and proof of residency may be required upon receipt of services,
+            and that assistance is subject to eligibility verification and availability.
+            Form submissions are processed by our partner
+            <a href="https://townhall.gg" class="text-black hover:underline" target="_blank" rel="noopener noreferrer">townhall</a>;
+            see their <a href="https://townhall.gg/legal/privacy" class="text-black hover:underline" target="_blank" rel="noopener noreferrer">Privacy Policy</a>. *
+          </label>
+        </div>
+
+        <div class="rounded-lg bg-white border border-gray-100 px-4 py-3">
+          <p class="text-xs text-gray-400 leading-relaxed">
+            <strong class="text-gray-500">Equal Opportunity:</strong> SIAS provides services without regard to race, color, religion, sex, national origin, age, disability, or any other protected status. If you need accommodations to access our services, please let us know in the form above.
+          </p>
+        </div>
+      </div>
     </div>
+
+    <!-- Navigation -->
+    <div class="flex items-center justify-between mt-6">
+      <button type="button" class="wizard-back text-sm text-gray-400 hover:text-black transition-colors hidden">
+        &larr; Back
+      </button>
+      <div class="ml-auto">
+        <button type="button" class="wizard-next px-6 py-3 bg-black text-white font-semibold text-sm rounded-lg hover:bg-gray-900 transition-colors">
+          Continue
+        </button>
+        <button type="submit" class="wizard-submit px-6 py-3 bg-black text-white font-semibold text-sm rounded-lg hover:bg-gray-900 transition-colors hidden disabled:opacity-40 disabled:cursor-not-allowed">
+          <span class="btn-text">Submit Request</span>
+          <span class="btn-loading hidden">Submitting...</span>
+        </button>
+      </div>
+    </div>
+    <div class="form-error hidden text-sm text-red-500 text-center py-2"></div>
+
+    <p class="text-center text-xs text-gray-300 pt-6">
+      We respond within 2&ndash;3 business days. For immediate food needs, visit our
+      <a href="/services/food-pantry" class="text-black hover:underline">24/7 pantry</a>.
+    </p>
   </form>
 </div>
 
 <style>
-  /* Custom Checkbox Styles */
-  .custom-checkbox-wrapper {
-    display: inline-flex;
-    align-items: flex-start;
-    cursor: pointer;
-    flex-shrink: 0;
+  .form-field {
+    width: 100%;
+    padding: 0.625rem 0.875rem;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.5rem;
+    background: white;
+    font-size: 0.875rem;
+    color: #111;
+    transition: border-color 0.15s ease;
+  }
+  .form-field::placeholder {
+    color: #d1d5db;
+  }
+  .form-field:focus {
+    outline: none;
+    border-color: #111;
+    box-shadow: 0 0 0 1px #111;
+  }
+  .form-field.field-error {
+    border-color: #ef4444;
   }
 
-  .custom-checkbox {
-    width: 20px;
-    height: 20px;
-    border: 2px solid #d1d5db;
-    border-radius: 4px;
-    background-color: #fff;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.15s ease-in-out;
-    margin-top: 1px;
+  .wizard-step {
+    transition: opacity 0.2s ease;
   }
-
-  .custom-checkbox .checkmark {
-    width: 12px;
-    height: 10px;
-    color: #fff;
+  .wizard-step.hidden {
+    display: none;
+  }
+  .wizard-step.fading {
     opacity: 0;
-    transform: scale(0.5);
-    transition: all 0.15s ease-in-out;
   }
 
-  /* Hover state */
-  .custom-checkbox-wrapper:hover .custom-checkbox {
-    border-color: var(--color-brand, #666ed8);
-    background-color: rgba(102, 110, 216, 0.05);
-  }
-
-  /* Focus state */
-  .terms-checkbox:focus + .custom-checkbox {
-    border-color: var(--color-brand, #666ed8);
-    box-shadow: 0 0 0 3px rgba(102, 110, 216, 0.15);
-  }
-
-  /* Checked state */
-  .terms-checkbox:checked + .custom-checkbox {
-    background-color: var(--color-brand, #666ed8);
-    border-color: var(--color-brand, #666ed8);
-  }
-
-  .terms-checkbox:checked + .custom-checkbox .checkmark {
-    opacity: 1;
-    transform: scale(1);
-  }
-
-  /* Checked + hover state */
-  .custom-checkbox-wrapper:hover .terms-checkbox:checked + .custom-checkbox {
-    background-color: var(--color-brand-dark, #5059c8);
-    border-color: var(--color-brand-dark, #5059c8);
-  }
-
-  /* Radio button checked state for icons */
-  input[type="radio"]:checked + div svg {
-    color: var(--color-brand, #666ed8);
+  .progress-segment {
+    transition: background-color 0.3s ease;
   }
 </style>
 
 <script is:inline>
   (function() {
-    function initRequestForm() {
-      // Find the form - look for any form with ID ending in '-form' within our component
+    function initWizard() {
       const form = document.querySelector('form[id$="-form"]') || document.getElementById('request-form');
-      if (!form) {
-        console.warn('Request form not found');
-        return;
-      }
+      if (!form) return;
 
-      // Function to get cookie value by name
+      let currentStep = 1;
+      const totalSteps = 4;
+      const steps = form.querySelectorAll('.wizard-step');
+      const backBtn = form.querySelector('.wizard-back');
+      const nextBtn = form.querySelector('.wizard-next');
+      const submitBtn = form.querySelector('.wizard-submit');
+      const segments = form.closest('div')?.querySelectorAll('.progress-segment') || [];
+      const stepLabel = form.closest('div')?.querySelector('.step-label');
+
       function getCookie(name) {
         const value = `; ${document.cookie}`;
         const parts = value.split(`; ${name}=`);
         if (parts.length === 2) return parts.pop().split(';').shift();
       }
 
-      // Populate hidden fields with UTM and referral data
-      const utmFields = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content', 'referral'];
-      utmFields.forEach(field => {
+      ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content', 'referral'].forEach(field => {
         const value = getCookie(field);
         if (value) {
           const input = form.querySelector(`[name="${field}"]`);
@@ -421,28 +403,129 @@ const formId = `${id}-form`;
         }
       });
 
-      // Check for existing submission
-      function checkSubmissionStatus() {
-        if (document.cookie.split(';').some((item) => item.trim().startsWith('formSubmitted='))) {
-          const message = document.createElement('div');
-          message.className = 'p-4 bg-yellow-50 text-yellow-800 rounded-lg mb-6 border border-yellow-200';
-          message.innerHTML = `
-            <p class="font-medium">You have recently submitted a request.</p>
-            <p class="text-sm mt-1">Please wait 2-3 days before submitting another request. If you need immediate assistance, 
-            our food pantry is available 24/7.</p>
-          `;
-          form.insertBefore(message, form.firstChild);
-          
-          // Disable form
-          form.querySelectorAll('input, select, textarea, button').forEach(el => {
-            el.disabled = true;
-          });
+      if (document.cookie.split(';').some((item) => item.trim().startsWith('formSubmitted='))) {
+        const message = document.createElement('div');
+        message.className = 'p-4 text-sm text-gray-500 border border-gray-200 rounded-xl mb-6';
+        message.innerHTML = '<p class="font-medium text-black">You have recently submitted a request.</p><p class="mt-1">Please wait 2-3 days before submitting again. For immediate food needs, visit our 24/7 pantry.</p>';
+        form.insertBefore(message, form.firstChild);
+        form.querySelectorAll('input, select, textarea, button').forEach(el => { el.disabled = true; });
+        return;
+      }
+
+      function showStep(n) {
+        const current = form.querySelector(`.wizard-step:not(.hidden)`);
+        if (current) {
+          current.classList.add('fading');
+          setTimeout(() => {
+            current.classList.add('hidden');
+            current.classList.remove('fading');
+            revealStep(n);
+          }, 150);
+        } else {
+          revealStep(n);
         }
       }
 
-      checkSubmissionStatus();
+      function revealStep(n) {
+        const target = form.querySelector(`.wizard-step[data-step="${n}"]`);
+        if (target) {
+          target.classList.remove('hidden');
+          target.classList.add('fading');
+          requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+              target.classList.remove('fading');
+            });
+          });
+        }
 
-      // Handle assistance type change
+        currentStep = n;
+
+        // Update progress
+        segments.forEach(seg => {
+          const segNum = parseInt(seg.getAttribute('data-seg'));
+          seg.style.backgroundColor = segNum <= n ? '#111' : '#e5e7eb';
+        });
+        if (stepLabel) stepLabel.textContent = `Step ${n} of ${totalSteps}`;
+
+        // Toggle buttons
+        if (backBtn) backBtn.classList.toggle('hidden', n === 1);
+        if (nextBtn) nextBtn.classList.toggle('hidden', n === totalSteps);
+        if (submitBtn) submitBtn.classList.toggle('hidden', n !== totalSteps);
+
+        // Scroll form into view
+        form.closest('div')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+
+      function validateStep(n) {
+        const stepEl = form.querySelector(`.wizard-step[data-step="${n}"]`);
+        if (!stepEl) return true;
+
+        let valid = true;
+        let firstBad = null;
+
+        // Step 1: check radio is selected
+        if (n === 1) {
+          const checked = form.querySelector('input[name="assistance"]:checked');
+          if (!checked) {
+            valid = false;
+            const radios = stepEl.querySelectorAll('input[name="assistance"]');
+            radios.forEach(r => r.closest('label')?.querySelector('div')?.classList.add('border-red-400'));
+            firstBad = radios[0];
+          } else {
+            stepEl.querySelectorAll('input[name="assistance"]').forEach(r => r.closest('label')?.querySelector('div')?.classList.remove('border-red-400'));
+          }
+
+          // If "other" selected, otherSupportDescription is required
+          if (checked && checked.value === 'other') {
+            const desc = document.getElementById('otherSupportDescription');
+            if (desc && !desc.value.trim()) {
+              desc.classList.add('field-error');
+              valid = false;
+              if (!firstBad) firstBad = desc;
+            }
+          }
+        }
+
+        // General required field check for this step
+        const fields = stepEl.querySelectorAll('input[required], select[required], textarea[required]');
+        fields.forEach(field => {
+          if (field.type === 'radio') return; // handled above
+          if (field.type === 'checkbox' && !field.checked) {
+            valid = false;
+            if (!firstBad) firstBad = field;
+          } else if (field.type !== 'checkbox' && field.type !== 'radio' && !field.value.trim()) {
+            valid = false;
+            field.classList.add('field-error');
+            if (!firstBad) firstBad = field;
+          } else {
+            field.classList.remove('field-error');
+          }
+        });
+
+        if (!valid && firstBad) {
+          firstBad.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        return valid;
+      }
+
+      // Next button
+      if (nextBtn) {
+        nextBtn.addEventListener('click', () => {
+          if (validateStep(currentStep) && currentStep < totalSteps) {
+            showStep(currentStep + 1);
+          }
+        });
+      }
+
+      // Back button
+      if (backBtn) {
+        backBtn.addEventListener('click', () => {
+          if (currentStep > 1) showStep(currentStep - 1);
+        });
+      }
+
+      // Step 1 conditional fields
       const assistanceRadios = form.querySelectorAll('input[name="assistance"]');
       const foodOptions = document.getElementById('foodOptions');
       const otherSupportDetails = document.getElementById('otherSupportDetails');
@@ -450,8 +533,12 @@ const formId = `${id}-form`;
 
       assistanceRadios.forEach(radio => {
         radio.addEventListener('change', (e) => {
+          // Clear radio error styling
+          form.querySelectorAll('input[name="assistance"]').forEach(r =>
+            r.closest('label')?.querySelector('div')?.classList.remove('border-red-400')
+          );
+
           const value = e.target.value;
-          
           if (value === 'foodbox') {
             foodOptions?.classList.remove('hidden');
             otherSupportDetails?.classList.add('hidden');
@@ -465,33 +552,100 @@ const formId = `${id}-form`;
             otherSupportDetails?.classList.add('hidden');
             if (otherDescription) otherDescription.removeAttribute('required');
           }
+
+          // Show the matching situation question on step 4
+          form.querySelectorAll('.situation-question').forEach(q => {
+            const isMatch = q.getAttribute('data-for') === value;
+            q.classList.toggle('hidden', !isMatch);
+            const field = q.querySelector('.situation-field');
+            if (field) {
+              if (isMatch) field.setAttribute('required', '');
+              else { field.removeAttribute('required'); field.classList.remove('field-error'); }
+            }
+          });
         });
       });
 
-      // Format phone number as user types
+      // Phone formatting
       const phoneInput = form.querySelector('input[name="phone"]');
       if (phoneInput) {
         phoneInput.addEventListener('input', (e) => {
-          let value = e.target.value.replace(/\D/g, '');
-          value = value.substring(0, 10);
-          
-          // Format as (XXX) XXX-XXXX
-          if (value.length > 6) {
-            value = `(${value.slice(0, 3)}) ${value.slice(3, 6)}-${value.slice(6)}`;
-          } else if (value.length > 3) {
-            value = `(${value.slice(0, 3)}) ${value.slice(3)}`;
-          } else if (value.length > 0) {
-            value = `(${value}`;
-          }
-          
+          let value = e.target.value.replace(/\D/g, '').substring(0, 10);
+          if (value.length > 6) value = `(${value.slice(0, 3)}) ${value.slice(3, 6)}-${value.slice(6)}`;
+          else if (value.length > 3) value = `(${value.slice(0, 3)}) ${value.slice(3)}`;
+          else if (value.length > 0) value = `(${value}`;
           e.target.value = value;
         });
       }
 
-      // Form submission
-      const submitBtn = form.querySelector('.submit-btn');
-      const btnText = form.querySelector('.btn-text');
-      const btnLoading = form.querySelector('.btn-loading');
+      // "I don't have a phone/email" toggles
+      const noPhoneCheck = form.querySelector('.no-phone-check');
+      const noEmailCheck = form.querySelector('.no-email-check');
+      const emailInput = form.querySelector('input[name="email"]');
+
+      if (noPhoneCheck && phoneInput) {
+        noPhoneCheck.addEventListener('change', () => {
+          if (noPhoneCheck.checked) {
+            phoneInput.value = 'N/A';
+            phoneInput.disabled = true;
+            phoneInput.classList.add('opacity-40');
+            phoneInput.removeAttribute('required');
+            phoneInput.classList.remove('field-error');
+          } else {
+            phoneInput.value = '';
+            phoneInput.disabled = false;
+            phoneInput.classList.remove('opacity-40');
+            phoneInput.setAttribute('required', '');
+          }
+        });
+      }
+
+      if (noEmailCheck && emailInput) {
+        noEmailCheck.addEventListener('change', () => {
+          if (noEmailCheck.checked) {
+            emailInput.value = '';
+            emailInput.disabled = true;
+            emailInput.classList.add('opacity-40');
+            emailInput.classList.remove('field-error');
+          } else {
+            emailInput.disabled = false;
+            emailInput.classList.remove('opacity-40');
+          }
+        });
+      }
+
+      // "I don't have a permanent address" toggle
+      const noAddressCheck = form.querySelector('.no-address-check');
+      const addressFields = form.querySelectorAll('.address-field');
+
+      if (noAddressCheck && addressFields.length) {
+        noAddressCheck.addEventListener('change', () => {
+          addressFields.forEach(field => {
+            if (noAddressCheck.checked) {
+              field.value = field.name === 'state' ? '' : 'N/A';
+              if (field.name === 'state') field.value = 'N/A';
+              field.disabled = true;
+              field.classList.add('opacity-40');
+              field.removeAttribute('required');
+              field.classList.remove('field-error');
+            } else {
+              field.value = field.name === 'state' ? 'MO' : '';
+              field.disabled = false;
+              field.classList.remove('opacity-40');
+              field.setAttribute('required', '');
+            }
+          });
+        });
+      }
+
+      // Clear error on input
+      form.querySelectorAll('input, select, textarea').forEach(field => {
+        field.addEventListener('input', () => { field.classList.remove('field-error'); });
+      });
+
+      // Form submission (step 4)
+      const btnText = submitBtn?.querySelector('.btn-text');
+      const btnLoading = submitBtn?.querySelector('.btn-loading');
 
       function resetButton() {
         if (submitBtn) submitBtn.disabled = false;
@@ -501,111 +655,65 @@ const formId = `${id}-form`;
 
       form.addEventListener('submit', async function(e) {
         e.preventDefault();
-        
-        // Check if submission cookie exists
+
+        if (!validateStep(currentStep)) return;
+
+        const errEl = form.querySelector('.form-error');
+        const showErr = (msg) => { if (errEl) { errEl.textContent = msg; errEl.classList.remove('hidden'); } };
+        const hideErr = () => { if (errEl) errEl.classList.add('hidden'); };
+        hideErr();
+
         if (document.cookie.split(';').some((item) => item.trim().startsWith('formSubmitted='))) {
-          alert('You have already submitted a request. Please wait 2-3 days before submitting another request.');
+          showErr('You have already submitted a request. Please wait 2\u20133 days before submitting another.');
           return;
         }
 
-        // Validation
-        const requiredFields = form.querySelectorAll('[required]');
-        let isValid = true;
-        let firstInvalidField = null;
-
-        requiredFields.forEach(field => {
-          if (field.type === 'checkbox' && !field.checked) {
-            isValid = false;
-            field.closest('.custom-checkbox-wrapper')?.querySelector('.custom-checkbox')?.classList.add('border-red-500');
-            if (!firstInvalidField) firstInvalidField = field;
-          } else if (field.type === 'radio') {
-            // Check if at least one radio in the group is selected
-            const name = field.name;
-            const checked = form.querySelector(`input[name="${name}"]:checked`);
-            if (!checked) {
-              isValid = false;
-              if (!firstInvalidField) firstInvalidField = field;
-            }
-          } else if (!field.value) {
-            isValid = false;
-            field.classList.add('border-red-500');
-            if (!firstInvalidField) firstInvalidField = field;
-          } else {
-            field.classList.remove('border-red-500');
-          }
-        });
-
-        if (!isValid) {
-          alert('Please fill in all required fields.');
-          if (firstInvalidField) {
-            firstInvalidField.scrollIntoView({ behavior: 'smooth', block: 'center' });
-          }
-          return;
-        }
-
-        // Show loading
         if (submitBtn) submitBtn.disabled = true;
         if (btnText) btnText.classList.add('hidden');
         if (btnLoading) btnLoading.classList.remove('hidden');
 
-        // Submit form
         const formData = new FormData(form);
-        
+
         try {
           const controller = new AbortController();
-          const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 second timeout
-          
+          const timeoutId = setTimeout(() => controller.abort(), 30000);
+
           const response = await fetch('https://formspree.io/f/mjkykawl', {
             method: 'POST',
             body: formData,
-            headers: {
-              'Accept': 'application/json'
-            },
+            headers: { 'Accept': 'application/json' },
             signal: controller.signal
           });
-          
-          clearTimeout(timeoutId);
 
+          clearTimeout(timeoutId);
           const result = await response.json().catch(() => ({}));
-          
+
           if (response.ok) {
-            // Set cookie to expire in 2 days
             const d = new Date();
             d.setTime(d.getTime() + (2 * 24 * 60 * 60 * 1000));
             document.cookie = `formSubmitted=true;expires=${d.toUTCString()};path=/`;
-            
-            // Redirect to thank you page
             window.location.href = '/thank-you';
           } else {
-            console.error('Form error:', result);
             throw new Error(result.error || 'Form submission failed');
           }
         } catch (error) {
-          console.error('Submission error:', error);
-          
           if (error.name === 'AbortError') {
-            alert('Request timed out. Please check your internet connection and try again.');
+            showErr('Request timed out. Please check your internet connection and try again.');
           } else {
-            alert('There was a problem submitting your form. Please try again.');
+            showErr('There was a problem submitting your form. Please try again.');
           }
-          
           resetButton();
         }
       });
 
-      // Remove error styling on input
-      form.querySelectorAll('input, select, textarea').forEach(field => {
-        field.addEventListener('input', () => {
-          field.classList.remove('border-red-500');
-        });
-      });
+      // Initialize step 1
+      showStep(1);
     }
 
-    // Initialize when DOM is ready
     if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', initRequestForm);
+      document.addEventListener('DOMContentLoaded', initWizard);
     } else {
-      initRequestForm();
+      initWizard();
     }
   })();
 </script>

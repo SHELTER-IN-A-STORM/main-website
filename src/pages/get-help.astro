@@ -1,330 +1,45 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import { siteConfig } from '../config/site';
 import RequestForm from '../components/RequestForm.astro';
-
-const heroImage = {
-  url: "https://cdn.shelterinastorm.org/images/handoutreach.png",
-  alt: "Helping Hands"
-};
-
-const assistanceTypes = [
-  {
-    title: "Emergency Food",
-    description: "Access our 24/7 food pantry or request a food box delivery.",
-    icon: `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />`
-  },
-  {
-    title: "Homelessness Prevention",
-    description: "Help with rent, utilities, or other bills to prevent housing loss.",
-    icon: `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />`
-  },
-  {
-    title: "Other Support",
-    description: "We'll do our best to help or connect you with the right resources.",
-    icon: `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z" />`
-  }
-];
 ---
 
 <Layout title="Get Help">
-  <!-- Preload hero image -->
-  <link rel="preload" href={heroImage.url} as="image" fetchpriority="high" slot="head" />
-
-  <!-- Hero Section -->
-  <section class="relative overflow-hidden bg-white">
-    <div class="absolute inset-0">
-      <img 
-        src={heroImage.url} 
-        alt={heroImage.alt}
-        class="w-full h-full object-cover"
-        fetchpriority="high"
-        loading="eager"
-        decoding="async"
-      />
-      <div class="absolute inset-0 bg-black/50"></div>
-    </div>
-
-    <div class="relative container mx-auto px-6 py-24 md:py-32">
-      <div class="max-w-3xl">
-        <p class="text-sm font-semibold text-white/80 uppercase tracking-wider mb-4">
-          We're Here to Help
-        </p>
-        <h1 class="text-4xl md:text-5xl font-semibold text-white mb-6 leading-tight">
-          Request Assistance
+  <section class="pt-32 pb-24 lg:pt-40 lg:pb-32">
+    <div class="max-w-2xl mx-auto px-6">
+      <div class="text-center mb-12">
+        <p class="text-sm text-gray-400 font-medium uppercase tracking-wide mb-4">We're here to help</p>
+        <h1 class="text-3xl lg:text-4xl font-bold text-black tracking-tight mb-4">
+          Request assistance
         </h1>
-        <p class="text-lg text-white/80 mb-8 max-w-2xl leading-relaxed">
-          Our team is ready to help you through your storm. Fill out our request form and we'll respond within 2-3 business days.
+        <p class="text-gray-400 leading-relaxed">
+          Fill out this confidential form and our team will respond within 2&ndash;3 business days.
         </p>
-        
-        <div class="flex flex-col sm:flex-row gap-3">
-          <a 
-            href="#request-form" 
-            class="inline-flex items-center justify-center px-6 py-3 bg-brand hover:bg-brand-dark text-white font-medium rounded transition-colors"
-          >
-            Request Help
-          </a>
-          <a 
-            href="#food-pantry" 
-            class="inline-flex items-center justify-center px-6 py-3 bg-white/10 backdrop-blur border border-white/30 text-white hover:bg-white/20 font-medium rounded transition-colors"
-          >
-            24/7 Food Pantry
-          </a>
-        </div>
       </div>
-    </div>
-  </section>
 
-  <!-- Request Form Section -->
-  <section id="request-form" class="py-20 bg-white">
-    <div class="container mx-auto px-6">
-      <div class="max-w-7xl mx-auto">
-        <div class="grid lg:grid-cols-5 gap-16 items-start">
-          <!-- Left Column - Content -->
-          <div class="lg:col-span-2 lg:sticky lg:top-24">
-            <p class="text-sm font-semibold text-brand uppercase tracking-wider mb-4">Assistance Request</p>
-            <h2 class="text-3xl lg:text-4xl font-semibold text-gray-900 mb-6">
-              Tell Us What You Need
-            </h2>
-            <p class="text-gray-600 mb-8 leading-relaxed">
-              Complete this form to request assistance. All information is kept confidential and used only to process your request.
-            </p>
-            
-            <div class="space-y-4 mb-8">
-              <div class="flex items-start gap-3">
-                <div class="w-8 h-8 rounded-lg bg-brand/10 flex items-center justify-center flex-shrink-0">
-                  <svg class="w-4 h-4 text-brand" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
-                  </svg>
-                </div>
-                <div>
-                  <p class="font-medium text-gray-900">Confidential</p>
-                  <p class="text-sm text-gray-500">Your information is kept private and secure</p>
-                </div>
-              </div>
-              <div class="flex items-start gap-3">
-                <div class="w-8 h-8 rounded-lg bg-brand/10 flex items-center justify-center flex-shrink-0">
-                  <svg class="w-4 h-4 text-brand" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                  </svg>
-                </div>
-                <div>
-                  <p class="font-medium text-gray-900">Quick Response</p>
-                  <p class="text-sm text-gray-500">We respond within 2-3 business days</p>
-                </div>
-              </div>
-              <div class="flex items-start gap-3">
-                <div class="w-8 h-8 rounded-lg bg-brand/10 flex items-center justify-center flex-shrink-0">
-                  <svg class="w-4 h-4 text-brand" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
-                  </svg>
-                </div>
-                <div>
-                  <p class="font-medium text-gray-900">No Judgment</p>
-                  <p class="text-sm text-gray-500">Everyone needs help sometimes</p>
-                </div>
-              </div>
-            </div>
-
-            <!-- Service Area -->
-            <div class="bg-gray-50 rounded-xl p-6 border border-gray-100">
-              <h3 class="font-semibold text-gray-900 mb-3">Service Area</h3>
-              <p class="text-sm text-gray-600 mb-3">
-                We primarily serve residents of Miller and Camden Counties in Missouri.
-              </p>
-              <div class="flex flex-wrap gap-2">
-                <span class="inline-flex items-center px-3 py-1 bg-white text-gray-700 text-sm rounded-full border border-gray-200">
-                  Miller County
-                </span>
-                <span class="inline-flex items-center px-3 py-1 bg-white text-gray-700 text-sm rounded-full border border-gray-200">
-                  Camden County
-                </span>
-              </div>
-            </div>
-          </div>
-          
-          <!-- Right Column - Form -->
-          <div class="lg:col-span-3">
-            <RequestForm showHeader={true} />
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Types of Assistance -->
-  <section class="py-20 bg-gray-50">
-    <div class="container mx-auto px-6">
-      <div class="max-w-6xl mx-auto">
-        <div class="text-center mb-12">
-          <p class="text-sm font-semibold text-brand uppercase tracking-wider mb-4">How We Help</p>
-          <h2 class="text-3xl lg:text-4xl font-semibold text-gray-900 mb-4">Types of Assistance</h2>
-          <p class="text-gray-600 max-w-2xl mx-auto">
-            We offer several types of support for those in need in our community
-          </p>
-        </div>
-        
-        <div class="grid md:grid-cols-3 gap-6">
-          {assistanceTypes.map(type => (
-            <div class="bg-white p-6 rounded-lg border border-gray-200 hover:border-gray-300 transition-all hover:shadow-sm">
-              <div class="w-10 h-10 bg-brand/10 rounded-lg flex items-center justify-center mb-4">
-                <svg class="w-5 h-5 text-brand" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <Fragment set:html={type.icon} />
-                </svg>
-              </div>
-              <h3 class="text-lg font-semibold mb-2 text-gray-900">{type.title}</h3>
-              <p class="text-sm text-gray-600 leading-relaxed">{type.description}</p>
-            </div>
-          ))}
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Food Pantry Section -->
-  <section id="food-pantry" class="py-20 bg-white border-t border-gray-100">
-    <div class="container mx-auto px-6">
-      <div class="max-w-6xl mx-auto">
-        <div class="grid lg:grid-cols-2 gap-12 items-center">
+      <!-- Eligibility Notice -->
+      <div class="mb-10 rounded-xl border border-gray-200 bg-gray-50 p-5">
+        <div class="flex gap-3">
+          <svg class="mt-0.5 h-5 w-5 shrink-0 text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15 9h3.75M15 12h3.75M15 15h3.75M4.5 19.5h15a2.25 2.25 0 0 0 2.25-2.25V6.75A2.25 2.25 0 0 0 19.5 4.5h-15A2.25 2.25 0 0 0 2.25 6.75v10.5A2.25 2.25 0 0 0 4.5 19.5Zm6-10.125a1.875 1.875 0 1 1-3.75 0 1.875 1.875 0 0 1 3.75 0Zm1.294 6.336a6.721 6.721 0 0 1-3.17.789 6.721 6.721 0 0 1-3.168-.789 3.376 3.376 0 0 1 6.338 0Z" />
+          </svg>
           <div>
-            <p class="text-sm font-semibold text-brand uppercase tracking-wider mb-4">Immediate Help</p>
-            <h2 class="text-3xl lg:text-4xl font-semibold text-gray-900 mb-6">
-              24/7 Food Pantry
-            </h2>
-            <p class="text-gray-600 mb-6 leading-relaxed">
-              Our Pantry of Blessings provides non-perishable food and hygiene items on an emergency basis, 24 hours a day, 7 days a week. No appointment or paperwork needed.
+            <p class="text-sm font-semibold text-black">Identification &amp; Residency Requirements</p>
+            <p class="mt-1 text-sm leading-relaxed text-gray-500">
+              A valid <strong class="text-black">government-issued photo ID</strong> is required when receiving goods, services, or other assistance.
+              You may also be asked to provide <strong class="text-black">proof of residency</strong> in Miller or Camden County (e.g., a utility bill, lease agreement, or piece of mail showing your address).
             </p>
-            
-            <div class="space-y-4 mb-8">
-              <div class="flex items-start gap-3">
-                <div class="w-8 h-8 rounded-lg bg-green-100 flex items-center justify-center flex-shrink-0">
-                  <svg class="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                  </svg>
-                </div>
-                <div>
-                  <p class="font-medium text-gray-900">Open 24/7</p>
-                  <p class="text-sm text-gray-500">Access anytime you need it</p>
-                </div>
-              </div>
-              <div class="flex items-start gap-3">
-                <div class="w-8 h-8 rounded-lg bg-green-100 flex items-center justify-center flex-shrink-0">
-                  <svg class="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                  </svg>
-                </div>
-                <div>
-                  <p class="font-medium text-gray-900">No Paperwork</p>
-                  <p class="text-sm text-gray-500">Just come as you are</p>
-                </div>
-              </div>
-              <div class="flex items-start gap-3">
-                <div class="w-8 h-8 rounded-lg bg-green-100 flex items-center justify-center flex-shrink-0">
-                  <svg class="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                  </svg>
-                </div>
-                <div>
-                  <p class="font-medium text-gray-900">Self-Service</p>
-                  <p class="text-sm text-gray-500">Take what you need, leave some for others</p>
-                </div>
-              </div>
-            </div>
-
-            <a 
-              href="/services/food-pantry" 
-              class="inline-flex items-center gap-2 text-brand font-medium hover:underline"
-            >
-              Learn more about our food pantry
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-              </svg>
-            </a>
-          </div>
-
-          <!-- Location Card -->
-          <div class="bg-gray-50 rounded-xl p-8 border border-gray-200">
-            <h3 class="font-semibold text-gray-900 mb-4">Location</h3>
-            <div class="space-y-4">
-              <div class="flex items-start gap-3">
-                <svg class="w-5 h-5 text-brand flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
-                </svg>
-                <div>
-                  <p class="font-medium text-gray-900">Lake Ozark Christian Church</p>
-                  <p class="text-gray-600">1560 Bagnell Dam Blvd.</p>
-                  <p class="text-gray-600">Lake Ozark, MO 65049</p>
-                  <p class="text-sm text-gray-500 mt-1">Located on the west side of the church</p>
-                </div>
-              </div>
-
-              <a 
-                href="https://www.google.com/maps/dir//Lake+Ozark+Christian+Church" 
-                target="_blank"
-                rel="noopener noreferrer"
-                class="inline-flex items-center gap-2 bg-brand text-white px-5 py-2.5 rounded font-medium hover:bg-brand-dark transition-colors"
-              >
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
-                </svg>
-                Get Directions
-              </a>
-            </div>
-
-            <!-- Map -->
-            <div class="mt-6 rounded-lg overflow-hidden border border-gray-200">
-              <iframe
-                width="100%"
-                height="200"
-                style="border:0"
-                loading="lazy"
-                allowfullscreen
-                referrerpolicy="no-referrer-when-downgrade"
-                title="Food Pantry Location Map"
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3135.497843479267!2d-92.64396702409653!3d38.19833697188163!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x87c4c5de89ac8075%3A0xd6b3ef02b5ac85cf!2sLake%20Ozark%20Christian%20Church!5e0!3m2!1sen!2sus!4v1737500655692!5m2!1sen!2sus"
-              />
-            </div>
           </div>
         </div>
       </div>
-    </div>
-  </section>
 
-  <!-- Other Resources Section -->
-  <section class="py-20 bg-gray-50 border-t border-gray-100">
-    <div class="container mx-auto px-6">
-      <div class="max-w-3xl mx-auto text-center">
-        <p class="text-sm font-semibold text-brand uppercase tracking-wider mb-4">Additional Help</p>
-        <h2 class="text-3xl lg:text-4xl font-semibold text-gray-900 mb-6">
-          Other Resources
-        </h2>
-        <p class="text-gray-600 mb-8 leading-relaxed">
-          We maintain a list of other community resources that may be able to help with specific needs.
-        </p>
-        
-        <div class="flex flex-col sm:flex-row gap-3 justify-center">
-          <a 
-            href="/resources" 
-            class="inline-flex items-center justify-center gap-2 bg-brand text-white px-6 py-3 rounded hover:bg-brand-dark transition-colors font-medium"
-          >
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-            View Resources
-          </a>
-          <a 
-            href="/about" 
-            class="inline-flex items-center justify-center gap-2 border border-gray-300 bg-white text-gray-700 px-6 py-3 rounded hover:bg-gray-50 transition-colors font-medium"
-          >
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-            About Us
-          </a>
-        </div>
+      <RequestForm showHeader={false} />
+
+      <div class="mt-10 pt-8 border-t border-gray-100 text-center">
+        <p class="text-sm text-gray-400 mb-1">Need food right now?</p>
+        <a href="/services/food-pantry" class="text-sm font-semibold text-brand hover:underline">
+          Visit our 24/7 food pantry &rarr;
+        </a>
       </div>
     </div>
   </section>
 </Layout>
-

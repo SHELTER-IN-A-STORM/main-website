@@ -1,146 +1,99 @@
 ---
 import Layout from '../../layouts/Layout.astro';
-import { siteConfig } from '../../config/site';
 ---
 
 <Layout title="License Information">
-    <section class="relative min-h-screen flex items-center justify-center">
-        <div class="absolute inset-0">
-            <img 
-                src={siteConfig.metadata.openGraph.image}
-                alt="License Information"
-                class="w-full h-full object-cover"
-            />
-            <div class="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/60"></div>
+  <main>
+
+    <!-- Header -->
+    <section class="pt-40 pb-16 lg:pt-48 lg:pb-20">
+      <div class="max-w-3xl mx-auto px-6">
+        <p class="text-sm text-gray-400 font-medium uppercase tracking-wide mb-4">Legal</p>
+        <h1 class="text-4xl md:text-5xl font-bold text-black leading-[1.1] tracking-tight mb-6" style="text-wrap: balance;">
+          License &amp; Attribution
+        </h1>
+        <p class="text-gray-400 text-lg leading-relaxed">
+          Information about the licenses and attributions used on this website.
+        </p>
+      </div>
+    </section>
+
+    <!-- Content -->
+    <section class="pb-24 lg:pb-32">
+      <div class="max-w-3xl mx-auto px-6">
+
+        <div class="prose prose-gray max-w-none prose-headings:font-bold prose-headings:tracking-tight prose-h2:text-xl prose-h2:mt-14 prose-h2:mb-4 prose-p:text-gray-500 prose-p:leading-relaxed prose-a:text-black prose-a:underline prose-a:decoration-gray-300 hover:prose-a:decoration-black mb-14">
+          <h2>Creative Commons License</h2>
+          <p>
+            Except where otherwise noted, third-party content on this site is licensed under a Creative Commons Attribution 3.0 License.
+          </p>
         </div>
 
-        <div class="container mx-auto px-6 relative z-10">
-            <div class="max-w-4xl mx-auto text-center text-white space-y-8">
-                <h1 
-                    class="text-5xl md:text-7xl font-bold mb-6 animate-fade-in"
-                    style="text-wrap: balance;"
-                >
-                    License Information
-                </h1>
-                <p 
-                    class="text-xl md:text-2xl text-gray-200 mb-12 animate-slide-up-delay-1 max-w-2xl mx-auto"
-                    style="text-wrap: balance;"
-                >
-                    Information about the licenses and attributions used on this website.
+        <!-- Attributions -->
+        <div class="space-y-0 divide-y divide-gray-100">
+
+          <!-- Images -->
+          <div class="py-6">
+            <p class="text-xs text-gray-400 font-medium uppercase tracking-wide mb-4">Images</p>
+            <div class="flex items-center gap-4">
+              <img src="https://unsplash.com/favicon.ico" alt="Unsplash" class="w-8 h-8 object-contain rounded grayscale" />
+              <div>
+                <p class="text-sm font-medium text-black">Unsplash</p>
+                <p class="text-sm text-gray-400">
+                  Free images under the <a href="https://unsplash.com/license" class="text-black underline decoration-gray-300 hover:decoration-black" target="_blank" rel="noopener noreferrer">Unsplash License</a>
                 </p>
+              </div>
             </div>
+          </div>
+
+          <!-- Icons: Lucide -->
+          <div class="py-6">
+            <p class="text-xs text-gray-400 font-medium uppercase tracking-wide mb-4">Icons</p>
+            <div class="space-y-4">
+              <div class="flex items-center gap-4">
+                <img src="https://lucide.dev/logo.svg" alt="Lucide" class="w-8 h-8 object-contain rounded grayscale" />
+                <div>
+                  <p class="text-sm font-medium text-black">Lucide Icons</p>
+                  <p class="text-sm text-gray-400">
+                    Licensed under the <a href="https://lucide.dev/license" class="text-black underline decoration-gray-300 hover:decoration-black" target="_blank" rel="noopener noreferrer">ISC License</a>
+                  </p>
+                </div>
+              </div>
+              <div class="flex items-center gap-4">
+                <img src="https://fonts.google.com/favicon.ico" alt="Material Icons" class="w-8 h-8 object-contain rounded grayscale" />
+                <div>
+                  <p class="text-sm font-medium text-black">Material Icons</p>
+                  <p class="text-sm text-gray-400">
+                    Licensed under the <a href="https://github.com/google/material-design-icons/blob/master/LICENSE" class="text-black underline decoration-gray-300 hover:decoration-black" target="_blank" rel="noopener noreferrer">Apache License 2.0</a>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Development -->
+          <div class="py-6">
+            <p class="text-xs text-gray-400 font-medium uppercase tracking-wide mb-4">Development</p>
+            <div class="flex items-center gap-4">
+              <img src="https://benji.services/favicon.ico" alt="Benji Services" class="w-8 h-8 object-contain rounded grayscale" />
+              <div>
+                <p class="text-sm font-medium text-black">PixelPulse Creations, LLC</p>
+                <p class="text-sm text-gray-400">
+                  Designed and developed by <a href="https://benji.services" class="text-black underline decoration-gray-300 hover:decoration-black" target="_blank" rel="noopener noreferrer">benji.services</a>
+                </p>
+              </div>
+            </div>
+          </div>
+
         </div>
 
-        <!-- Scroll Indicator -->
-    </section>
-
-    <section id="content" class="py-24">
-        <div class="container mx-auto px-6">
-            <div class="max-w-4xl mx-auto space-y-12">
-                <!-- Creative Commons Section -->
-                <div class="prose prose-gray max-w-none">
-                    <h2 class="text-2xl font-bold text-gray-900">Creative Commons License</h2>
-                    <p>
-                        Except where otherwise noted, third-party content on this site is licensed under 
-                        a Creative Commons Attribution 3.0 License.
-                    </p>
-                </div>
-
-                <!-- Attributions Grid -->
-                <div class="grid gap-8">
-                    <!-- Images -->
-                    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-                        <h3 class="text-lg font-semibold text-gray-900 mb-4">Images</h3>
-                        <div class="flex items-start gap-4 p-4 bg-gray-50 rounded-lg">
-                            <div class="flex items-center justify-center w-12 h-12 bg-white rounded-lg shrink-0">
-                                <img 
-                                    src="https://unsplash.com/favicon.ico" 
-                                    alt="Unsplash Logo" 
-                                    class="w-8 h-8 object-contain"
-                                />
-                            </div>
-                            <div>
-                                <h4 class="text-sm font-medium text-gray-900">Unsplash</h4>
-                                <p class="text-sm text-gray-600 mt-1">
-                                    Beautiful, free images licensed under the{' '}
-                                    <a href="https://unsplash.com/license" class="text-brand hover:text-brand-dark">
-                                        Unsplash License
-                                    </a>
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Icons -->
-                    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-                        <h3 class="text-lg font-semibold text-gray-900 mb-4">Icons</h3>
-                        <div class="space-y-4">
-                            <!-- Lucide -->
-                            <div class="flex items-start gap-4 p-4 bg-gray-50 rounded-lg">
-                                <div class="flex items-center justify-center w-12 h-12 bg-white rounded-lg shrink-0">
-                                    <img 
-                                        src="https://lucide.dev/logo.svg" 
-                                        alt="Lucide Logo" 
-                                        class="w-8 h-8 object-contain"
-                                    />
-                                </div>
-                                <div>
-                                    <h4 class="text-sm font-medium text-gray-900">Lucide Icons</h4>
-                                    <p class="text-sm text-gray-600 mt-1">
-                                        Licensed under the{' '}
-                                        <a href="https://lucide.dev/license" class="text-brand hover:text-brand-dark">
-                                            ISC License
-                                        </a>
-                                    </p>
-                                </div>
-                            </div>
-
-                            <!-- Material Icons -->
-                            <div class="flex items-start gap-4 p-4 bg-gray-50 rounded-lg">
-                                <div class="flex items-center justify-center w-12 h-12 bg-white rounded-lg shrink-0">
-                                    <img 
-                                        src="https://fonts.google.com/favicon.ico" 
-                                        alt="Google Material Icons" 
-                                        class="w-8 h-8 object-contain"
-                                    />
-                                </div>
-                                <div>
-                                    <h4 class="text-sm font-medium text-gray-900">Material Icons</h4>
-                                    <p class="text-sm text-gray-600 mt-1">
-                                        Licensed under the{' '}
-                                        <a href="https://github.com/google/material-design-icons/blob/master/LICENSE" class="text-brand hover:text-brand-dark">
-                                            Apache License 2.0
-                                        </a>
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Development -->
-                    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-                        <h3 class="text-lg font-semibold text-gray-900 mb-4">Development</h3>
-                        <div class="flex items-start gap-4 p-4 bg-gray-50 rounded-lg">
-                            <div class="flex items-center justify-center w-12 h-12 bg-white rounded-lg shrink-0">
-                                <img 
-                                    src="https://benji.services/favicon.ico" 
-                                    alt="Benji Services Logo" 
-                                    class="w-8 h-8 object-contain"
-                                />
-                            </div>
-                            <div>
-                                <h4 class="text-sm font-medium text-gray-900">PixelPulse Creations, LLC</h4>
-                                <p class="text-sm text-gray-600 mt-1">
-                                    Website designed and developed by{' '}
-                                    <a href="https://benji.services" class="text-brand hover:text-brand-dark">
-                                        benji.services
-                                    </a>
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <div class="mt-14 pt-6 border-t border-gray-100">
+          <p class="text-xs text-gray-300">
+            Last updated {new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}.
+          </p>
         </div>
+      </div>
     </section>
-</Layout> 
+
+  </main>
+</Layout>

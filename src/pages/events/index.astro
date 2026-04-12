@@ -2,149 +2,135 @@
 import Layout from '../../layouts/Layout.astro';
 import { getCollection } from 'astro:content';
 import { format } from 'date-fns';
-import { siteConfig } from '../../config/site';
 
 const allEvents = await getCollection('events');
 const upcomingEvents = allEvents.filter((event) => event.data.status === 'upcoming')
   .sort((a, b) => a.data.date.getTime() - b.data.date.getTime());
 const pastEvents = allEvents.filter((event) => event.data.status === 'past')
   .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
-
-// Function to truncate description
-const truncateDescription = (description: string, maxLength: number = 70) => {
-  if (description.length <= maxLength) return description;
-  return description.slice(0, maxLength).trim() + '...';
-};
 ---
 
 <Layout title="Events">
-    <!-- Hero Section -->
-    <section class="relative min-h-screen flex items-center justify-center">
-        <div class="absolute inset-0">
-            <img 
-                src="https://cdn.shelterinastorm.org/images/2025Fundraiser-WebsitePhoto.jpeg"
-                alt="Community Events"
-                class="w-full h-full object-cover"
-            />
-            <div class="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/60"></div>
-        </div>
+  <main>
 
-        <div class="container mx-auto px-6 relative z-10">
-            <div class="max-w-4xl mx-auto text-center text-white space-y-8">
-                <h1 
-                    class="text-5xl md:text-7xl font-bold mb-6"
-                    style="text-wrap: balance;"
-                >
-                    Community Events
-                </h1>
-                <p 
-                    class="text-xl md:text-2xl text-gray-200 mb-12 max-w-2xl mx-auto"
-                    style="text-wrap: balance;"
-                >
-                    Bringing our community together through meaningful events and fundraisers
-                </p>
-            </div>
-        </div>
-
-        <!-- Scroll Indicator -->
+    <!-- Header -->
+    <section class="pt-40 pb-20 lg:pt-48 lg:pb-24">
+      <div class="max-w-3xl mx-auto px-6 text-center">
+        <p class="text-sm text-gray-400 font-medium uppercase tracking-wide mb-4">Events</p>
+        <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-black leading-[1.1] tracking-tight mb-6" style="text-wrap: balance;">
+          Community events &amp; fundraisers.
+        </h1>
+        <p class="text-gray-400 text-lg max-w-xl mx-auto leading-relaxed">
+          Bringing people together to support our mission and celebrate our community.
+        </p>
+      </div>
     </section>
 
-    <!-- Impact Numbers Section -->
-    <section class="py-16 bg-gray-50">
-        <div class="container mx-auto px-4">
-            <div class="text-center mb-12">
-                <h2 class="text-3xl font-bold text-gray-900 mb-4">Our Impact</h2>
-                <p class="text-lg text-gray-600">Making a difference in our community, one person at a time</p>
-            </div>
-            <div class="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
-                <div class="text-center">
-                    <div class="text-4xl font-bold text-brand mb-2">250+</div>
-                    <div class="text-lg text-gray-700">Individuals Helped</div>
+    <!-- Upcoming Events -->
+    <section class="pb-24 lg:pb-32">
+      <div class="max-w-6xl mx-auto px-6">
+        <p class="text-sm text-gray-400 font-medium uppercase tracking-wide mb-2">What's next</p>
+        <h2 class="text-2xl font-bold text-black tracking-tight mb-10">Upcoming events</h2>
+
+        {upcomingEvents.length > 0 ? (
+          <div class="space-y-6">
+            {upcomingEvents.map((event) => (
+              <a href={`/events/${event.id}`} class="group flex flex-col md:flex-row gap-6 p-5 -mx-5 rounded-xl hover:bg-gray-50 transition-colors">
+                <div class="md:w-80 shrink-0 aspect-[16/10] rounded-xl overflow-hidden">
+                  <img
+                    src={event.data.image}
+                    alt={event.data.title}
+                    class="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-500"
+                  />
                 </div>
-                <div class="text-center">
-                    <div class="text-4xl font-bold text-brand mb-2">10,000+</div>
-                    <div class="text-lg text-gray-700">Pantry Items Taken</div>
+                <div class="flex-1 flex flex-col justify-center py-1">
+                  <div class="flex items-center gap-3 mb-2">
+                    <span class="text-sm font-semibold text-black">{format(event.data.date, 'MMM d, yyyy')}</span>
+                    {event.data.time && <span class="text-sm text-gray-300">&middot;</span>}
+                    {event.data.time && <span class="text-sm text-gray-400">{event.data.time}</span>}
+                  </div>
+                  <h3 class="text-xl font-semibold text-black mb-2 group-hover:text-brand transition-colors">{event.data.title}</h3>
+                  <p class="text-gray-500 text-sm leading-relaxed mb-3">{event.data.description}</p>
+                  {event.data.location && (
+                    <p class="text-xs text-gray-400 flex items-center gap-1">
+                      <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                      </svg>
+                      {event.data.location}
+                    </p>
+                  )}
                 </div>
-                <div class="text-center">
-                    <div class="text-4xl font-bold text-brand mb-2">$70,000</div>
-                    <div class="text-lg text-gray-700">Donated and Used</div>
+                <div class="hidden md:flex items-center shrink-0">
+                  <span class="text-sm font-semibold text-gray-300 group-hover:text-black transition-colors">View &rarr;</span>
                 </div>
-            </div>
-        </div>
+              </a>
+            ))}
+          </div>
+        ) : (
+          <div class="py-20 text-center border border-gray-100 rounded-xl">
+            <p class="text-gray-400 mb-1">No upcoming events scheduled right now.</p>
+            <p class="text-sm text-gray-300">Check back soon or follow us on social media.</p>
+          </div>
+        )}
+      </div>
     </section>
 
-    <!-- Events Content -->
-    <div id="events" class="container mx-auto px-4 py-24">
-        <h1 class="text-4xl font-bold mb-12">Events</h1>
-        
-        <!-- Upcoming Events -->
-        <section class="mb-16">
-          <h2 class="text-2xl font-semibold mb-6">Upcoming Events</h2>
-          {upcomingEvents.length > 0 ? (
-            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {upcomingEvents.map((event) => (
-                <a href={`/events/${event.slug}`} class="group h-full transition-transform duration-300 hover:-translate-y-1">
-                  <div class="bg-white rounded-lg shadow-md overflow-hidden h-full flex flex-col transition-shadow duration-300 hover:shadow-lg">
-                    <div class="w-full h-48 flex-shrink-0">
-                      <img 
-                        src={event.data.image} 
-                        alt={event.data.title}
-                        class="w-full h-full object-cover"
-                      />
-                    </div>
-                    <div class="p-6 flex-grow flex flex-col">
-                      <div class="text-brand font-medium mb-2">
-                        {format(event.data.date, 'MMMM d, yyyy')}
-                      </div>
-                      <h3 class="text-xl font-semibold mb-2 transition-colors duration-300 group-hover:text-brand">
-                        {event.data.title}
-                      </h3>
-                      <p class="text-gray-600 flex-grow">
-                        {truncateDescription(event.data.description)}
-                      </p>
-                    </div>
-                  </div>
-                </a>
-              ))}
-            </div>
-          ) : (
-            <p class="text-gray-600 text-center py-8">No upcoming events scheduled at this time.</p>
-          )}
-        </section>
+    <!-- Past Events -->
+    {pastEvents.length > 0 && (
+      <section class="py-24 lg:py-32 border-t border-gray-100">
+        <div class="max-w-6xl mx-auto px-6">
+          <p class="text-sm text-gray-400 font-medium uppercase tracking-wide mb-2">Looking back</p>
+          <h2 class="text-2xl font-bold text-black tracking-tight mb-10">Past events</h2>
 
-        <!-- Past Events -->
-        <section>
-          <h2 class="text-2xl font-semibold mb-6">Past Events</h2>
-          {pastEvents.length > 0 ? (
-            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {pastEvents.map((event) => (
-                <a href={`/events/${event.slug}`} class="group h-full transition-all duration-300">
-                  <div class="bg-white rounded-lg shadow-md overflow-hidden opacity-75 hover:opacity-100 h-full flex flex-col transition-all duration-300 hover:shadow-lg">
-                    <div class="w-full h-48 flex-shrink-0">
-                      <img 
-                        src={event.data.image} 
-                        alt={event.data.title}
-                        class="w-full h-full object-cover"
-                      />
-                    </div>
-                    <div class="p-6 flex-grow flex flex-col">
-                      <div class="text-brand font-medium mb-2">
-                        {format(event.data.date, 'MMMM d, yyyy')}
-                      </div>
-                      <h3 class="text-xl font-semibold mb-2 transition-colors duration-300 group-hover:text-brand">
-                        {event.data.title}
-                      </h3>
-                      <p class="text-gray-600 flex-grow">
-                        {truncateDescription(event.data.description)}
-                      </p>
-                    </div>
-                  </div>
-                </a>
-              ))}
-            </div>
-          ) : (
-            <p class="text-gray-600 text-center py-8">No past events to display.</p>
-          )}
-        </section>
-    </div>
-</Layout> 
+          <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-12">
+            {pastEvents.map((event) => (
+              <a href={`/events/${event.id}`} class="group block">
+                <div class="aspect-[16/10] rounded-xl overflow-hidden mb-4 bg-gray-100">
+                  <img
+                    src={event.data.image}
+                    alt={event.data.title}
+                    class="w-full h-full object-cover grayscale group-hover:grayscale-0 opacity-70 group-hover:opacity-100 group-hover:scale-[1.03] transition-all duration-500"
+                  />
+                </div>
+                <div class="flex items-center gap-2 mb-2">
+                  <span class="text-xs font-medium text-gray-400">{format(event.data.date, 'MMM yyyy')}</span>
+                  {event.data.location && (
+                    <>
+                      <span class="text-gray-200">&middot;</span>
+                      <span class="text-xs text-gray-300">{event.data.location}</span>
+                    </>
+                  )}
+                </div>
+                <h3 class="text-base font-semibold text-black mb-1 group-hover:text-brand transition-colors">{event.data.title}</h3>
+                <p class="text-sm text-gray-400 leading-relaxed line-clamp-2">{event.data.description}</p>
+              </a>
+            ))}
+          </div>
+        </div>
+      </section>
+    )}
+
+    <!-- CTA -->
+    <section class="py-24 lg:py-32 border-t border-gray-100">
+      <div class="max-w-2xl mx-auto px-6 text-center">
+        <p class="text-sm text-gray-400 font-medium uppercase tracking-wide mb-4">Get involved</p>
+        <h2 class="text-3xl lg:text-4xl font-bold text-black tracking-tight mb-5">
+          Want to help make these events happen?
+        </h2>
+        <p class="text-gray-400 leading-relaxed mb-10">
+          Volunteer your time or donate to support our community programs.
+        </p>
+        <div class="flex flex-wrap gap-3 justify-center">
+          <a href="/donate" class="px-7 py-3.5 bg-black text-white font-semibold text-sm rounded-lg hover:bg-gray-900 transition-colors">
+            Donate
+          </a>
+          <a href="/volunteer" class="px-7 py-3.5 border border-gray-200 text-black font-semibold text-sm rounded-lg hover:border-gray-300 transition-colors">
+            Volunteer
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</Layout>

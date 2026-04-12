@@ -1,1766 +1,750 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import { getCollection } from 'astro:content';
-import { format } from 'date-fns';
+import { eventConfig } from '../config/event';
 
-// Get event details from content collection
-const events = await getCollection('events');
-const fallFundraiser = events.find(event => event.slug === '4');
+const { tickets, sponsors, raffle, auction, schedule, highlights, extras, documents } = eventConfig;
 
-const eventConfig = {
-    name: "2nd Annual Fall Fundraiser",
-    date: "Saturday, November 1, 2025",
-    time: "5:00 PM - 8:00 PM",
-    location: "Memory Lane Events, 78 Walnut Grove Road, Eldon, MO",
-    price: 50, // $50 per ticket
-    maxTickets: 5
-};
-
-// Stripe API configuration
-const STRIPE_API_URL = 'https://api.shelterinastorm.org/api/v2/OtherProduct';
-
-// Fetch auction items server-side
-let auctionItems = [];
-try {
-    const auctionResponse = await fetch('http://auction.shelterinastorm.org/api/items');
-    if (auctionResponse.ok) {
-        const auctionData = await auctionResponse.json();
-        auctionItems = auctionData.items || [];
+let auctionItems: any[] = [];
+if (auction) {
+  try {
+    const res = await fetch(auction.apiUrl);
+    if (res.ok) {
+      const data = await res.json();
+      auctionItems = (data.items || [])
+        .sort((a: any, b: any) => (b.value || 0) - (a.value || 0))
+        .slice(0, auction.previewCount);
     }
-} catch (error) {
-    console.error('Failed to fetch auction items:', error);
-    auctionItems = [];
+  } catch { auctionItems = []; }
 }
+
+const hasIntentOptions = [tickets, sponsors].filter(Boolean).length > 0;
+const clientConfig = JSON.stringify({
+  name: eventConfig.name,
+  date: eventConfig.date,
+  stripeApiUrl: eventConfig.stripeApiUrl,
+  tickets: tickets ? { price: tickets.price, maxPerOrder: tickets.maxPerOrder } : null,
+  sponsors: sponsors ? { tiers: sponsors.tiers.map(t => ({ id: t.id, name: t.name, price: t.price, seats: t.seats })) } : null,
+  raffle: raffle ? { singlePrice: raffle.singlePrice, bundleSize: raffle.bundleSize, bundlePrice: raffle.bundlePrice, maxPerPerson: raffle.maxPerPerson } : null,
+  extras: extras.map(e => e.id),
+});
 ---
 
-<Layout title="2nd Annual Fall Fundraiser - Tickets & Sponsorship">
-    <!-- Hero Section -->
-    <section class="relative min-h-screen flex items-center justify-center">
-        <div class="absolute inset-0">
-            <img 
-                src="https://cdn.shelterinastorm.org/images/2025-FallFundraiser-Front-1.png"
-                alt="2nd Annual Fall Fundraiser"
-                class="w-full h-full object-cover"
-            />
-            <div class="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/60"></div>
+<Layout title={`${eventConfig.name} - Tickets & Checkout`}>
+  <main>
+
+    <!-- Header -->
+    <section class="pt-32 pb-12 lg:pt-40 lg:pb-16">
+      <div class="max-w-2xl mx-auto px-6">
+        <div class="text-center mb-8">
+          <p class="text-sm text-gray-400 font-medium uppercase tracking-wide mb-2">Upcoming Event</p>
+          <h1 class="text-2xl lg:text-3xl font-bold text-black tracking-tight mb-3">{eventConfig.name}</h1>
+          <p class="text-sm text-gray-400 leading-relaxed">{eventConfig.tagline}</p>
         </div>
 
-        <div class="container mx-auto px-6 relative z-10">
-            <div class="max-w-4xl mx-auto text-center text-white space-y-8">
-                <h1 
-                    class="text-5xl md:text-7xl font-bold mb-6"
-                    style="text-wrap: balance;"
-                >
-                    2nd Annual Fall Fundraiser
-                </h1>
-                <p 
-                    class="text-xl md:text-2xl text-gray-200 mb-12 max-w-2xl mx-auto"
-                    style="text-wrap: balance;"
-                >
-                    Join us for dinner, bake-off competition, live music, and silent auction!
-                </p>
-                <div class="flex flex-col sm:flex-row gap-4 justify-center items-center mb-8">
-                    <div class="bg-white/10 backdrop-blur-sm rounded-lg px-6 py-3">
-                        <div class="text-sm text-gray-300">Date</div>
-                        <div class="font-semibold">November 1, 2025</div>
-                    </div>
-                    <div class="bg-white/10 backdrop-blur-sm rounded-lg px-6 py-3">
-                        <div class="text-sm text-gray-300">Time</div>
-                        <div class="font-semibold">5:00 PM - 8:00 PM</div>
-                    </div>
-                    <div class="bg-white/10 backdrop-blur-sm rounded-lg px-6 py-3">
-                        <div class="text-sm text-gray-300">Location</div>
-                        <div class="font-semibold">Memory Lane Events</div>
-                    </div>
-                </div>
-                
-                <!-- Action Buttons -->
-                <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
-                    <a 
-                        href="#tickets" 
-                        class="inline-flex items-center gap-2 bg-brand hover:bg-brand-dark text-white px-8 py-4 rounded-lg font-semibold transition-colors text-lg shadow-lg hover:shadow-xl"
-                    >
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z"/>
-                        </svg>
-                        Get Tickets
-                    </a>
-                    <a 
-                        href="#tickets" 
-                        class="inline-flex items-center gap-2 bg-white/20 hover:bg-white/30 text-white px-8 py-4 rounded-lg font-semibold transition-colors text-lg backdrop-blur-sm border border-white/30"
-                    >
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
-                        </svg>
-                        Become a Sponsor
-                    </a>
-                </div>
-            </div>
+        <div class="flex flex-wrap justify-center gap-3 text-sm">
+          <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-gray-200">
+            <svg class="h-4 w-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5"/></svg>
+            {eventConfig.date}
+          </span>
+          <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-gray-200">
+            <svg class="h-4 w-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/></svg>
+            {eventConfig.time}
+          </span>
+          <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-gray-200">
+            <svg class="h-4 w-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z"/></svg>
+            {eventConfig.location}
+          </span>
         </div>
+      </div>
     </section>
 
-    <!-- Event Details Section -->
-    <section id="details" class="py-16 bg-white">
-        <div class="container mx-auto px-4">
-            <div class="max-w-4xl mx-auto">
-                <div class="text-center mb-12">
-                    <h2 class="text-3xl font-bold text-gray-900 mb-4">Event Details</h2>
-                    <p class="text-lg text-gray-600 mb-8">Join us for our exciting Fall Fundraiser featuring dinner, bake-off competition, live music, and silent auction! All proceeds will benefit Shelter in a Storm.</p>
-                    
-                    <!-- Quick Navigation -->
-                    <div class="flex flex-wrap justify-center gap-4">
-                        <a href="#details" class="inline-flex items-center gap-2 bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 rounded-lg font-medium transition-colors">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                        </svg>
-                            Event Details
-                        </a>
-                        <a href="#tickets" class="inline-flex items-center gap-2 bg-brand hover:bg-brand-dark text-white px-4 py-2 rounded-lg font-medium transition-colors">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z"/>
-                            </svg>
-                            Get Tickets
-                        </a>
-                    </div>
-                </div>
+    <!-- Schedule & Highlights -->
+    {(schedule || highlights) && (
+      <section class="border-t border-gray-100">
+        <div class="max-w-3xl mx-auto px-6 py-12 lg:py-16">
+          <div class={`grid gap-8 ${schedule && highlights ? 'md:grid-cols-2' : ''}`}>
 
-                <div class="grid md:grid-cols-2 gap-12">
-                    <!-- Event Schedule -->
-                    <div class="bg-gray-50 rounded-xl p-8">
-                        <h3 class="text-2xl font-bold text-gray-900 mb-6">Event Schedule</h3>
-                        <div class="space-y-4">
-                            <div class="flex items-center gap-4">
-                                <div class="w-12 h-12 bg-brand text-white rounded-full flex items-center justify-center font-bold">5:00</div>
-                                <div>
-                                    <div class="font-semibold text-gray-900">Cash Bar Opens</div>
-                                    <div class="text-gray-600">Refreshments available</div>
-                            </div>
-                            </div>
-                            <div class="flex items-center gap-4">
-                                <div class="w-12 h-12 bg-brand text-white rounded-full flex items-center justify-center font-bold">6:00</div>
-                                <div>
-                                    <div class="font-semibold text-gray-900">Dinner & Bake-off Tasting</div>
-                                    <div class="text-gray-600">Enjoy a delicious meal and vote for your favorites</div>
-                                </div>
-                            </div>
-                            <div class="flex items-center gap-4">
-                                <div class="w-12 h-12 bg-brand text-white rounded-full flex items-center justify-center font-bold">7:15</div>
-                                <div>
-                                    <div class="font-semibold text-gray-900">Bake-off Trophy Awarded</div>
-                                    <div class="text-gray-600">Winner announced</div>
-                                </div>
-                            </div>
-                        </div>
+            {schedule && (
+              <div class="rounded-xl border border-gray-200 p-5">
+                <p class="text-xs text-gray-400 font-medium uppercase tracking-wide mb-4">Schedule</p>
+                <div class="space-y-4">
+                  {schedule.map(item => (
+                    <div class="flex gap-3">
+                      <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-black text-white text-xs font-semibold">{item.time.replace(/\s*(AM|PM)/i, '')}</div>
+                      <div>
+                        <p class="text-sm font-semibold text-black">{item.title}</p>
+                        <p class="text-xs text-gray-400 mt-0.5">{item.description}</p>
+                      </div>
                     </div>
+                  ))}
+                </div>
+              </div>
+            )}
 
-                    <!-- What to Expect -->
-                    <div class="bg-gray-50 rounded-xl p-8">
-                        <h3 class="text-2xl font-bold text-gray-900 mb-6">What to Expect</h3>
-                        <div class="space-y-4">
-                            <div class="flex items-start gap-3">
-                                <svg class="w-6 h-6 text-brand mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                        </svg>
-                                <div>
-                                    <div class="font-semibold text-gray-900">Dinner</div>
-                                    <div class="text-gray-600">Enjoy a delicious meal</div>
+            {highlights && (
+              <div class="rounded-xl border border-gray-200 p-5">
+                <p class="text-xs text-gray-400 font-medium uppercase tracking-wide mb-4">What to expect</p>
+                <div class="space-y-3">
+                  {highlights.map(h => (
+                    <div class="flex gap-2.5">
+                      <svg class="mt-0.5 h-4 w-4 shrink-0 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                      <div>
+                        <p class="text-sm font-semibold text-black">{h.title}</p>
+                        <p class="text-xs text-gray-400">{h.description}</p>
+                      </div>
                     </div>
+                  ))}
                 </div>
-                            <div class="flex items-start gap-3">
-                                <svg class="w-6 h-6 text-brand mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                                </svg>
-                                <div>
-                                    <div class="font-semibold text-gray-900">Bake-off Competition</div>
-                                    <div class="text-gray-600">Taste amazing baked goods and vote for your favorites</div>
-                                </div>
-                            </div>
-                            <div class="flex items-start gap-3">
-                                <svg class="w-6 h-6 text-brand mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                                </svg>
-                                <div>
-                                    <div class="font-semibold text-gray-900">Live Music</div>
-                                    <div class="text-gray-600">Enjoy "Me & Jim" pick their guitars to 60s & 70s music</div>
-                                </div>
-                            </div>
-                            <div class="flex items-start gap-3">
-                                <svg class="w-6 h-6 text-brand mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                                </svg>
-                                <div>
-                                    <div class="font-semibold text-gray-900">Silent Auction</div>
-                                    <div class="text-gray-600">Bid on unique items and experiences</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+              </div>
+            )}
+
+          </div>
         </div>
-    </section>
+      </section>
+    )}
 
-    <!-- Auction Item s Preview Section -->
-    <section id="auction-preview" class="py-16 bg-white">
-        <div class="container mx-auto px-4">
-            <div class="max-w-6xl mx-auto">
-                <div class="text-center mb-12">
-                    <h2 class="text-3xl font-bold text-gray-900 mb-4">Silent Auction Preview</h2>
-                    <p class="text-lg text-gray-600 mb-8">Get a sneak peek at the top 6 highest value items you can bid on during our silent auction!</p>
-                </div>
+    <!-- Auction Preview -->
+    {auction && (
+      <section class="border-t border-gray-100">
+        <div class="max-w-4xl mx-auto px-6 py-12 lg:py-16">
+          <p class="text-xs text-gray-400 font-medium uppercase tracking-wide mb-2 text-center">Silent Auction</p>
+          <p class="text-center text-sm text-gray-400 mb-8">Preview the top items you can bid on at the event.</p>
 
-                {auctionItems.length > 0 ? (
-                    <>
-                        <!-- Auction Items Grid -->
-                        <div id="auction-items-grid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                            {auctionItems
-                                .sort((a: any, b: any) => (b.value || 0) - (a.value || 0))
-                                .slice(0, 6)
-                                .map((item: any) => (
-                                <a 
-                                    href={`http://auction.shelterinastorm.org/app/items/${item.id}`}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    class="auction-item bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 hover:scale-105 cursor-pointer block"
-                                >
-                                    <div class="relative">
-                                        {item.imageUrl ? (
-                                            <img 
-                                                src={item.imageUrl} 
-                                                alt={item.title}
-                                                class="w-full h-48 object-cover"
-                                                loading="lazy"
-                                            />
-                                        ) : (
-                                            <div class="w-full h-48 bg-gray-200 flex items-center justify-center">
-                                                <svg class="w-12 h-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-                                                </svg>
-                                            </div>
-                                        )}
-                                        <div class="absolute top-3 right-3 bg-brand text-white px-2 py-1 rounded-full text-sm font-semibold">
-                                            ${item.startingBid}
-                                        </div>
-                                        <div class="absolute top-3 left-3 bg-black/50 text-white px-2 py-1 rounded-full text-xs">
-                                            View Details
-                                        </div>
-                                    </div>
-                                    <div class="p-6">
-                                        <h3 class="text-lg font-semibold text-gray-900 mb-2 line-clamp-2">{item.title}</h3>
-                                        <p class="text-sm text-gray-600 mb-3 line-clamp-2">{item.description}</p>
-                                        <div class="flex items-center justify-between text-sm">
-                                            <div class="text-gray-500">
-                                                <span class="font-medium">Value:</span> ${item.value}
-                                            </div>
-                                            <div class="text-gray-500">
-                                                <span class="font-medium">Bid Increment:</span> ${item.bidIncrement}
-                                            </div>
-                                        </div>
-                                        {item.bidCount > 0 && (
-                                            <div class="mt-3 text-center">
-                                                <span class="text-sm text-brand font-medium">{item.bidCount} bid{item.bidCount > 1 ? 's' : ''}</span>
-                                            </div>
-                                        )}
-                                    </div>
-                                </a>
-                            ))}
-                        </div>
-                    </>
-                ) : (
-                    <!-- Error State -->
-                    <div class="text-center py-12">
-                        <div class="bg-red-50 border border-red-200 rounded-xl p-6 max-w-md mx-auto">
-                            <svg class="w-12 h-12 text-red-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                            </svg>
-                            <h3 class="text-lg font-semibold text-red-900 mb-2">Unable to Load Auction Items</h3>
-                            <p class="text-red-700">Please check back later to see our amazing auction items!</p>
-                        </div>
+          {auctionItems.length > 0 ? (
+            <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {auctionItems.map((item: any) => (
+                <a
+                  href={`${auction.siteUrl}/app/items/${item.id}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="group rounded-xl border border-gray-200 overflow-hidden hover:border-gray-300 transition-colors"
+                >
+                  <div class="relative">
+                    {item.imageUrl ? (
+                      <img src={item.imageUrl} alt={item.title} class="w-full h-40 object-cover" loading="lazy" />
+                    ) : (
+                      <div class="w-full h-40 bg-gray-100 flex items-center justify-center">
+                        <svg class="w-8 h-8 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                      </div>
+                    )}
+                    <span class="absolute top-2 right-2 bg-black text-white text-xs font-semibold px-2 py-0.5 rounded-full">${item.startingBid}</span>
+                  </div>
+                  <div class="p-4">
+                    <p class="text-sm font-semibold text-black line-clamp-1 group-hover:underline">{item.title}</p>
+                    <p class="text-xs text-gray-400 mt-1 line-clamp-2">{item.description}</p>
+                    <div class="flex items-center justify-between mt-3 text-xs text-gray-400">
+                      <span>Value: ${item.value}</span>
+                      {item.bidCount > 0 && <span class="font-medium text-black">{item.bidCount} bid{item.bidCount > 1 ? 's' : ''}</span>}
                     </div>
+                  </div>
+                </a>
+              ))}
+            </div>
+          ) : (
+            <div class="rounded-xl border border-gray-200 bg-gray-50 p-8 text-center">
+              <p class="text-sm text-gray-400">Auction items will be available soon. Check back later!</p>
+            </div>
+          )}
+
+          <div class="text-center mt-6">
+            <a href={auction.siteUrl} target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center px-6 py-3 bg-black text-white font-semibold text-sm rounded-lg hover:bg-gray-900 transition-colors">
+              Start Bidding
+            </a>
+          </div>
+        </div>
+      </section>
+    )}
+
+    <!-- Checkout -->
+    <section id="tickets" class="border-t border-gray-100">
+      <div class="max-w-2xl mx-auto px-6 py-12 lg:py-16">
+        <div class="text-center mb-8">
+          <p class="text-xs text-gray-400 font-medium uppercase tracking-wide mb-2">Checkout</p>
+          <p class="text-sm text-gray-400">Select how you'd like to support this event.</p>
+        </div>
+
+        <form id="checkoutForm" novalidate>
+
+          <!-- Step 1: Intent Selection -->
+          <div class="checkout-step" data-step="1">
+            {hasIntentOptions && (
+              <div class={`grid gap-3 mb-6 ${tickets && sponsors ? 'sm:grid-cols-2' : ''}`}>
+                {tickets && (
+                  <button type="button" class="intent-btn rounded-xl border border-gray-200 p-5 text-left hover:border-black transition-colors" data-intent="tickets">
+                    <p class="text-sm font-semibold text-black">{tickets.label}</p>
+                    <p class="text-xs text-gray-400 mt-1">{tickets.description}</p>
+                    <p class="text-lg font-bold text-black mt-3">${tickets.price}<span class="text-xs font-normal text-gray-400"> / person</span></p>
+                  </button>
                 )}
+                {sponsors && (
+                  <button type="button" class="intent-btn rounded-xl border border-gray-200 p-5 text-left hover:border-black transition-colors" data-intent="sponsor">
+                    <p class="text-sm font-semibold text-black">Become a Sponsor</p>
+                    <p class="text-xs text-gray-400 mt-1">Support the event with a sponsor package</p>
+                    <p class="text-lg font-bold text-black mt-3">${sponsors.tiers[0].price.toLocaleString()}&ndash;${sponsors.tiers[sponsors.tiers.length - 1].price.toLocaleString()}</p>
+                  </button>
+                )}
+              </div>
+            )}
 
-                <!-- View All Button -->
-                <div class="text-center mt-8">
-                    <a 
-                        href="http://auction.shelterinastorm.org" 
-                        target="_blank" 
-                        rel="noopener noreferrer"
-                        class="inline-flex items-center gap-2 bg-brand hover:bg-brand-dark text-white px-6 py-3 rounded-lg font-semibold transition-colors"
-                    >
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
-                        </svg>
-                        Start Bidding
+            <a href="/donate" class="block rounded-xl border border-gray-200 p-4 text-center hover:border-black transition-colors">
+              <p class="text-sm text-gray-400">Just want to donate? <span class="font-semibold text-black">Give here &rarr;</span></p>
+            </a>
+          </div>
+
+          <!-- Step 2: Ticket Flow -->
+          {tickets && (
+            <div class="checkout-step hidden" data-step="2" data-flow="tickets">
+              <button type="button" class="btn-back text-sm text-gray-400 hover:text-black transition-colors mb-6">&larr; Back</button>
+
+              <!-- Contact -->
+              <div class="rounded-xl border border-gray-200 p-5 mb-4">
+                <p class="text-xs text-gray-400 font-medium uppercase tracking-wide mb-4">Contact Information</p>
+                <div class="grid sm:grid-cols-2 gap-3">
+                  <div>
+                    <label class="block text-sm font-medium text-black mb-1.5">Email *</label>
+                    <input type="email" name="email" required placeholder="you@example.com" class="checkout-field" />
+                  </div>
+                  <div>
+                    <label class="block text-sm font-medium text-black mb-1.5">Phone</label>
+                    <input type="tel" name="phone" placeholder="(555) 123-4567" class="checkout-field" />
+                  </div>
+                </div>
+              </div>
+
+              <!-- Ticket quantity -->
+              <div class="rounded-xl border border-gray-200 p-5 mb-4">
+                <div class="flex items-center justify-between">
+                  <div>
+                    <p class="text-sm font-semibold text-black">{tickets.label}</p>
+                    <p class="text-xs text-gray-400 mt-0.5">{tickets.description}</p>
+                    <p class="text-lg font-bold text-black mt-2">${tickets.price}<span class="text-xs font-normal text-gray-400"> / person</span></p>
+                  </div>
+                  <div class="flex items-center gap-3">
+                    <button type="button" class="qty-btn h-9 w-9 rounded-full border border-gray-200 flex items-center justify-center text-lg hover:bg-gray-50 transition-colors" data-action="decrease" data-type="regular">&minus;</button>
+                    <span class="qty-display w-8 text-center font-semibold" data-type="regular">0</span>
+                    <button type="button" class="qty-btn h-9 w-9 rounded-full border border-gray-200 flex items-center justify-center text-lg hover:bg-gray-50 transition-colors" data-action="increase" data-type="regular">&plus;</button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Raffle (ticket flow) -->
+              {raffle && (
+                <div class="rounded-xl border border-gray-200 p-5 mb-4">
+                  <p class="text-sm font-semibold text-black mb-1">Drawing Entries</p>
+                  <p class="text-xs text-gray-400 mb-4">${raffle.singlePrice} each &middot; Buy {raffle.bundleSize}+ and save with a bundle deal</p>
+                  <div class="flex items-center justify-between">
+                    <div class="text-sm text-gray-400">Entries</div>
+                    <div class="flex items-center gap-3">
+                      <button type="button" class="qty-btn h-9 w-9 rounded-full border border-gray-200 flex items-center justify-center text-lg hover:bg-gray-50 transition-colors" data-action="decrease" data-type="raffle">&minus;</button>
+                      <span class="qty-display w-8 text-center font-semibold" data-type="raffle">0</span>
+                      <button type="button" class="qty-btn h-9 w-9 rounded-full border border-gray-200 flex items-center justify-center text-lg hover:bg-gray-50 transition-colors" data-action="increase" data-type="raffle">&plus;</button>
+                    </div>
+                  </div>
+                  <div id="raffle-savings" class="hidden mt-3 rounded-lg bg-gray-50 border border-gray-200 px-3 py-2 text-xs text-gray-500"></div>
+                </div>
+              )}
+
+              <!-- Extras -->
+              {extras.length > 0 && (
+                <div class="space-y-2 mb-6">
+                  {extras.map(ex => (
+                    <label class="flex items-start gap-3 rounded-xl border border-gray-200 p-4 cursor-pointer hover:border-black transition-colors">
+                      <input type="checkbox" name={ex.id} class="extra-check mt-0.5 h-4 w-4 accent-black rounded" />
+                      <div>
+                        <p class="text-sm font-medium text-black">{ex.label}</p>
+                        <p class="text-xs text-gray-400">{ex.description}</p>
+                      </div>
+                    </label>
+                  ))}
+                </div>
+              )}
+
+              <button type="button" class="btn-review w-full px-6 py-3 bg-black text-white font-semibold text-sm rounded-lg hover:bg-gray-900 transition-colors">
+                Review Order
+              </button>
+            </div>
+          )}
+
+          <!-- Step 2: Sponsor Flow -->
+          {sponsors && (
+            <div class="checkout-step hidden" data-step="2" data-flow="sponsor">
+              <button type="button" class="btn-back text-sm text-gray-400 hover:text-black transition-colors mb-6">&larr; Back</button>
+
+              <!-- Contact -->
+              <div class="rounded-xl border border-gray-200 p-5 mb-4">
+                <p class="text-xs text-gray-400 font-medium uppercase tracking-wide mb-4">Contact Information</p>
+                <div class="grid sm:grid-cols-2 gap-3">
+                  <div>
+                    <label class="block text-sm font-medium text-black mb-1.5">Email *</label>
+                    <input type="email" name="sponsor-email" required placeholder="you@example.com" class="checkout-field" />
+                  </div>
+                  <div>
+                    <label class="block text-sm font-medium text-black mb-1.5">Phone</label>
+                    <input type="tel" name="sponsor-phone" placeholder="(555) 123-4567" class="checkout-field" />
+                  </div>
+                </div>
+              </div>
+
+              <!-- Sponsor tiers -->
+              <div class="space-y-3 mb-4">
+                {sponsors.tiers.map(tier => (
+                  <label class="sponsor-tier flex items-center justify-between rounded-xl border border-gray-200 p-5 cursor-pointer hover:border-black transition-colors">
+                    <div>
+                      <input type="radio" name="sponsor-tier" value={tier.id} class="sr-only peer" />
+                      <p class="text-sm font-semibold text-black">{tier.name}</p>
+                      <p class="text-xs text-gray-400 mt-0.5">{tier.seats} people &middot; {tier.perks}</p>
+                    </div>
+                    <p class="text-lg font-bold text-black">${tier.price.toLocaleString()}</p>
+                  </label>
+                ))}
+              </div>
+
+              <!-- Extra tickets for sponsors -->
+              {tickets && (
+                <div class="rounded-xl border border-gray-200 p-5 mb-4">
+                  <p class="text-sm font-semibold text-black mb-1">Additional Tickets</p>
+                  <p class="text-xs text-gray-400 mb-3">Need more seats beyond your sponsor package?</p>
+                  <div class="flex items-center justify-between">
+                    <p class="text-sm text-gray-400">${tickets.price} / person</p>
+                    <div class="flex items-center gap-3">
+                      <button type="button" class="qty-btn h-9 w-9 rounded-full border border-gray-200 flex items-center justify-center text-lg hover:bg-gray-50 transition-colors" data-action="decrease" data-type="sponsor-extra">&minus;</button>
+                      <span class="qty-display w-8 text-center font-semibold" data-type="sponsor-extra">0</span>
+                      <button type="button" class="qty-btn h-9 w-9 rounded-full border border-gray-200 flex items-center justify-center text-lg hover:bg-gray-50 transition-colors" data-action="increase" data-type="sponsor-extra">&plus;</button>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              <!-- Raffle for sponsors -->
+              {raffle && (
+                <div class="rounded-xl border border-gray-200 p-5 mb-4">
+                  <p class="text-sm font-semibold text-black mb-1">Drawing Entries</p>
+                  <p class="text-xs text-gray-400 mb-4">${raffle.singlePrice} each &middot; Buy {raffle.bundleSize}+ and save</p>
+                  <div class="flex items-center justify-between">
+                    <div class="text-sm text-gray-400">Entries</div>
+                    <div class="flex items-center gap-3">
+                      <button type="button" class="qty-btn h-9 w-9 rounded-full border border-gray-200 flex items-center justify-center text-lg hover:bg-gray-50 transition-colors" data-action="decrease" data-type="sponsor-raffle">&minus;</button>
+                      <span class="qty-display w-8 text-center font-semibold" data-type="sponsor-raffle">0</span>
+                      <button type="button" class="qty-btn h-9 w-9 rounded-full border border-gray-200 flex items-center justify-center text-lg hover:bg-gray-50 transition-colors" data-action="increase" data-type="sponsor-raffle">&plus;</button>
+                    </div>
+                  </div>
+                  <div id="sponsor-raffle-savings" class="hidden mt-3 rounded-lg bg-gray-50 border border-gray-200 px-3 py-2 text-xs text-gray-500"></div>
+                </div>
+              )}
+
+              <!-- Extras for sponsors -->
+              {extras.length > 0 && (
+                <div class="space-y-2 mb-6">
+                  {extras.map(ex => (
+                    <label class="flex items-start gap-3 rounded-xl border border-gray-200 p-4 cursor-pointer hover:border-black transition-colors">
+                      <input type="checkbox" name={`sponsor-${ex.id}`} class="extra-check mt-0.5 h-4 w-4 accent-black rounded" />
+                      <div>
+                        <p class="text-sm font-medium text-black">{ex.label}</p>
+                        <p class="text-xs text-gray-400">{ex.description}</p>
+                      </div>
+                    </label>
+                  ))}
+                </div>
+              )}
+
+              <button type="button" class="btn-review w-full px-6 py-3 bg-black text-white font-semibold text-sm rounded-lg hover:bg-gray-900 transition-colors">
+                Review Order
+              </button>
+            </div>
+          )}
+
+          <!-- Step 3: Review & Pay -->
+          <div class="checkout-step hidden" data-step="3">
+            <button type="button" class="btn-back text-sm text-gray-400 hover:text-black transition-colors mb-6">&larr; Back</button>
+
+            <div class="rounded-xl border border-gray-200 p-5 mb-4">
+              <p class="text-xs text-gray-400 font-medium uppercase tracking-wide mb-4">Order Summary</p>
+              <div id="orderSummary" class="space-y-2 text-sm"></div>
+              <div class="border-t border-gray-100 pt-3 mt-3 flex justify-between text-base font-bold text-black">
+                <span>Total</span>
+                <span id="totalAmount">$0.00</span>
+              </div>
+            </div>
+
+            {documents && documents.length > 0 && (
+              <div class="rounded-xl border border-gray-200 bg-gray-50 p-5 mb-4">
+                <p class="text-xs text-gray-400 font-medium uppercase tracking-wide mb-3">Documents</p>
+                <div class="space-y-2">
+                  {documents.map(doc => (
+                    <a href={doc.url} target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 text-sm text-black hover:underline">
+                      <svg class="h-4 w-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z"/></svg>
+                      {doc.label}
                     </a>
+                  ))}
                 </div>
+              </div>
+            )}
+
+            <div class="rounded-xl border border-gray-200 bg-gray-50 p-5 mb-6">
+              <div class="flex items-center gap-3">
+                <svg class="h-5 w-5 text-gray-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 1 0-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H6.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z"/></svg>
+                <div>
+                  <p class="text-sm font-medium text-black">Secure Payment</p>
+                  <p class="text-xs text-gray-400">You'll be redirected to our secure payment processor. Tax-deductible contribution.</p>
+                </div>
+              </div>
             </div>
-        </div>
+
+            <button type="submit" id="payBtn" class="w-full px-6 py-3 bg-black text-white font-semibold text-sm rounded-lg hover:bg-gray-900 transition-colors disabled:opacity-40 disabled:cursor-not-allowed">
+              <span class="pay-text">Complete Purchase</span>
+              <span class="pay-loading hidden">Processing...</span>
+            </button>
+          </div>
+
+          <!-- Error display (outside steps so it's always visible) -->
+          <div id="checkoutError" class="hidden mt-4 rounded-lg border border-gray-200 bg-gray-50 p-4 text-center text-sm text-gray-500"></div>
+
+        </form>
+      </div>
     </section>
 
-    <!-- Checkout Section -->
-    <section id="tickets" class="py-16 bg-white">
-        <div class="container mx-auto px-4">
-            <div class="max-w-4xl mx-auto">
-                <div class="text-center mb-12">
-                    <h2 class="text-3xl font-bold text-gray-900 mb-4">Get Your Tickets</h2>
-                    <p class="text-lg text-gray-600">Choose from regular admission tickets, sponsor packages, drawing entries, and more!</p>
-                </div>
-
-                <!-- Professional Checkout Container -->
-                <form id="checkoutForm" class="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
-                    <!-- Checkout Options -->
-                    <div class="p-8">
-                        <div class="text-center mb-8">
-                            <h2 class="text-2xl font-bold text-gray-900 mb-2">Choose Your Support</h2>
-                            <p class="text-gray-600">Select how you'd like to support our Fall Fundraiser</p>
-                        </div>
-
-                        <div class="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto mb-8">
-                            <!-- Buy Tickets Option -->
-                            <div class="intent-option p-6 border-2 border-gray-200 rounded-xl hover:border-brand hover:bg-brand/5 transition-all duration-200 text-left group cursor-pointer" data-intent="tickets">
-                                <div class="text-center">
-                                    <div class="w-16 h-16 bg-brand/10 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-brand/20 transition-colors">
-                                        <svg class="w-8 h-8 text-brand" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z"/>
-                                        </svg>
-                                    </div>
-                                    <h3 class="font-semibold text-gray-900 mb-2">Buy Tickets</h3>
-                                    <p class="text-sm text-gray-600 mb-3">Purchase admission tickets for the event</p>
-                                    <div class="text-lg font-bold text-brand">$50 per person</div>
-                                </div>
-                            </div>
-
-                            <!-- Become Sponsor Option -->
-                            <div class="intent-option p-6 border-2 border-gray-200 rounded-xl hover:border-brand hover:bg-brand/5 transition-all duration-200 text-left group cursor-pointer" data-intent="sponsor">
-                                <div class="text-center">
-                                    <div class="w-16 h-16 bg-brand/10 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-brand/20 transition-colors">
-                                        <svg class="w-8 h-8 text-brand" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
-                                        </svg>
-                                    </div>
-                                    <h3 class="font-semibold text-gray-900 mb-2">Become a Sponsor</h3>
-                                    <p class="text-sm text-gray-600 mb-3">Support the event with a sponsor package</p>
-                                    <div class="text-lg font-bold text-brand">$500 - $2,000</div>
-                                </div>
-                            </div>
-
-                            <!-- Make Donation Option -->
-                            <div class="intent-option p-6 border-2 border-gray-200 rounded-xl hover:border-brand hover:bg-brand/5 transition-all duration-200 text-left group cursor-pointer" data-intent="donation">
-                                <div class="text-center">
-                                    <div class="w-16 h-16 bg-brand/10 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-brand/20 transition-colors">
-                                        <svg class="w-8 h-8 text-brand" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
-                                        </svg>
-                                    </div>
-                                    <h3 class="font-semibold text-gray-900 mb-2">Make a Donation</h3>
-                                    <p class="text-sm text-gray-600 mb-3">Support our cause with a tax-deductible donation</p>
-                                    <div class="text-lg font-bold text-brand">Any amount</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Step 2: Buy Tickets Flow -->
-                    <div class="checkout-step p-8 hidden" data-step="2" data-flow="tickets">
-                        <div class="text-center mb-8">
-                            <h2 class="text-2xl font-bold text-gray-900 mb-2">Buy Tickets</h2>
-                            <p class="text-gray-600">Purchase admission tickets for the Fall Fundraiser</p>
-                        </div>
-
-                        <!-- Contact Information -->
-                        <div class="bg-gray-50 rounded-xl p-6 mb-8">
-                            <h3 class="text-lg font-semibold text-gray-900 mb-4">Contact Information</h3>
-                            <div class="grid md:grid-cols-2 gap-4">
-                                <div>
-                                    <label for="email" class="block text-sm font-medium text-gray-700 mb-2">Email Address *</label>
-                                    <input 
-                                        type="email" 
-                                        id="email" 
-                                        name="email" 
-                                        required 
-                                        class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-brand focus:border-brand"
-                                        placeholder="your@email.com"
-                                    >
-                                </div>
-                                <div>
-                                    <label for="phone" class="block text-sm font-medium text-gray-700 mb-2">Phone Number</label>
-                                    <input 
-                                        type="tel" 
-                                        id="phone" 
-                                        name="phone" 
-                                        class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-brand focus:border-brand"
-                                        placeholder="(555) 123-4567"
-                                    >
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Ticket Selection -->
-                        <div class="border border-gray-200 rounded-xl p-6 mb-6">
-                            <div class="flex items-center justify-between">
-                                <div class="flex-1">
-                                    <h3 class="text-lg font-semibold text-gray-900 mb-1">Regular Admission</h3>
-                                    <p class="text-gray-600 mb-2">Includes dinner, bake-off tasting, and all activities</p>
-                                    <p class="text-2xl font-bold text-brand">$50 <span class="text-sm font-normal text-gray-600">per person</span></p>
-                                </div>
-                                <div class="flex items-center gap-4">
-                                    <button type="button" class="quantity-btn w-12 h-12 bg-gray-100 hover:bg-gray-200 rounded-full flex items-center justify-center transition-colors text-xl font-bold" data-action="decrease" data-type="regular">-</button>
-                                    <span class="quantity-display w-16 text-center font-semibold text-2xl min-w-[4rem]" data-type="regular">0</span>
-                                    <button type="button" class="quantity-btn w-12 h-12 bg-gray-100 hover:bg-gray-200 rounded-full flex items-center justify-center transition-colors text-xl font-bold" data-action="increase" data-type="regular">+</button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Sponsor Suggestion (appears when 4+ tickets) -->
-                        <div id="sponsor-suggestion" class="hidden bg-blue-50 border border-blue-200 rounded-xl p-6 mb-6">
-                            <div class="flex items-start gap-4">
-                                <div class="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
-                                    <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                                    </svg>
-                                </div>
-                                <div class="flex-1">
-                                    <h4 class="font-semibold text-blue-900 mb-2">Consider Becoming a Sponsor!</h4>
-                                    <p class="text-blue-800 mb-3">You're buying <span id="suggestion-ticket-count">4</span> tickets. A sponsor package might be more cost-effective and includes recognition benefits.</p>
-                                    <button type="button" class="btn-switch-to-sponsor bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition-colors">
-                                        View Sponsor Packages →
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Drawing Entries -->
-                        <div class="border border-gray-200 rounded-xl p-6 mb-6">
-                            <h3 class="text-lg font-semibold text-gray-900 mb-4">Add Drawing Entries (Optional)</h3>
-                            <div class="space-y-4">
-                                <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
-                                    <div>
-                                        <div class="font-semibold text-gray-900">Drawing Entries</div>
-                                        <div class="text-sm text-gray-600">$10 each • Buy 3+ and save with our triple package deal!</div>
-                                    </div>
-                                    <div class="flex items-center gap-3">
-                                        <button type="button" class="quantity-btn w-8 h-8 bg-white hover:bg-gray-100 rounded-full flex items-center justify-center transition-colors font-bold" data-action="decrease" data-type="raffle-total">-</button>
-                                        <span class="quantity-display w-12 text-center font-semibold min-w-[3rem]" data-type="raffle-total">0</span>
-                                        <button type="button" class="quantity-btn w-8 h-8 bg-white hover:bg-gray-100 rounded-full flex items-center justify-center transition-colors font-bold" data-action="increase" data-type="raffle-total">+</button>
-                                    </div>
-                                </div>
-                                
-                                <!-- Smart Pricing Display -->
-                                <div id="raffle-pricing-breakdown" class="hidden bg-green-50 border border-green-200 rounded-lg p-4">
-                                    <div class="flex items-center gap-2 mb-2">
-                                        <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                                        </svg>
-                                        <span class="font-semibold text-green-800">Smart Pricing Applied!</span>
-                                    </div>
-                                    <div id="raffle-breakdown-text" class="text-sm text-green-700"></div>
-                                </div>
-                            </div>
-                            <p class="text-sm text-gray-600 mt-3">Maximum 50 drawing entries per person</p>
-                        </div>
-
-                        <!-- Additional Options -->
-                        <div class="space-y-4 mb-8">
-                            <label class="flex items-start space-x-3 cursor-pointer p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
-                                <input type="checkbox" name="bakeOff" class="mt-1 w-4 h-4 text-brand border-gray-300 rounded focus:ring-brand">
-                                <div>
-                                    <div class="font-medium text-gray-900">Enter Bake-Off Competition</div>
-                                    <div class="text-sm text-gray-600">Bring 48 homemade mini cupcakes or mini cheesecakes</div>
-                                </div>
-                            </label>
-                            <label class="flex items-start space-x-3 cursor-pointer p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
-                                <input type="checkbox" name="coverFees" class="mt-1 w-4 h-4 text-brand border-gray-300 rounded focus:ring-brand">
-                                <div>
-                                    <div class="font-medium text-gray-900">Cover Processing Fees</div>
-                                    <div class="text-sm text-gray-600">Help us maximize funds for our cause</div>
-                                </div>
-                            </label>
-                        </div>
-
-                        <div class="flex justify-center">
-                            <button type="button" class="btn-next bg-brand hover:bg-brand-dark text-white px-8 py-4 rounded-lg font-semibold transition-colors text-lg">
-                                Continue to Payment →
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Sponsor Flow -->
-                    <div class="checkout-step p-8 hidden" data-step="2" data-flow="sponsor">
-                        <div class="text-center mb-8">
-                            <h2 class="text-2xl font-bold text-gray-900 mb-2">Become a Sponsor</h2>
-                            <p class="text-gray-600">Support the event with a sponsor package and get recognition</p>
-                        </div>
-
-                        <!-- Contact Information -->
-                        <div class="bg-gray-50 rounded-xl p-6 mb-8">
-                            <h3 class="text-lg font-semibold text-gray-900 mb-4">Contact Information</h3>
-                            <div class="grid md:grid-cols-2 gap-4">
-                                <div>
-                                    <label for="sponsor-email" class="block text-sm font-medium text-gray-700 mb-2">Email Address *</label>
-                                    <input 
-                                        type="email" 
-                                        id="sponsor-email" 
-                                        name="sponsor-email" 
-                                        required 
-                                        class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-brand focus:border-brand"
-                                        placeholder="your@email.com"
-                                    >
-                                </div>
-                                <div>
-                                    <label for="sponsor-phone" class="block text-sm font-medium text-gray-700 mb-2">Phone Number</label>
-                                    <input 
-                                        type="tel" 
-                                        id="sponsor-phone" 
-                                        name="sponsor-phone" 
-                                        class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-brand focus:border-brand"
-                                        placeholder="(555) 123-4567"
-                                    >
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Sponsor Package Selection -->
-                        <div class="grid md:grid-cols-3 gap-6 mb-8">
-                            <label class="sponsor-option p-6 border-2 border-gray-200 rounded-xl cursor-pointer hover:border-brand hover:bg-brand/5 transition-all">
-                                <input type="radio" name="sponsor" value="bronze" class="sr-only">
-                                <div class="text-center">
-                                    <div class="text-3xl font-bold text-brand mb-2">$500</div>
-                                    <div class="font-semibold text-gray-900 mb-2">Bronze Sponsor</div>
-                                    <div class="text-sm text-gray-600 mb-4">2 people + Logo/Name on materials</div>
-                                    <div class="text-xs text-gray-500">Perfect for small businesses</div>
-                                </div>
-                            </label>
-                            <label class="sponsor-option p-6 border-2 border-gray-200 rounded-xl cursor-pointer hover:border-brand hover:bg-brand/5 transition-all">
-                                <input type="radio" name="sponsor" value="silver" class="sr-only">
-                                <div class="text-center">
-                                    <div class="text-3xl font-bold text-brand mb-2">$1,000</div>
-                                    <div class="font-semibold text-gray-900 mb-2">Silver Sponsor</div>
-                                    <div class="text-sm text-gray-600 mb-4">4 people + Logo/Name on materials</div>
-                                    <div class="text-xs text-gray-500">Great for medium businesses</div>
-                                </div>
-                            </label>
-                            <label class="sponsor-option p-6 border-2 border-gray-200 rounded-xl cursor-pointer hover:border-brand hover:bg-brand/5 transition-all">
-                                <input type="radio" name="sponsor" value="gold" class="sr-only">
-                                <div class="text-center">
-                                    <div class="text-3xl font-bold text-brand mb-2">$2,000</div>
-                                    <div class="font-semibold text-gray-900 mb-2">Gold Sponsor</div>
-                                    <div class="text-sm text-gray-600 mb-4">8 people + Logo/Name on materials</div>
-                                    <div class="text-xs text-gray-500">Premium visibility</div>
-                                </div>
-                            </label>
-                        </div>
-
-                        <!-- Additional Tickets for Sponsors -->
-                        <div class="border border-gray-200 rounded-xl p-6 mb-6">
-                            <h3 class="text-lg font-semibold text-gray-900 mb-4">Additional Admission Tickets</h3>
-                            <p class="text-gray-600 mb-4">Need more tickets beyond your sponsor package? Add them here.</p>
-                            
-                            <div class="flex items-center justify-between">
-                                <div class="flex-1">
-                                    <div class="font-semibold text-gray-900 mb-1">Extra Admission Tickets</div>
-                                    <p class="text-gray-600 mb-2">Additional tickets for your team or guests</p>
-                                    <p class="text-2xl font-bold text-brand">$50 <span class="text-sm font-normal text-gray-600">per person</span></p>
-                                </div>
-                                <div class="flex items-center gap-4">
-                                    <button type="button" class="quantity-btn w-12 h-12 bg-gray-100 hover:bg-gray-200 rounded-full flex items-center justify-center transition-colors text-xl font-bold" data-action="decrease" data-type="sponsor-extra">-</button>
-                                    <span class="quantity-display w-16 text-center font-semibold text-2xl min-w-[4rem]" data-type="sponsor-extra">0</span>
-                                    <button type="button" class="quantity-btn w-12 h-12 bg-gray-100 hover:bg-gray-200 rounded-full flex items-center justify-center transition-colors text-xl font-bold" data-action="increase" data-type="sponsor-extra">+</button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Drawing Entries for Sponsors -->
-                        <div class="border border-gray-200 rounded-xl p-6 mb-6">
-                            <h3 class="text-lg font-semibold text-gray-900 mb-4">Drawing Entries (Optional)</h3>
-                            <p class="text-gray-600 mb-4">Participate in our prize drawings! Buy 3+ and save with our triple package deal.</p>
-                            
-                            <div class="space-y-4">
-                                <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
-                                    <div>
-                                        <div class="font-semibold text-gray-900">Drawing Entries</div>
-                                        <div class="text-sm text-gray-600">$10 each • Buy 3+ and save with our triple package deal!</div>
-                                    </div>
-                                    <div class="flex items-center gap-3">
-                                        <button type="button" class="quantity-btn w-8 h-8 bg-white hover:bg-gray-100 rounded-full flex items-center justify-center transition-colors font-bold" data-action="decrease" data-type="sponsor-raffle">-</button>
-                                        <span class="quantity-display w-12 text-center font-semibold min-w-[3rem]" data-type="sponsor-raffle">0</span>
-                                        <button type="button" class="quantity-btn w-8 h-8 bg-white hover:bg-gray-100 rounded-full flex items-center justify-center transition-colors font-bold" data-action="increase" data-type="sponsor-raffle">+</button>
-                                    </div>
-                                </div>
-                                
-                                <!-- Smart Pricing Display for Sponsors -->
-                                <div id="sponsor-raffle-pricing-breakdown" class="hidden bg-green-50 border border-green-200 rounded-lg p-4">
-                                    <div class="flex items-center gap-2 mb-2">
-                                        <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                                        </svg>
-                                        <span class="font-semibold text-green-800">Smart Pricing Applied!</span>
-                                    </div>
-                                    <div id="sponsor-raffle-breakdown-text" class="text-sm text-green-700"></div>
-                                </div>
-                            </div>
-                            <p class="text-sm text-gray-600 mt-3">Maximum 50 drawing entries per person</p>
-                        </div>
-
-                        <!-- Sponsor Benefits -->
-                        <div class="bg-green-50 border border-green-200 rounded-xl p-6 mb-8">
-                            <h3 class="text-lg font-semibold text-green-900 mb-4">Sponsor Benefits</h3>
-                            <div class="grid md:grid-cols-2 gap-4">
-                                <div class="flex items-center gap-3">
-                                    <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                                    </svg>
-                                    <span class="text-green-800">Logo/Name on event materials</span>
-                                </div>
-                                <div class="flex items-center gap-3">
-                                    <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                                    </svg>
-                                    <span class="text-green-800">Admission for multiple people</span>
-                                </div>
-                                <div class="flex items-center gap-3">
-                                    <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                                    </svg>
-                                    <span class="text-green-800">Dinner and bake-off tasting</span>
-                                </div>
-                                <div class="flex items-center gap-3">
-                                    <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                                    </svg>
-                                    <span class="text-green-800">Tax-deductible contribution</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="flex justify-center">
-                            <button type="button" class="btn-next bg-brand hover:bg-brand-dark text-white px-8 py-4 rounded-lg font-semibold transition-colors text-lg">
-                                Continue to Payment →
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Review & Payment -->
-                    <div class="checkout-step p-8 hidden" data-step="3">
-                        <div class="text-center mb-8">
-                            <h2 class="text-2xl font-bold text-gray-900 mb-2">Review & Payment</h2>
-                            <p class="text-gray-600">Review your order and complete your purchase</p>
-                        </div>
-
-                        <div class="grid lg:grid-cols-2 gap-8">
-                            <!-- Order Summary -->
-                            <div class="space-y-6">
-                                <div class="bg-gray-50 rounded-xl p-6">
-                                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Order Summary</h3>
-                                    <div id="orderSummary" class="space-y-3">
-                                        <!-- Order items will be populated here -->
-                                    </div>
-                                    <div class="border-t border-gray-300 pt-4 mt-4">
-                                        <div class="flex justify-between text-xl font-bold">
-                                            <span>Total:</span>
-                                            <span id="totalAmount" class="text-brand">$0.00</span>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- Important Documents -->
-                                <div class="bg-blue-50 border border-blue-200 rounded-xl p-6">
-                                    <h3 class="text-lg font-semibold text-blue-900 mb-4">Important Documents</h3>
-                                    <div class="space-y-3">
-                                        <a 
-                                            href="https://app.box.com/s/2c461qyql0cai1lxu4hb2xv21nbh4uxi" 
-                                            target="_blank" 
-                                            rel="noopener noreferrer"
-                                            class="flex items-center gap-3 text-blue-700 hover:text-blue-800 transition-colors"
-                                        >
-                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
-                                            </svg>
-                                            <span>Official Prize Rules (PDF)</span>
-                                        </a>
-                                        <a 
-                                            href="https://app.box.com/s/95tz5hmqf1cptuea1ttd249pteyik2qf" 
-                                            target="_blank" 
-                                            rel="noopener noreferrer"
-                                            class="flex items-center gap-3 text-blue-700 hover:text-blue-800 transition-colors"
-                                        >
-                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
-                                            </svg>
-                                            <span>Ticket Refund Policy (PDF)</span>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Payment Section -->
-                            <div class="space-y-6">
-                                <div class="bg-gray-50 rounded-xl p-6">
-                                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Payment Information</h3>
-                                    <div class="space-y-4">
-                                        <div class="flex items-center gap-3 p-3 bg-white rounded-lg border border-gray-200">
-                                            <svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/>
-                                            </svg>
-                                            <div>
-                                                <div class="font-medium text-gray-900">Secure Payment</div>
-                                                <div class="text-sm text-gray-600">You'll be redirected to our secure payment processor</div>
-                                            </div>
-                                        </div>
-                                        <div class="flex items-center gap-3 p-3 bg-white rounded-lg border border-gray-200">
-                                            <svg class="w-6 h-6 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                                            </svg>
-                                            <div>
-                                                <div class="font-medium text-gray-900">Tax-Deductible</div>
-                                                <div class="text-sm text-gray-600">Your purchase supports our 501(c)(3) nonprofit</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- Payment Button -->
-                                <button type="submit" id="payButton" class="w-full bg-brand hover:bg-brand-dark text-white py-4 rounded-xl font-semibold text-lg transition-colors flex items-center justify-center gap-3 shadow-lg hover:shadow-xl">
-                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/>
-                                    </svg>
-                                    Complete Purchase
-                                </button>
-                            </div>
-                        </div>
-
-                        <div class="mt-8 text-center">
-                            <button type="button" class="btn-prev bg-gray-500 hover:bg-gray-600 text-white px-6 py-3 rounded-lg font-semibold transition-colors">
-                                ← Back to Options
-                            </button>
-                        </div>
-                    </div>
-                </form>
-
-                <!-- Error Message -->
-                <div id="errorMessage" class="mt-6 bg-red-50 border border-red-200 rounded-xl p-4 hidden">
-                    <div class="flex">
-                        <svg class="w-5 h-5 text-red-400 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                        </svg>
-                        <div class="ml-3">
-                            <p class="text-sm text-red-800" id="errorText"></p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+  </main>
 </Layout>
 
-<script>
-    // Event configuration
-    const eventConfig = {
-        name: "2nd Annual Fall Fundraiser",
-        date: "Saturday, November 1, 2025",
-        time: "5:00 PM - 8:00 PM",
-        location: "Memory Lane Events, 78 Walnut Grove Road, Eldon, MO",
-        price: 50
-    };
-
-    // Pricing configuration
-    const pricing = {
-        regularTicket: 50,
-        goldSponsor: 2000,
-        silverSponsor: 1000,
-        bronzeSponsor: 500,
-        raffleSingle: 10,
-        raffleTriple: 20
-    };
-
-    // API configuration
-    const STRIPE_API_URL = 'https://api.shelterinastorm.org/api/v2/OtherProduct';
-
-    // State management
-    let currentStep = 1;
-    let userIntent: 'tickets' | 'sponsor' | 'donation' | null = null;
-    let orderState = {
-        email: '',
-        phone: '',
-        regularTickets: 0,
-        sponsorPackage: null as string | null,
-        sponsorExtraTickets: 0,
-        raffleTotal: 0,
-        raffleTriplePackages: 0,
-        raffleSingleTickets: 0,
-        sponsorRaffleTotal: 0,
-        sponsorRaffleTriplePackages: 0,
-        sponsorRaffleSingleTickets: 0,
-        bakeOffEntry: false,
-        payProcessingFees: false,
-        donationOnly: false,
-        donationAmount: 0
-    };
-
-    // DOM elements
-    const form = document.getElementById('checkoutForm');
-    const errorMessage = document.getElementById('errorMessage');
-    const errorText = document.getElementById('errorText');
-    const payButton = document.getElementById('payButton') as HTMLButtonElement;
-    const orderSummary = document.getElementById('orderSummary');
-    const totalAmount = document.getElementById('totalAmount');
-
-    // Initialize
-    document.addEventListener('DOMContentLoaded', function() {
-        setupEventListeners();
-    });
-
-    function setupEventListeners() {
-        // Intent selection
-        document.querySelectorAll('.intent-option').forEach(btn => {
-            btn.addEventListener('click', handleIntentSelection);
-        });
-
-        // Step navigation
-        document.querySelectorAll('.btn-next').forEach(btn => {
-            btn.addEventListener('click', nextStep);
-        });
-        
-        document.querySelectorAll('.btn-prev').forEach(btn => {
-            btn.addEventListener('click', prevStep);
-        });
-
-        // Quantity buttons
-        document.querySelectorAll('.quantity-btn').forEach(btn => {
-            btn.addEventListener('click', handleQuantityChange);
-        });
-
-        // Sponsor option selection
-        document.querySelectorAll('.sponsor-option').forEach(option => {
-            option.addEventListener('click', handleSponsorSelection);
-        });
-
-        // Switch to sponsor flow button
-        const switchToSponsorBtn = document.querySelector('.btn-switch-to-sponsor');
-        if (switchToSponsorBtn) {
-            switchToSponsorBtn.addEventListener('click', switchToSponsorFlow);
-        }
-
-        // Form inputs
-        const emailInput = document.getElementById('email') as HTMLInputElement;
-        const phoneInput = document.getElementById('phone') as HTMLInputElement;
-        const sponsorEmailInput = document.getElementById('sponsor-email') as HTMLInputElement;
-        const sponsorPhoneInput = document.getElementById('sponsor-phone') as HTMLInputElement;
-        
-        if (emailInput) {
-            emailInput.addEventListener('input', (e) => {
-                orderState.email = (e.target as HTMLInputElement).value;
-            });
-        }
-
-        if (phoneInput) {
-            phoneInput.addEventListener('input', (e) => {
-                orderState.phone = (e.target as HTMLInputElement).value;
-            });
-        }
-
-        if (sponsorEmailInput) {
-            sponsorEmailInput.addEventListener('input', (e) => {
-                orderState.email = (e.target as HTMLInputElement).value;
-            });
-        }
-
-        if (sponsorPhoneInput) {
-            sponsorPhoneInput.addEventListener('input', (e) => {
-                orderState.phone = (e.target as HTMLInputElement).value;
-            });
-        }
-
-        // Sponsor packages
-        document.querySelectorAll('input[name="sponsor"]').forEach(radio => {
-            radio.addEventListener('change', (e) => {
-                orderState.sponsorPackage = (e.target as HTMLInputElement).value || null;
-                updateOrderSummary();
-            });
-        });
-
-        // Checkboxes
-        const bakeOffCheckbox = document.querySelector('input[name="bakeOff"]') as HTMLInputElement;
-        const coverFeesCheckbox = document.querySelector('input[name="coverFees"]') as HTMLInputElement;
-        const donationOnlyCheckbox = document.querySelector('input[name="donationOnly"]') as HTMLInputElement;
-        const donationAmountInput = document.querySelector('input[name="donationAmount"]') as HTMLInputElement;
-
-        if (bakeOffCheckbox) {
-            bakeOffCheckbox.addEventListener('change', (e) => {
-                orderState.bakeOffEntry = (e.target as HTMLInputElement).checked;
-            });
-        }
-
-        if (coverFeesCheckbox) {
-            coverFeesCheckbox.addEventListener('change', (e) => {
-                orderState.payProcessingFees = (e.target as HTMLInputElement).checked;
-                updateOrderSummary();
-            });
-        }
-
-        if (donationOnlyCheckbox) {
-            donationOnlyCheckbox.addEventListener('change', (e) => {
-                orderState.donationOnly = (e.target as HTMLInputElement).checked;
-                updateOrderSummary();
-            });
-        }
-
-        if (donationAmountInput) {
-            donationAmountInput.addEventListener('input', (e) => {
-                orderState.donationAmount = parseFloat((e.target as HTMLInputElement).value) || 0;
-                updateOrderSummary();
-            });
-        }
-
-        // Form submission
-        if (form) {
-            form.addEventListener('submit', handleSubmit);
-        }
-        
-        // Backup click handler for pay button
-        if (payButton) {
-            payButton.addEventListener('click', (e) => {
-                console.log('Pay button clicked!', e);
-                handleSubmit(e);
-            });
-        }
-    }
-
-    function handleIntentSelection(e: Event) {
-        const target = e.target as HTMLElement;
-        const intentOption = target.closest('.intent-option') as HTMLElement;
-        
-        if (!intentOption) return;
-        
-        const intent = intentOption.dataset.intent as 'tickets' | 'sponsor' | 'donation';
-        
-        // Update visual selection
-        document.querySelectorAll('.intent-option').forEach(option => {
-            option.classList.remove('border-brand', 'bg-brand/10');
-            option.classList.add('border-gray-200');
-        });
-        
-        intentOption.classList.remove('border-gray-200');
-        intentOption.classList.add('border-brand', 'bg-brand/10');
-        
-        userIntent = intent;
-        
-        if (intent === 'donation') {
-            // Redirect to donation page
-            window.location.href = '/donate';
-        } else {
-            // Show the appropriate form section
-            showFormSection(intent);
-        }
-    }
-
-    function showFormSection(intent: 'tickets' | 'sponsor') {
-        // Hide all form sections
-        document.querySelectorAll('.checkout-step').forEach(step => {
-            step.classList.add('hidden');
-        });
-        
-        // Show the selected form section
-        const targetSection = document.querySelector(`[data-flow="${intent}"]`);
-        if (targetSection) {
-            targetSection.classList.remove('hidden');
-        }
-        
-        // Sync contact information between forms
-        syncContactInfo();
-    }
-    
-    function syncContactInfo() {
-        const emailInput = document.getElementById('email') as HTMLInputElement;
-        const phoneInput = document.getElementById('phone') as HTMLInputElement;
-        const sponsorEmailInput = document.getElementById('sponsor-email') as HTMLInputElement;
-        const sponsorPhoneInput = document.getElementById('sponsor-phone') as HTMLInputElement;
-        
-        // If we have email/phone in state, populate both forms
-        if (orderState.email && emailInput && sponsorEmailInput) {
-            emailInput.value = orderState.email;
-            sponsorEmailInput.value = orderState.email;
-        }
-        
-        if (orderState.phone && phoneInput && sponsorPhoneInput) {
-            phoneInput.value = orderState.phone;
-            sponsorPhoneInput.value = orderState.phone;
-        }
-    }
-
-    function switchToSponsorFlow() {
-        userIntent = 'sponsor';
-        showFormSection('sponsor');
-    }
-
-    function handleSponsorSelection(e: Event) {
-        const target = e.target as HTMLElement;
-        const sponsorOption = target.closest('.sponsor-option') as HTMLElement;
-        const radioInput = sponsorOption.querySelector('input[type="radio"]') as HTMLInputElement;
-        
-        // Update visual selection
-        document.querySelectorAll('.sponsor-option').forEach(option => {
-            option.classList.remove('border-brand', 'bg-brand/10');
-            option.classList.add('border-gray-200');
-        });
-        
-        sponsorOption.classList.remove('border-gray-200');
-        sponsorOption.classList.add('border-brand', 'bg-brand/10');
-        
-        // Check the radio button
-        radioInput.checked = true;
-        orderState.sponsorPackage = radioInput.value;
-        
-        updateOrderSummary();
-    }
-
-    function handleQuantityChange(e: Event) {
-        const target = e.target as HTMLElement;
-        const action = target.dataset.action;
-        const type = target.dataset.type;
-        const display = document.querySelector(`.quantity-display[data-type="${type}"]`) as HTMLElement;
-        
-        console.log('Quantity change:', { action, type, display, target });
-        
-        if (!display) {
-            console.error('Display element not found for type:', type);
-            return;
-        }
-        
-        let currentValue = parseInt(display.textContent || '0') || 0;
-        
-        if (action === 'increase') {
-            // Check drawing entry limits
-            if (type === 'raffle-total') {
-                if (orderState.raffleTotal >= 50) {
-                    showError('Maximum 50 drawing entries per person');
-                    return;
-                }
-            }
-            if (type === 'sponsor-raffle') {
-                if (orderState.sponsorRaffleTotal >= 50) {
-                    showError('Maximum 50 drawing entries per person');
-                    return;
-                }
-            }
-            currentValue++;
-        } else if (action === 'decrease' && currentValue > 0) {
-            currentValue--;
-        }
-        
-        // Only update if this is actually a quantity display element
-        if (display.classList.contains('quantity-display')) {
-            display.textContent = currentValue.toString();
-        } else {
-            console.error('Target element is not a quantity display:', display);
-        }
-        
-        // Update state
-        switch (type) {
-            case 'regular':
-                orderState.regularTickets = currentValue;
-                break;
-            case 'sponsor-extra':
-                orderState.sponsorExtraTickets = currentValue;
-                break;
-            case 'raffle-total':
-                orderState.raffleTotal = currentValue;
-                calculateOptimalRafflePricing();
-                break;
-            case 'sponsor-raffle':
-                orderState.sponsorRaffleTotal = currentValue;
-                calculateOptimalSponsorRafflePricing();
-                break;
-        }
-        
-        updateOrderSummary();
-    }
-
-    function calculateOptimalRafflePricing() {
-        const total = orderState.raffleTotal;
-        
-        if (total === 0) {
-            orderState.raffleTriplePackages = 0;
-            orderState.raffleSingleTickets = 0;
-            hideRafflePricingBreakdown();
-            return;
-        }
-        
-        // Calculate optimal combination
-        const triplePackages = Math.floor(total / 3);
-        const remainingTickets = total % 3;
-        
-        orderState.raffleTriplePackages = triplePackages;
-        orderState.raffleSingleTickets = remainingTickets;
-        
-        // Show pricing breakdown if there are savings
-        if (triplePackages > 0) {
-            const savings = triplePackages * 10; // $10 saved per triple package
-            showRafflePricingBreakdown(total, triplePackages, remainingTickets, savings);
-        } else {
-            hideRafflePricingBreakdown();
-        }
-    }
-
-    function showRafflePricingBreakdown(total: number, triplePackages: number, singleTickets: number, savings: number) {
-        const breakdownElement = document.getElementById('raffle-pricing-breakdown');
-        const breakdownText = document.getElementById('raffle-breakdown-text');
-        
-        if (!breakdownElement || !breakdownText) return;
-        
-        let breakdown = `You're buying ${total} drawing entr${total > 1 ? 'ies' : 'y'}: `;
-        
-        if (triplePackages > 0) {
-            breakdown += `${triplePackages} triple package${triplePackages > 1 ? 's' : ''} (${triplePackages * 3} tickets)`;
-        }
-        
-        if (singleTickets > 0) {
-            if (triplePackages > 0) breakdown += ' + ';
-            breakdown += `${singleTickets} single ticket${singleTickets > 1 ? 's' : ''}`;
-        }
-        
-        breakdown += ` • You save $${savings}!`;
-        
-        breakdownText.textContent = breakdown;
-        breakdownElement.classList.remove('hidden');
-    }
-
-    function hideRafflePricingBreakdown() {
-        const breakdownElement = document.getElementById('raffle-pricing-breakdown');
-        if (breakdownElement) {
-            breakdownElement.classList.add('hidden');
-        }
-    }
-
-    function calculateOptimalSponsorRafflePricing() {
-        const total = orderState.sponsorRaffleTotal;
-        
-        if (total === 0) {
-            orderState.sponsorRaffleTriplePackages = 0;
-            orderState.sponsorRaffleSingleTickets = 0;
-            hideSponsorRafflePricingBreakdown();
-            return;
-        }
-        
-        // Calculate optimal combination
-        const triplePackages = Math.floor(total / 3);
-        const remainingTickets = total % 3;
-        
-        orderState.sponsorRaffleTriplePackages = triplePackages;
-        orderState.sponsorRaffleSingleTickets = remainingTickets;
-        
-        // Show pricing breakdown if there are savings
-        if (triplePackages > 0) {
-            const savings = triplePackages * 10; // $10 saved per triple package
-            showSponsorRafflePricingBreakdown(total, triplePackages, remainingTickets, savings);
-        } else {
-            hideSponsorRafflePricingBreakdown();
-        }
-    }
-
-    function showSponsorRafflePricingBreakdown(total: number, triplePackages: number, singleTickets: number, savings: number) {
-        const breakdownElement = document.getElementById('sponsor-raffle-pricing-breakdown');
-        const breakdownText = document.getElementById('sponsor-raffle-breakdown-text');
-        
-        if (!breakdownElement || !breakdownText) return;
-        
-        let breakdown = `You're buying ${total} drawing entr${total > 1 ? 'ies' : 'y'}: `;
-        
-        if (triplePackages > 0) {
-            breakdown += `${triplePackages} triple package${triplePackages > 1 ? 's' : ''} (${triplePackages * 3} tickets)`;
-        }
-        
-        if (singleTickets > 0) {
-            if (triplePackages > 0) breakdown += ' + ';
-            breakdown += `${singleTickets} single ticket${singleTickets > 1 ? 's' : ''}`;
-        }
-        
-        breakdown += ` • You save $${savings}!`;
-        
-        breakdownText.textContent = breakdown;
-        breakdownElement.classList.remove('hidden');
-    }
-
-    function hideSponsorRafflePricingBreakdown() {
-        const breakdownElement = document.getElementById('sponsor-raffle-pricing-breakdown');
-        if (breakdownElement) {
-            breakdownElement.classList.add('hidden');
-        }
-    }
-
-    function nextStep() {
-        if (!validateCurrentForm()) return;
-        
-        // Show the payment section
-        document.querySelectorAll('.checkout-step').forEach(step => {
-            step.classList.add('hidden');
-        });
-        
-        const paymentSection = document.querySelector('[data-step="3"]');
-        if (paymentSection) {
-            paymentSection.classList.remove('hidden');
-            updateOrderSummary();
-        }
-    }
-
-    function prevStep() {
-        // Go back to the options selection
-        document.querySelectorAll('.checkout-step').forEach(step => {
-            step.classList.add('hidden');
-        });
-        
-        // Reset visual selection
-        document.querySelectorAll('.intent-option').forEach(option => {
-            option.classList.remove('border-brand', 'bg-brand/10');
-            option.classList.add('border-gray-200');
-        });
-        
-        userIntent = null;
-    }
-
-    function validateCurrentForm() {
-        // Validate email - check both regular and sponsor email fields
-        let email = orderState.email.trim();
-        
-        // If no email in state, try to get it from the visible form
-        if (!email) {
-            const visibleEmailInput = document.querySelector('input[type="email"]:not([style*="display: none"])') as HTMLInputElement;
-            if (visibleEmailInput) {
-                email = visibleEmailInput.value.trim();
-            }
-        }
-        
-        if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-            showError('Please enter a valid email address');
-            return false;
-        }
-
-        // Validate that at least one item is selected
-        const hasRegularTickets = orderState.regularTickets > 0;
-        const hasSponsorPackage = orderState.sponsorPackage !== null;
-        const hasSponsorExtraTickets = orderState.sponsorExtraTickets > 0;
-        const hasRaffleTickets = orderState.raffleTotal > 0;
-        const hasSponsorRaffleTickets = orderState.sponsorRaffleTotal > 0;
-
-        if (!hasRegularTickets && !hasSponsorPackage && !hasSponsorExtraTickets && !hasRaffleTickets && !hasSponsorRaffleTickets) {
-            showError('Please select at least one item to purchase');
-            return false;
-        }
-
-        return true;
-    }
-
-
-
-    function updateOrderSummary() {
-        const items = [];
-        let total = 0;
-
-        // Regular tickets
-        if (orderState.regularTickets > 0) {
-            const cost = orderState.regularTickets * pricing.regularTicket;
-            items.push({
-                name: `Regular Admission Ticket${orderState.regularTickets > 1 ? 's' : ''}`,
-                cost: cost
-            });
-            total += cost;
-        }
-
-        // Sponsor extra tickets
-        if (orderState.sponsorExtraTickets > 0) {
-            const cost = orderState.sponsorExtraTickets * pricing.regularTicket;
-            items.push({
-                name: `Additional Admission Ticket${orderState.sponsorExtraTickets > 1 ? 's' : ''}`,
-                cost: cost
-            });
-            total += cost;
-        }
-
-        // Sponsor packages
-        if (orderState.sponsorPackage) {
-            let cost = 0;
-            let name = '';
-            switch (orderState.sponsorPackage) {
-                case 'gold':
-                    cost = pricing.goldSponsor;
-                    name = 'Gold Sponsor Package';
-                    break;
-                case 'silver':
-                    cost = pricing.silverSponsor;
-                    name = 'Silver Sponsor Package';
-                    break;
-                case 'bronze':
-                    cost = pricing.bronzeSponsor;
-                    name = 'Bronze Sponsor Package';
-                    break;
-            }
-            items.push({ name, cost });
-            total += cost;
-        }
-
-        // Drawing entries (smart pricing)
-        if (orderState.raffleTotal > 0) {
-            let raffleCost = 0;
-            
-            if (orderState.raffleTriplePackages > 0) {
-                raffleCost += orderState.raffleTriplePackages * pricing.raffleTriple;
-            }
-            
-            if (orderState.raffleSingleTickets > 0) {
-                raffleCost += orderState.raffleSingleTickets * pricing.raffleSingle;
-            }
-            
-            // Calculate savings for display
-            const regularPrice = orderState.raffleTotal * pricing.raffleSingle;
-            const savings = regularPrice - raffleCost;
-            
-            let raffleName = `${orderState.raffleTotal} Drawing Entr${orderState.raffleTotal > 1 ? 'ies' : 'y'}`;
-            if (savings > 0) {
-                raffleName += ` (Save $${savings})`;
-            }
-            
-            items.push({
-                name: raffleName,
-                cost: raffleCost
-            });
-            total += raffleCost;
-        }
-
-        // Sponsor drawing entries (smart pricing)
-        if (orderState.sponsorRaffleTotal > 0) {
-            let sponsorRaffleCost = 0;
-            
-            if (orderState.sponsorRaffleTriplePackages > 0) {
-                sponsorRaffleCost += orderState.sponsorRaffleTriplePackages * pricing.raffleTriple;
-            }
-            
-            if (orderState.sponsorRaffleSingleTickets > 0) {
-                sponsorRaffleCost += orderState.sponsorRaffleSingleTickets * pricing.raffleSingle;
-            }
-            
-            // Calculate savings for display
-            const regularPrice = orderState.sponsorRaffleTotal * pricing.raffleSingle;
-            const savings = regularPrice - sponsorRaffleCost;
-            
-            let sponsorRaffleName = `${orderState.sponsorRaffleTotal} Drawing Entr${orderState.sponsorRaffleTotal > 1 ? 'ies' : 'y'}`;
-            if (savings > 0) {
-                sponsorRaffleName += ` (Save $${savings})`;
-            }
-            
-            items.push({
-                name: sponsorRaffleName,
-                cost: sponsorRaffleCost
-            });
-            total += sponsorRaffleCost;
-        }
-
-        // Donation
-        if (orderState.donationOnly && orderState.donationAmount > 0) {
-            items.push({
-                name: 'Donation',
-                cost: orderState.donationAmount
-            });
-            total += orderState.donationAmount;
-        }
-
-        // Processing fees
-        if (orderState.payProcessingFees && total > 0) {
-            const processingFee = Math.round((total * 0.029 + 0.30) * 100) / 100;
-            items.push({
-                name: 'Processing Fee Coverage',
-                cost: processingFee
-            });
-            total += processingFee;
-        }
-
-        // Update display
-        if (items.length > 0) {
-            if (orderSummary) {
-                orderSummary.innerHTML = items.map(item => 
-                    `<div class="flex justify-between py-2">
-                        <span>${item.name}</span>
-                        <span>$${item.cost.toFixed(2)}</span>
-                    </div>`
-                ).join('');
-            }
-            if (totalAmount) {
-                totalAmount.textContent = `$${total.toFixed(2)}`;
-            }
-        } else {
-            if (orderSummary) {
-                orderSummary.innerHTML = '<div class="text-gray-500 text-center py-4">No items selected</div>';
-            }
-            if (totalAmount) {
-                totalAmount.textContent = '$0.00';
-            }
-        }
-    }
-
-    async function handleSubmit(e: Event) {
-        e.preventDefault();
-        console.log('Form submitted!', e);
-        
-        if (!validateCurrentForm()) {
-            console.log('Form validation failed');
-            return;
-        }
-        
-        console.log('Form validation passed, proceeding with API call');
-
-        setLoading(true);
-        hideError();
-
-        try {
-            // Build products array
-            const products = [];
-            let totalAmount = 0;
-
-            // Regular tickets
-            if (orderState.regularTickets > 0) {
-                products.push({
-                    name: `Regular Admission Ticket${orderState.regularTickets > 1 ? 's' : ''}`,
-                    description: `Admission, Dinner, and Bake-Off Tasting for ${orderState.regularTickets} ${orderState.regularTickets > 1 ? 'people' : 'person'}`,
-                    price: pricing.regularTicket,
-                    quantity: orderState.regularTickets,
-                    type: 'admission'
-                });
-                totalAmount += orderState.regularTickets * pricing.regularTicket;
-            }
-
-            // Sponsor extra tickets
-            if (orderState.sponsorExtraTickets > 0) {
-                products.push({
-                    name: `Additional Admission Ticket${orderState.sponsorExtraTickets > 1 ? 's' : ''}`,
-                    description: `Additional admission tickets beyond sponsor package for ${orderState.sponsorExtraTickets} ${orderState.sponsorExtraTickets > 1 ? 'people' : 'person'}`,
-                    price: pricing.regularTicket,
-                    quantity: orderState.sponsorExtraTickets,
-                    type: 'admission'
-                });
-                totalAmount += orderState.sponsorExtraTickets * pricing.regularTicket;
-            }
-
-            // Sponsor packages
-            if (orderState.sponsorPackage) {
-                let sponsorName = '';
-                let sponsorPrice = 0;
-                let sponsorDescription = '';
-                
-                switch (orderState.sponsorPackage) {
-                    case 'gold':
-                        sponsorName = 'Gold Sponsor Package';
-                        sponsorPrice = pricing.goldSponsor;
-                        sponsorDescription = '8 people + Logo/Name on Event Materials';
-                        break;
-                    case 'silver':
-                        sponsorName = 'Silver Sponsor Package';
-                        sponsorPrice = pricing.silverSponsor;
-                        sponsorDescription = '4 people + Logo/Name on Event Materials';
-                        break;
-                    case 'bronze':
-                        sponsorName = 'Bronze Sponsor Package';
-                        sponsorPrice = pricing.bronzeSponsor;
-                        sponsorDescription = '2 people + Logo/Name on Event Materials';
-                        break;
-                }
-                
-                products.push({
-                    name: sponsorName,
-                    description: sponsorDescription,
-                    price: sponsorPrice,
-                    quantity: 1,
-                    type: 'sponsor'
-                });
-                totalAmount += sponsorPrice;
-            }
-
-            // Drawing entries (smart pricing - single line item)
-            if (orderState.raffleTotal > 0) {
-                let raffleCost = 0;
-                
-                if (orderState.raffleTriplePackages > 0) {
-                    raffleCost += orderState.raffleTriplePackages * pricing.raffleTriple;
-                }
-                
-                if (orderState.raffleSingleTickets > 0) {
-                    raffleCost += orderState.raffleSingleTickets * pricing.raffleSingle;
-                }
-                
-                // Calculate savings for description
-                const regularPrice = orderState.raffleTotal * pricing.raffleSingle;
-                const savings = regularPrice - raffleCost;
-                
-                let description = `${orderState.raffleTotal} drawing entr${orderState.raffleTotal > 1 ? 'ies' : 'y'} for prize drawings`;
-                if (savings > 0) {
-                    description += ` (Smart pricing applied - Save $${savings}!)`;
-                }
-                
-                products.push({
-                    name: `${orderState.raffleTotal} Drawing Entr${orderState.raffleTotal > 1 ? 'ies' : 'y'}`,
-                    description: description,
-                    price: raffleCost,
-                    quantity: 1,
-                    type: 'prize_entry'
-                });
-                totalAmount += raffleCost;
-            }
-
-            // Sponsor drawing entries (smart pricing - single line item)
-            if (orderState.sponsorRaffleTotal > 0) {
-                let sponsorRaffleCost = 0;
-                
-                if (orderState.sponsorRaffleTriplePackages > 0) {
-                    sponsorRaffleCost += orderState.sponsorRaffleTriplePackages * pricing.raffleTriple;
-                }
-                
-                if (orderState.sponsorRaffleSingleTickets > 0) {
-                    sponsorRaffleCost += orderState.sponsorRaffleSingleTickets * pricing.raffleSingle;
-                }
-                
-                // Calculate savings for description
-                const regularPrice = orderState.sponsorRaffleTotal * pricing.raffleSingle;
-                const savings = regularPrice - sponsorRaffleCost;
-                
-                let description = `${orderState.sponsorRaffleTotal} drawing entr${orderState.sponsorRaffleTotal > 1 ? 'ies' : 'y'} for prize drawings`;
-                if (savings > 0) {
-                    description += ` (Smart pricing applied - Save $${savings}!)`;
-                }
-                
-                products.push({
-                    name: `${orderState.sponsorRaffleTotal} Drawing Entr${orderState.sponsorRaffleTotal > 1 ? 'ies' : 'y'}`,
-                    description: description,
-                    price: sponsorRaffleCost,
-                    quantity: 1,
-                    type: 'prize_entry'
-                });
-                totalAmount += sponsorRaffleCost;
-            }
-
-            // Donation
-            if (orderState.donationOnly && orderState.donationAmount > 0) {
-                products.push({
-                    name: 'Donation',
-                    description: 'Tax-deductible donation to support Shelter in a Storm',
-                    price: orderState.donationAmount,
-                    quantity: 1,
-                    type: 'donation'
-                });
-                totalAmount += orderState.donationAmount;
-            }
-
-            // Processing fees
-            if (orderState.payProcessingFees && totalAmount > 0) {
-                const processingFee = Math.round((totalAmount * 0.029 + 0.30) * 100) / 100;
-                products.push({
-                    name: 'Processing Fee Coverage',
-                    description: 'Help cover payment processing fees to maximize funds for our cause',
-                    price: processingFee,
-                    quantity: 1,
-                    type: 'fee'
-                });
-                totalAmount += processingFee;
-            }
-
-            // Prepare request body
-            const requestBody = {
-                email: orderState.email,
-                eventName: eventConfig.name,
-                eventDate: eventConfig.date,
-                products: products,
-                bakeOffEntry: orderState.bakeOffEntry,
-                coverFees: orderState.payProcessingFees
-            };
-
-            let response;
-            if (orderState.donationOnly && !orderState.regularTickets && !orderState.sponsorPackage && !orderState.raffleTotal) {
-                // Donation only - use donation API
-                response = await fetch('https://api.shelterinastorm.org/api/v2/donation.js', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        amount: orderState.donationAmount,
-                        email: orderState.email,
-                        donationType: 'one-time'
-                    })
-                });
-            } else {
-                // Event tickets - use comprehensive API
-                response = await fetch(STRIPE_API_URL, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(requestBody)
-                });
-            }
-
-            // Handle response properly
-            let data;
-            const contentType = response.headers.get('content-type');
-            
-            if (contentType && contentType.includes('application/json')) {
-                data = await response.json();
-            } else {
-                const text = await response.text();
-                try {
-                    data = JSON.parse(text);
-                } catch (e) {
-                    throw new Error(`Server returned invalid response: ${text.substring(0, 100)}`);
-                }
-            }
-
-            if (data.success && data.url) {
-                // Redirect to Stripe checkout
-                window.location.href = data.url;
-            } else {
-                throw new Error(data.message || 'Failed to create checkout session');
-            }
-        } catch (error) {
-            console.error('Error:', error);
-            showError(error instanceof Error ? error.message : 'An error occurred. Please try again.');
-        } finally {
-            setLoading(false);
-        }
-    }
-
-    function setLoading(loading: boolean) {
-        if (!payButton) return;
-        
-        if (loading) {
-            payButton.disabled = true;
-            payButton.innerHTML = `
-                <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                </svg>
-                Processing...
-            `;
-        } else {
-            payButton.disabled = false;
-            payButton.innerHTML = `
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/>
-                </svg>
-                Proceed to Payment
-            `;
-        }
-    }
-
-    function showError(message: string) {
-        if (errorText) {
-            errorText.textContent = message;
-        }
-        if (errorMessage) {
-            errorMessage.classList.remove('hidden');
-        }
-    }
-
-    function hideError() {
-        if (errorMessage) {
-            errorMessage.classList.add('hidden');
-        }
-    }
-
-</script>
-
 <style>
-    /* Professional checkout styling */
-    .intent-option {
-        transition: all 0.2s ease;
-    }
-    
-    .intent-option:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    }
-    
-    .sponsor-option {
-        transition: all 0.2s ease;
-    }
-    
-    .sponsor-option:hover {
-        transform: translateY(-1px);
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    }
-    
-    .quantity-btn {
-        transition: all 0.2s ease;
-        flex-shrink: 0;
-    }
-    
-    .quantity-btn:hover {
-        transform: scale(1.1);
-    }
-    
-    .quantity-btn:active {
-        transform: scale(0.95);
-    }
-    
-    .quantity-display {
-        flex-shrink: 0;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-    
-    /* Loading animation */
-    @keyframes spin {
-        from { transform: rotate(0deg); }
-        to { transform: rotate(360deg); }
-    }
-    
-    .animate-spin {
-        animation: spin 1s linear infinite;
-    }
-    
-    /* Smooth transitions */
-    .checkout-step {
-        transition: all 0.3s ease;
-    }
-    
-    /* Focus states */
-    input:focus, button:focus {
-        outline: none;
-        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
-    }
-    
-    /* Professional shadows */
-    .shadow-xl {
-        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-    }
-    
-    .shadow-lg {
-        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-    }
-    
-    /* Auction items styling */
-    .auction-item {
-        transition: all 0.3s ease;
-    }
-    
-    .auction-item:hover {
-        transform: translateY(-4px);
-    }
-    
-    .line-clamp-2 {
-        display: -webkit-box;
-        -webkit-line-clamp: 2;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
-    }
-    
-    /* Loading animation for auction items */
-    @keyframes pulse {
-        0%, 100% {
-            opacity: 1;
-        }
-        50% {
-            opacity: 0.5;
-        }
-    }
-    
-    .animate-pulse {
-        animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-    }
+  .checkout-field {
+    width: 100%;
+    padding: 0.625rem 0.875rem;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.5rem;
+    background: white;
+    font-size: 0.875rem;
+    color: #111;
+    transition: border-color 0.15s ease;
+  }
+  .checkout-field::placeholder { color: #d1d5db; }
+  .checkout-field:focus {
+    outline: none;
+    border-color: #111;
+    box-shadow: 0 0 0 1px #111;
+  }
+  .checkout-step.hidden { display: none; }
+  .intent-btn.selected { border-color: #111; background: #fafafa; }
+  .sponsor-tier:has(input:checked) { border-color: #111; background: #fafafa; }
+  .line-clamp-1 { display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; }
+  .line-clamp-2 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
 </style>
 
+<script is:inline define:vars={{ clientConfig }}>
+(function() {
+  const CFG = JSON.parse(clientConfig);
+
+  let flow = null;
+  let prevStep = 1;
+  const state = {
+    email: '', phone: '',
+    regularTickets: 0,
+    sponsorTier: null,
+    sponsorExtraTickets: 0,
+    raffleTickets: 0,
+    sponsorRaffleTickets: 0,
+    extras: {},
+  };
+
+  const $ = (s, ctx) => (ctx || document).querySelector(s);
+  const $$ = (s, ctx) => (ctx || document).querySelectorAll(s);
+  const form = $('#checkoutForm');
+  if (!form) return;
+
+  // ── Step Navigation ──────────────────────────────────────
+  function showStep(n, targetFlow) {
+    $$('.checkout-step', form).forEach(el => el.classList.add('hidden'));
+    if (n === 2 && targetFlow) {
+      const s = $(`.checkout-step[data-step="2"][data-flow="${targetFlow}"]`, form);
+      if (s) s.classList.remove('hidden');
+    } else {
+      const s = $(`.checkout-step[data-step="${n}"]`, form);
+      if (s) s.classList.remove('hidden');
+    }
+    form.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  // Intent buttons
+  $$('.intent-btn', form).forEach(btn => {
+    btn.addEventListener('click', () => {
+      $$('.intent-btn', form).forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+      flow = btn.dataset.intent;
+      prevStep = 1;
+      showStep(2, flow);
+    });
+  });
+
+  // Back buttons
+  $$('.btn-back', form).forEach(btn => {
+    btn.addEventListener('click', () => {
+      const currentStep = btn.closest('.checkout-step');
+      const step = currentStep ? currentStep.dataset.step : '2';
+      if (step === '3') {
+        showStep(2, flow);
+      } else {
+        flow = null;
+        $$('.intent-btn', form).forEach(b => b.classList.remove('selected'));
+        showStep(1);
+      }
+    });
+  });
+
+  // Review buttons
+  $$('.btn-review', form).forEach(btn => {
+    btn.addEventListener('click', () => {
+      if (!validateForm()) return;
+      syncState();
+      updateSummary();
+      prevStep = 2;
+      showStep(3);
+    });
+  });
+
+  // ── Sponsor Tier Selection ───────────────────────────────
+  $$('.sponsor-tier', form).forEach(label => {
+    label.addEventListener('click', () => {
+      const radio = $('input[type="radio"]', label);
+      if (radio) {
+        radio.checked = true;
+        state.sponsorTier = radio.value;
+      }
+    });
+  });
+
+  // ── Quantity Buttons ─────────────────────────────────────
+  $$('.qty-btn', form).forEach(btn => {
+    btn.addEventListener('click', () => {
+      const type = btn.dataset.type;
+      const action = btn.dataset.action;
+      const display = $(`.qty-display[data-type="${type}"]`, form);
+      if (!display) return;
+
+      let val = parseInt(display.textContent) || 0;
+
+      if (action === 'increase') {
+        if ((type === 'raffle' || type === 'sponsor-raffle') && CFG.raffle) {
+          if (val >= CFG.raffle.maxPerPerson) return;
+        }
+        if (type === 'regular' && CFG.tickets && val >= CFG.tickets.maxPerOrder) return;
+        val++;
+      } else if (action === 'decrease' && val > 0) {
+        val--;
+      }
+
+      display.textContent = val;
+
+      if (type === 'regular') state.regularTickets = val;
+      else if (type === 'sponsor-extra') state.sponsorExtraTickets = val;
+      else if (type === 'raffle') { state.raffleTickets = val; showRaffleSavings('raffle-savings', val); }
+      else if (type === 'sponsor-raffle') { state.sponsorRaffleTickets = val; showRaffleSavings('sponsor-raffle-savings', val); }
+    });
+  });
+
+  // ── Raffle Savings Display ───────────────────────────────
+  function calcRaffle(total) {
+    if (!CFG.raffle || total === 0) return { bundles: 0, singles: 0, cost: 0, savings: 0 };
+    const bundles = Math.floor(total / CFG.raffle.bundleSize);
+    const singles = total % CFG.raffle.bundleSize;
+    const cost = bundles * CFG.raffle.bundlePrice + singles * CFG.raffle.singlePrice;
+    const full = total * CFG.raffle.singlePrice;
+    return { bundles, singles, cost, savings: full - cost };
+  }
+
+  function showRaffleSavings(elId, total) {
+    const el = document.getElementById(elId);
+    if (!el) return;
+    const r = calcRaffle(total);
+    if (r.savings > 0) {
+      el.textContent = `${r.bundles} bundle${r.bundles > 1 ? 's' : ''} of ${CFG.raffle.bundleSize}${r.singles > 0 ? ` + ${r.singles} single` : ''} — you save $${r.savings}!`;
+      el.classList.remove('hidden');
+    } else {
+      el.classList.add('hidden');
+    }
+  }
+
+  // ── Sync State from DOM ──────────────────────────────────
+  function syncState() {
+    const emailEl = $('input[name="email"]', form) || $('input[name="sponsor-email"]', form);
+    const phoneEl = $('input[name="phone"]', form) || $('input[name="sponsor-phone"]', form);
+    if (flow === 'sponsor') {
+      state.email = ($('input[name="sponsor-email"]', form) || {}).value || '';
+      state.phone = ($('input[name="sponsor-phone"]', form) || {}).value || '';
+      const checked = $('input[name="sponsor-tier"]:checked', form);
+      state.sponsorTier = checked ? checked.value : null;
+    } else {
+      state.email = ($('input[name="email"]', form) || {}).value || '';
+      state.phone = ($('input[name="phone"]', form) || {}).value || '';
+    }
+    state.extras = {};
+    $$('.extra-check', form).forEach(cb => {
+      if (cb.checked) {
+        const key = cb.name.replace('sponsor-', '');
+        state.extras[key] = true;
+      }
+    });
+  }
+
+  // ── Validation ───────────────────────────────────────────
+  function validateForm() {
+    syncState();
+    if (!state.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(state.email)) {
+      showError('Please enter a valid email address.'); return false;
+    }
+    if (flow === 'tickets' && state.regularTickets === 0 && state.raffleTickets === 0) {
+      showError('Please select at least one item.'); return false;
+    }
+    if (flow === 'sponsor' && !state.sponsorTier) {
+      showError('Please select a sponsor package.'); return false;
+    }
+    hideError();
+    return true;
+  }
+
+  // ── Order Summary ────────────────────────────────────────
+  function updateSummary() {
+    const items = [];
+    let total = 0;
+
+    if (state.regularTickets > 0 && CFG.tickets) {
+      const c = state.regularTickets * CFG.tickets.price;
+      items.push({ name: `Admission x${state.regularTickets}`, cost: c });
+      total += c;
+    }
+
+    if (state.sponsorTier && CFG.sponsors) {
+      const tier = CFG.sponsors.tiers.find(t => t.id === state.sponsorTier);
+      if (tier) { items.push({ name: tier.name, cost: tier.price }); total += tier.price; }
+    }
+
+    if (state.sponsorExtraTickets > 0 && CFG.tickets) {
+      const c = state.sponsorExtraTickets * CFG.tickets.price;
+      items.push({ name: `Additional Tickets x${state.sponsorExtraTickets}`, cost: c });
+      total += c;
+    }
+
+    if (state.raffleTickets > 0) {
+      const r = calcRaffle(state.raffleTickets);
+      const label = r.savings > 0 ? `Drawing Entries x${state.raffleTickets} (save $${r.savings})` : `Drawing Entries x${state.raffleTickets}`;
+      items.push({ name: label, cost: r.cost });
+      total += r.cost;
+    }
+
+    if (state.sponsorRaffleTickets > 0) {
+      const r = calcRaffle(state.sponsorRaffleTickets);
+      const label = r.savings > 0 ? `Drawing Entries x${state.sponsorRaffleTickets} (save $${r.savings})` : `Drawing Entries x${state.sponsorRaffleTickets}`;
+      items.push({ name: label, cost: r.cost });
+      total += r.cost;
+    }
+
+    if (state.extras.coverFees && total > 0) {
+      const fee = Math.round((total * 0.029 + 0.30) * 100) / 100;
+      items.push({ name: 'Processing Fee Coverage', cost: fee });
+      total += fee;
+    }
+
+    const summaryEl = document.getElementById('orderSummary');
+    const totalEl = document.getElementById('totalAmount');
+    if (summaryEl) {
+      summaryEl.innerHTML = items.length > 0
+        ? items.map(i => `<div class="flex justify-between"><span class="text-gray-500">${i.name}</span><span class="text-black font-medium">$${i.cost.toFixed(2)}</span></div>`).join('')
+        : '<p class="text-gray-400 text-center py-2">No items selected</p>';
+    }
+    if (totalEl) totalEl.textContent = `$${total.toFixed(2)}`;
+  }
+
+  // ── Submit ───────────────────────────────────────────────
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    syncState();
+
+    const payBtn = document.getElementById('payBtn');
+    const payText = payBtn ? payBtn.querySelector('.pay-text') : null;
+    const payLoad = payBtn ? payBtn.querySelector('.pay-loading') : null;
+
+    function setLoading(on) {
+      if (payBtn) payBtn.disabled = on;
+      if (payText) payText.classList.toggle('hidden', on);
+      if (payLoad) payLoad.classList.toggle('hidden', !on);
+    }
+
+    setLoading(true);
+    hideError();
+
+    try {
+      const products = [];
+      let amt = 0;
+
+      if (state.regularTickets > 0 && CFG.tickets) {
+        products.push({ name: 'Regular Admission', description: `Admission for ${state.regularTickets}`, price: CFG.tickets.price, quantity: state.regularTickets, type: 'admission' });
+        amt += state.regularTickets * CFG.tickets.price;
+      }
+
+      if (state.sponsorTier && CFG.sponsors) {
+        const tier = CFG.sponsors.tiers.find(t => t.id === state.sponsorTier);
+        if (tier) {
+          products.push({ name: tier.name, description: `${tier.seats} people`, price: tier.price, quantity: 1, type: 'sponsor' });
+          amt += tier.price;
+        }
+      }
+
+      if (state.sponsorExtraTickets > 0 && CFG.tickets) {
+        products.push({ name: 'Additional Admission', description: `Extra tickets x${state.sponsorExtraTickets}`, price: CFG.tickets.price, quantity: state.sponsorExtraTickets, type: 'admission' });
+        amt += state.sponsorExtraTickets * CFG.tickets.price;
+      }
+
+      const allRaffle = state.raffleTickets + state.sponsorRaffleTickets;
+      if (allRaffle > 0) {
+        const r = calcRaffle(allRaffle);
+        products.push({ name: `${allRaffle} Drawing Entries`, description: `Drawing entries`, price: r.cost, quantity: 1, type: 'prize_entry' });
+        amt += r.cost;
+      }
+
+      if (state.extras.coverFees && amt > 0) {
+        const fee = Math.round((amt * 0.029 + 0.30) * 100) / 100;
+        products.push({ name: 'Processing Fee Coverage', description: 'Cover payment processing', price: fee, quantity: 1, type: 'fee' });
+        amt += fee;
+      }
+
+      const body = {
+        email: state.email,
+        eventName: CFG.name,
+        eventDate: CFG.date,
+        products,
+        bakeOffEntry: !!state.extras.bakeOff,
+        coverFees: !!state.extras.coverFees,
+      };
+
+      const res = await fetch(CFG.stripeApiUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+      });
+
+      let data;
+      const ct = res.headers.get('content-type');
+      if (ct && ct.includes('application/json')) { data = await res.json(); }
+      else { const txt = await res.text(); data = JSON.parse(txt); }
+
+      if (data.success && data.url) {
+        window.location.href = data.url;
+      } else {
+        throw new Error(data.message || 'Failed to create checkout session');
+      }
+    } catch (err) {
+      showError(err.message || 'An error occurred. Please try again.');
+      setLoading(false);
+    }
+  });
+
+  // ── Error Helpers ────────────────────────────────────────
+  function showError(msg) {
+    const el = document.getElementById('checkoutError');
+    if (el) { el.textContent = msg; el.classList.remove('hidden'); el.scrollIntoView({ behavior: 'smooth', block: 'center' }); }
+  }
+  function hideError() {
+    const el = document.getElementById('checkoutError');
+    if (el) el.classList.add('hidden');
+  }
+})();
+</script>

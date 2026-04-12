@@ -1,160 +1,61 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import { siteConfig } from '../../config/site';
-import { trackEvent } from '../../utils/analytics';
-import PartnerScroll from '../../components/DonorScroll.astro';
-import FullScreenAlert from '../../components/alerts/FullScreenAlert.astro';
+import DonorSection from '../../components/DonorSection.astro';
 ---
 
 <Layout title="Thank You for Your Donation">
-    <!-- Hero Section -->
-    <section class="relative min-h-screen flex items-center justify-center">
-        <div class="absolute inset-0">
-            <img 
-                src={siteConfig.metadata.openGraph.image}
-                alt="Thank you for your donation"
-                class="w-full h-full object-cover"
-            />
-            <div class="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/60"></div>
-        </div>
+  <main>
 
-        <div class="relative container mx-auto px-6 z-10">
-            <div class="max-w-4xl mx-auto text-center text-white space-y-8">
-                <h1 
-                    class="text-5xl md:text-7xl font-bold mb-6 animate-fade-in"
-                    style="text-wrap: balance;"
-                >
-                    Thank You for Your Support
-                </h1>
-                <p 
-                    class="text-xl md:text-2xl text-gray-200 mb-12 animate-slide-up-delay-1 max-w-2xl mx-auto"
-                    style="text-wrap: balance;"
-                >
-                    Your generosity helps us serve our community
-                </p>
-            </div>
-        </div>
-
-    
+    <!-- Header -->
+    <section class="pt-40 pb-20 lg:pt-48 lg:pb-24">
+      <div class="max-w-2xl mx-auto px-6 text-center">
+        <p class="text-sm text-gray-400 font-medium uppercase tracking-wide mb-4">Thank you</p>
+        <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-black leading-[1.1] tracking-tight mb-6" style="text-wrap: balance;">
+          Your support makes a real difference.
+        </h1>
+        <p class="text-gray-400 text-lg max-w-xl mx-auto leading-relaxed">
+          Your generous donation helps us provide vital emergency assistance and support to families in need.
+        </p>
+      </div>
     </section>
 
-    <div id="content" class="min-h-screen bg-gradient-to-b from-gray-50 to-white">
-        <div class="container mx-auto px-6 py-48"> {/* Increased padding from py-32 to py-48 */}
-            <div class="max-w-4xl mx-auto text-center">
-                {/* Hero Section */}
-                <div class="relative mb-16">
-                    <div class="absolute inset-0 flex items-center justify-center">
-                        <div class="w-48 h-48 bg-brand/5 rounded-full blur-3xl"></div>
-                    </div>
-                    <div class="relative">
-                        <div class="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-brand to-brand-dark rounded-2xl shadow-xl shadow-brand/20 mb-8 transform -rotate-6">
-                            <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path 
-                                    stroke-linecap="round" 
-                                    stroke-linejoin="round" 
-                                    stroke-width="2" 
-                                    d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
-                                />
-                            </svg>
-                        </div>
-                        
-                        <div class="space-y-6">
-                            <div class="inline-flex items-center gap-3 text-brand font-medium">
-                                <span class="w-12 h-[2px] bg-gradient-to-r from-brand to-brand-dark rounded-full"></span>
-                                <span class="uppercase tracking-wider text-sm">Thank You</span>
-                                <span class="w-12 h-[2px] bg-gradient-to-r from-brand-dark to-brand rounded-full"></span>
-                            </div>
-                            <h1 class="text-5xl md:text-6xl font-bold text-gray-900 leading-tight">
-                                Your Support Makes<br/>a Real Difference
-                            </h1>
-                            <p class="text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
-                                Your generous donation empowers us to continue providing vital emergency assistance and support to families in need around our community.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-
-                {/* Impact Stats */}
-                <div class="grid md:grid-cols-3 gap-8 mt-16">
-                    {[
-                        { 
-                            number: '24/7', 
-                            label: 'Emergency Support',
-                            description: 'Always available when help is needed most'
-                        },
-                        { 
-                            number: '100%', 
-                            label: 'Goes to Programs',
-                            description: 'Every dollar directly supports our mission'
-                        },
-                        { 
-                            number: '2', 
-                            label: 'Counties Served',
-                            description: 'Making an impact across our region'
-                        },
-                    ].map(stat => (
-                        <div class="group bg-white p-8 rounded-2xl shadow-lg shadow-gray-100/50 border border-gray-100 hover:shadow-xl hover:shadow-brand/5 transition-all duration-300 hover:-translate-y-1">
-                            <div class="text-5xl font-bold bg-gradient-to-r from-brand to-brand-dark bg-clip-text text-transparent mb-3">{stat.number}</div>
-                            <div class="text-gray-900 font-medium text-lg mb-2">{stat.label}</div>
-                            <div class="text-gray-500 text-sm">{stat.description}</div>
-                        </div>
-                    ))}
-                </div>
-
-                {/* CTAs */}
-                <div class="flex flex-col sm:flex-row gap-4 justify-center mt-16">
-                
-                    <a 
-                        href="/" 
-                        class="inline-flex items-center justify-center px-8 py-4 bg-white text-brand border-2 border-brand/20 rounded-xl hover:bg-brand/5 hover:border-brand transition-colors font-medium"
-                    >
-                        Return Home
-                    </a>
-                </div>
-
-                {/* Receipt Info */}
-                <div class="mt-16 p-6 bg-gray-50 rounded-2xl border border-gray-100 text-sm text-gray-600 max-w-2xl mx-auto">
-                    <div class="flex items-center justify-center gap-2 mb-4 text-brand">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                        </svg>
-                        <span class="font-medium">Donation Receipt Sent</span>
-                    </div>
-                    <p>
-                        We've sent a donation receipt to your email. For tax purposes, our EIN is {siteConfig.shelter.ein || '[EIN Number]'}.
-                    </p>
-                    <p class="mt-3">
-                        Questions? Contact us at{' '}
-                        <a href={`mailto:${siteConfig.contact.email}`} class="text-brand hover:text-brand-dark font-medium">
-                            {siteConfig.contact.email}
-                        </a>
-                    </p>
-                </div>
-            </div>
+    <!-- Quick stats -->
+    <section class="border-t border-b border-gray-100">
+      <div class="max-w-4xl mx-auto px-6 py-12 grid grid-cols-1 sm:grid-cols-3 gap-8 text-center">
+        <div>
+          <p class="text-2xl font-bold text-black">24/7</p>
+          <p class="text-sm text-gray-400 mt-1">Emergency support</p>
         </div>
+        <div>
+          <p class="text-2xl font-bold text-black">100%</p>
+          <p class="text-sm text-gray-400 mt-1">Goes to programs</p>
+        </div>
+        <div>
+          <p class="text-2xl font-bold text-black">2 counties</p>
+          <p class="text-sm text-gray-400 mt-1">Served</p>
+        </div>
+      </div>
+    </section>
 
-        {/* Partners Section */}
-        <section class="py-24 bg-gray-50">
-            <div class="text-center mb-12">
-                <div class="inline-flex items-center gap-3 text-brand font-medium mb-6">
-                    <span class="w-12 h-[2px] bg-gradient-to-r from-brand to-brand-dark rounded-full"></span>
-                    <span class="uppercase tracking-wider text-sm">Our Partners</span>
-                    <span class="w-12 h-[2px] bg-gradient-to-r from-brand-dark to-brand rounded-full"></span>
-                </div>
-                <h2 class="text-4xl font-bold text-gray-900">Working Together to Help Our Community</h2>
-            </div>
-            <PartnerScroll />
-        </section>
-    </div>
+    <!-- Receipt info -->
+    <section class="py-24 lg:py-32">
+      <div class="max-w-xl mx-auto px-6 text-center">
+        <p class="text-sm text-gray-500 leading-relaxed mb-6">
+          We've sent a donation receipt to your email. For tax purposes, our EIN is {siteConfig.shelter.ein}.
+        </p>
+        <p class="text-sm text-gray-500 leading-relaxed mb-10">
+          Questions? Contact us at
+          <a href={`mailto:${siteConfig.contact.email}`} class="text-brand hover:underline font-medium">{siteConfig.contact.email}</a>.
+        </p>
+        <a href="/" class="inline-block px-7 py-3.5 bg-black text-white font-semibold text-sm rounded-lg hover:bg-gray-900 transition-colors">
+          Return home
+        </a>
+      </div>
+    </section>
+
+    <!-- Partners -->
+    <DonorSection />
+
+  </main>
 </Layout>
-
-<style>
-    .animate-float {
-        animation: float 3s ease-in-out infinite;
-    }
-
-    @keyframes float {
-        0%, 100% { transform: translateY(0); }
-        50% { transform: translateY(-10px); }
-    }
-</style>

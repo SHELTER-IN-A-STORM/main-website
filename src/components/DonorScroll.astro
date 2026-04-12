@@ -1,110 +1,52 @@
 ---
 import { siteConfig } from '../config/site';
 
-// Double the partners array to create a seamless scroll
-const partners = [...siteConfig.shelter.donors, ...siteConfig.shelter.donors];
-
-// Get unique image URLs for preloading (exclude null logos)
-const uniqueImageUrls = [...new Set(siteConfig.shelter.donors.map(p => p.logo).filter(Boolean))];
+const partners = siteConfig.shelter.donors;
+const uniqueImageUrls = [...new Set(partners.map(p => p.logo).filter(Boolean))];
 ---
 
-<!-- Preload Images -->
 {uniqueImageUrls.map(url => (
-    <link rel="preload" href={url} as="image" />
+  <link rel="preload" href={url} as="image" />
 ))}
 
-<div class="relative overflow-hidden bg-gray-50 py-12">
-    <div class="flex space-x-8 animate-scroll hover:pause">
-        {partners.map((partner) => (
-            <div class="flex-none">
-                <a 
-                    href={partner.url}
-                    target="_blank"
-                    rel="noopener noreferrer" 
-                    class="group block bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 w-[200px] relative"
-                >
-                    <div class="flex items-center justify-center h-[100px] w-[168px]">
-                        {partner.logo ? (
-                            <img 
-                                src={partner.logo} 
-                                alt={`${partner.name} logo`} 
-                                class="max-h-[80px] w-full object-contain"
-                                loading="eager"
-                                decoding="async"
-                                fetchpriority="high"
-                            />
-                        ) : (
-                            <div class="text-center">
-                                <span class="text-xl font-bold text-brand">{partner.name}</span>
-                            </div>
-                        )}
-                    </div>
-                    <!-- Hover Arrow -->
-                    <div class="absolute inset-0 flex items-center justify-center bg-black/0 group-hover:bg-black/5 transition-all duration-300">
-                        <div class="opacity-0 group-hover:opacity-100 transform group-hover:scale-110 transition-all duration-300 bg-white/90 p-3 rounded-full shadow-lg">
-                            <svg class="w-6 h-6 text-brand" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                            </svg>
-                        </div>
-                    </div>
-                </a>
-            </div>
-        ))}
-        {/* Duplicate for seamless loop */}
-        {partners.map((partner) => (
-            <div class="flex-none">
-                <a 
-                    href={partner.url}
-                    target="_blank"
-                    rel="noopener noreferrer" 
-                    class="group block bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 w-[200px] relative"
-                >
-                    <div class="flex items-center justify-center h-[100px] w-[168px]">
-                        {partner.logo ? (
-                            <img 
-                                src={partner.logo} 
-                                alt={`${partner.name} logo`} 
-                                class="max-h-[80px] w-full object-contain"
-                                loading="eager"
-                                decoding="async"
-                                fetchpriority="high"
-                            />
-                        ) : (
-                            <div class="text-center">
-                                <span class="text-xl font-bold text-brand">{partner.name}</span>
-                            </div>
-                        )}
-                    </div>
-                    <!-- Hover Arrow -->
-                    <div class="absolute inset-0 flex items-center justify-center bg-black/0 group-hover:bg-black/5 transition-all duration-300">
-                        <div class="opacity-0 group-hover:opacity-100 transform group-hover:scale-110 transition-all duration-300 bg-white/90 p-3 rounded-full shadow-lg">
-                            <svg class="w-6 h-6 text-brand" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                            </svg>
-                        </div>
-                    </div>
-                </a>
-            </div>
-        ))}
-    </div>
+<div class="relative overflow-hidden">
+  <div class="absolute left-0 top-0 bottom-0 w-16 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none"></div>
+  <div class="absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none"></div>
+
+  <div class="flex items-center gap-12 donor-track">
+    {[...partners, ...partners].map((partner) => (
+      <a
+        href={partner.url}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="flex-none grayscale opacity-50 hover:grayscale-0 hover:opacity-100 transition-all duration-300"
+      >
+        {partner.logo ? (
+          <img
+            src={partner.logo}
+            alt={partner.name}
+            class="h-10 w-auto object-contain"
+            loading="eager"
+            decoding="async"
+          />
+        ) : (
+          <span class="text-sm font-semibold text-gray-400 whitespace-nowrap">{partner.name}</span>
+        )}
+      </a>
+    ))}
+  </div>
 </div>
 
 <style>
-    .animate-scroll {
-        animation: scroll 30s linear infinite;
-        width: fit-content;
-    }
-
-    .animate-scroll:hover {
-        animation-play-state: paused;
-    }
-
-    @keyframes scroll {
-        0% {
-            transform: translateX(0);
-        }
-        100% {
-            transform: translateX(-50%);
-        }
-    }
-</style> 
+  .donor-track {
+    animation: scroll 40s linear infinite;
+    width: max-content;
+  }
+  .donor-track:hover {
+    animation-play-state: paused;
+  }
+  @keyframes scroll {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+</style>

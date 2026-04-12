@@ -52,7 +52,6 @@ const allTestimonials = [
     }
 ];
 
-// Function to shuffle array and pick 4 random testimonials
 function shuffleArray(array: any[]) {
     const shuffled = [...array];
     for (let i = shuffled.length - 1; i > 0; i--) {
@@ -62,207 +61,93 @@ function shuffleArray(array: any[]) {
     return shuffled;
 }
 
-// Get 4 random testimonials
-const testimonials = shuffleArray(allTestimonials).slice(0, 4);
+const featured = shuffleArray(allTestimonials).slice(0, 3);
 ---
 
-<section id="testimonials" class="py-16 bg-gradient-to-b from-gray-50 to-white relative overflow-hidden">
-    <div class="absolute inset-0 bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px] [mask-image:radial-gradient(ellipse_50%_50%_at_50%_50%,#000_70%,transparent_100%)] opacity-25"></div>
-    <div class="container mx-auto px-6 relative">
-        <div class="max-w-7xl mx-auto">
-            <div class="space-y-4 mb-12 text-center">
-                <div class="inline-flex items-center gap-2 text-brand font-medium">
-                    <span class="w-12 h-[2px] bg-brand"></span>
-                    <span>Words from Our Community</span>
-                    <span class="w-12 h-[2px] bg-brand"></span>
-                </div>
-                <h2 class="text-3xl md:text-4xl font-bold text-gray-900 leading-tight">
-                    Stories of Hope & Gratitude
-                </h2>
-            </div>
-            <div id="testimonials-grid" class="grid md:grid-cols-2 gap-6">
-                {testimonials.map(testimonial => (
-                    <div class="group bg-white rounded-3xl p-6 shadow-xl border border-gray-100 hover:border-brand/20 transition-all duration-300 hover:shadow-2xl hover:shadow-brand/5 relative">
-                        <div class="absolute top-4 right-4">
-                            <svg class="w-8 h-8 text-brand/20" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/>
-                            </svg>
-                        </div>
-                        <div class="space-y-4">
-                            <div class="text-sm text-brand/60 font-medium">
-                                {testimonial.date}
-                            </div>
-                            <div class="min-h-[100px]">
-                                <p class="text-gray-600 leading-relaxed italic text-lg">
-                                    "{testimonial.text}"
-                                </p>
-                            </div>
-                            <div class="flex justify-end items-center gap-3">
-                                <div class="h-[2px] w-12 bg-brand/20"></div>
-                                <span class="font-handwriting text-xl text-brand">
-                                    {testimonial.initials}
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                ))}
-            </div>
-            
-            <!-- View More Button -->
-            <div class="text-center mt-8">
-                <button 
-                    id="view-more-btn" 
-                    class="inline-flex items-center gap-2 bg-brand hover:bg-brand-dark text-white px-6 py-3 rounded-lg font-semibold transition-colors shadow-lg hover:shadow-xl"
-                >
-                    <span>View More Testimonials</span>
-                    <svg class="w-5 h-5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-                    </svg>
-                </button>
-            </div>
-        </div>
+<section class="py-24 lg:py-32">
+  <div class="max-w-6xl mx-auto px-6">
+    <div class="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-4 mb-16">
+      <div>
+        <p class="text-sm text-gray-400 font-medium uppercase tracking-wide mb-4">Community voices</p>
+        <h2 class="text-3xl lg:text-4xl font-bold text-black tracking-tight max-w-md">
+          Stories from people we've helped.
+        </h2>
+      </div>
+      <button id="refresh-btn" class="text-sm font-semibold text-brand self-start lg:self-auto hover:underline">
+        Show different stories
+      </button>
     </div>
+
+    <div id="testimonials-grid" class="grid md:grid-cols-3 gap-8">
+      {featured.map(t => (
+        <blockquote class="testimonial-card">
+          <p class="text-gray-600 leading-relaxed mb-6">"{t.text}"</p>
+          <footer class="mt-auto">
+            <div class="flex items-center gap-3">
+              <div class="w-9 h-9 rounded-full bg-black flex items-center justify-center text-white text-xs font-bold">{t.initials}</div>
+              <span class="text-xs text-gray-400">{t.date}</span>
+            </div>
+          </footer>
+        </blockquote>
+      ))}
+    </div>
+  </div>
 </section>
 
+<style>
+  .testimonial-card {
+    display: flex;
+    flex-direction: column;
+    padding: 2rem;
+    background: white;
+    border: 1px solid #f3f4f6;
+    border-radius: 12px;
+  }
+</style>
+
 <script>
-    // All testimonials data (same as in the frontmatter)
-    const allTestimonials = [
-        { 
-            initials: "M.C.", 
-            text: "Thank you so much for all you do. I can't wait to one day be able to pay it forward.",
-            date: "December 2025"
-        },
-        { 
-            initials: "B.K.", 
-            text: "Thank you so much. You are all a blessing.",
-            date: "January 2025"
-        },
-        { 
-            initials: "V.C.",
-            text: "We greatly appreciate the help that was provided to us by 'Shelter in a Storm'. We have been living in our truck waiting on our first pay check. The heat has been crazy, we had no air conditioning, and barely any food other than the free meal we are given at work. 'Shelter in a Storm' has been a blessing, something I would have never expected from somebody, and also the people that donate to this ministry are life savers. When they called me back, their phone number was labeled spam, but something told me to answer, and I am so very glad that I did. God works in mysterious ways. Thank you to this ministry and to all the good people who donate to help people like us. When we are financially stable again, we plan to donate and give back to help others that are in a similar situation.",
-            date: "July 2025"
-        },
-        { 
-            initials: "T.B.",
-            text: "'Shelter in a Storm' has been a tremendous help for my wife and I. We were met in the midst of our life's storm and given hope again. We are grateful for all of those who support 'Shelter in a Storm'. We pray blessings upon those who donate their time, energy, and tithes towards this wonderful, community-driven organization. Thank you so much!",
-            date: "March 2025"
-        },
-        { 
-            initials: "O.E.",
-            text: "I want to thank you so much for all you have done in helping me get a home. I couldn't have done it without you. You are angels sent to me by God and I appreciate all of you from the bottom of my heart. God bless all of you. Thank you.",
-            date: "February 2025"
-        },
-        { 
-            initials: "A.M.", 
-            text: "I want to say a huge thank you to 'Shelter in a Storm'.  I fell into a financial bind, and they helped me.  I work a full-time job, and I am about to start another job just to make ends meet for me and my 11-year-old son.  I will be forever grateful for their assistance.  Our Lake community is amazing!",
-            date: "June 2025" 
-        },
-        { 
-            initials: "D.J.", 
-            text: "Thank you so much for the help from you and the rest of the church. You have been a great help to me and my husband. You were a godsend.",
-            date: "June 2024" 
-        },
-        { 
-            initials: "C.C.", 
-            text: "Thank you so much. My girls and I appreciate you so much. What a true blessing your ministry is. May God bless all of you.",
-            date: "December 2023"
-        },
-        {
-            initials: "D.E.", 
-            text: "Thank you very much, you are a blessing. I appreciate what you do for everyone including myself. You're awesome!",
-            date: "August 2023"
-        },
-        {
-            initials: "M.G.", 
-            text: "Thank you so much!  I really appreciate everything you've done. You've made this month so much easier for me. I can't thank you enough! God is good and perfectly on time.",
-            date: "August 2023"
-        }
-    ];
+  const allTestimonials = [
+    { initials: "M.C.", text: "Thank you so much for all you do. I can\u2019t wait to one day be able to pay it forward.", date: "December 2025" },
+    { initials: "B.K.", text: "Thank you so much. You are all a blessing.", date: "January 2025" },
+    { initials: "V.C.", text: "We greatly appreciate the help that was provided to us by \u2018Shelter in a Storm\u2019. We have been living in our truck waiting on our first pay check. The heat has been crazy, we had no air conditioning, and barely any food other than the free meal we are given at work. \u2018Shelter in a Storm\u2019 has been a blessing, something I would have never expected from somebody, and also the people that donate to this ministry are life savers.", date: "July 2025" },
+    { initials: "T.B.", text: "\u2018Shelter in a Storm\u2019 has been a tremendous help for my wife and I. We were met in the midst of our life\u2019s storm and given hope again. We are grateful for all of those who support \u2018Shelter in a Storm\u2019. Thank you so much!", date: "March 2025" },
+    { initials: "O.E.", text: "I want to thank you so much for all you have done in helping me get a home. I couldn\u2019t have done it without you. You are angels sent to me by God and I appreciate all of you from the bottom of my heart.", date: "February 2025" },
+    { initials: "A.M.", text: "I want to say a huge thank you to \u2018Shelter in a Storm\u2019. I fell into a financial bind, and they helped me. I work a full-time job, and I am about to start another job just to make ends meet for me and my 11-year-old son. I will be forever grateful for their assistance.", date: "June 2025" },
+    { initials: "D.J.", text: "Thank you so much for the help from you and the rest of the church. You have been a great help to me and my husband. You were a godsend.", date: "June 2024" },
+    { initials: "C.C.", text: "Thank you so much. My girls and I appreciate you so much. What a true blessing your ministry is. May God bless all of you.", date: "December 2023" },
+    { initials: "D.E.", text: "Thank you very much, you are a blessing. I appreciate what you do for everyone including myself. You\u2019re awesome!", date: "August 2023" },
+    { initials: "M.G.", text: "Thank you so much! I really appreciate everything you\u2019ve done. You\u2019ve made this month so much easier for me. I can\u2019t thank you enough! God is good and perfectly on time.", date: "August 2023" }
+  ];
 
-    document.addEventListener('DOMContentLoaded', function() {
-        const viewMoreBtn = document.getElementById('view-more-btn');
-        const testimonialsGrid = document.getElementById('testimonials-grid');
-        let showingAll = false;
+  function renderCards(items: typeof allTestimonials) {
+    return items.map(t => `
+      <blockquote class="testimonial-card">
+        <p class="text-gray-600 leading-relaxed mb-6">"${t.text}"</p>
+        <footer class="mt-auto">
+          <div class="flex items-center gap-3">
+            <div class="w-9 h-9 rounded-full bg-black flex items-center justify-center text-white text-xs font-bold">${t.initials}</div>
+            <span class="text-xs text-gray-400">${t.date}</span>
+          </div>
+        </footer>
+      </blockquote>
+    `).join('');
+  }
 
-        if (viewMoreBtn && testimonialsGrid) {
-            viewMoreBtn.addEventListener('click', function() {
-                if (!showingAll) {
-                    // Show all testimonials
-                    const allTestimonialsHTML = allTestimonials.map(testimonial => `
-                        <div class="group bg-white rounded-3xl p-6 shadow-xl border border-gray-100 hover:border-brand/20 transition-all duration-300 hover:shadow-2xl hover:shadow-brand/5 relative">
-                            <div class="absolute top-4 right-4">
-                                <svg class="w-8 h-8 text-brand/20" fill="currentColor" viewBox="0 0 24 24">
-                                    <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/>
-                                </svg>
-                            </div>
-                            <div class="space-y-4">
-                                <div class="text-sm text-brand/60 font-medium">
-                                    ${testimonial.date}
-                                </div>
-                                <div class="min-h-[100px]">
-                                    <p class="text-gray-600 leading-relaxed italic text-lg">
-                                        "${testimonial.text}"
-                                    </p>
-                                </div>
-                                <div class="flex justify-end items-center gap-3">
-                                    <div class="h-[2px] w-12 bg-brand/20"></div>
-                                    <span class="font-handwriting text-xl text-brand">
-                                        ${testimonial.initials}
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                    `).join('');
+  const refreshBtn = document.getElementById('refresh-btn');
+  const grid = document.getElementById('testimonials-grid');
 
-                    testimonialsGrid.innerHTML = allTestimonialsHTML;
-                    viewMoreBtn.innerHTML = `
-                        <span>Show Less</span>
-                        <svg class="w-5 h-5 transition-transform rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-                        </svg>
-                    `;
-                    showingAll = true;
-                } else {
-                    // Show only 4 random testimonials
-                    const shuffled = [...allTestimonials].sort(() => Math.random() - 0.5);
-                    const randomFour = shuffled.slice(0, 4);
-                    
-                    const fourTestimonialsHTML = randomFour.map(testimonial => `
-                        <div class="group bg-white rounded-3xl p-6 shadow-xl border border-gray-100 hover:border-brand/20 transition-all duration-300 hover:shadow-2xl hover:shadow-brand/5 relative">
-                            <div class="absolute top-4 right-4">
-                                <svg class="w-8 h-8 text-brand/20" fill="currentColor" viewBox="0 0 24 24">
-                                    <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/>
-                                </svg>
-                            </div>
-                            <div class="space-y-4">
-                                <div class="text-sm text-brand/60 font-medium">
-                                    ${testimonial.date}
-                                </div>
-                                <div class="min-h-[100px]">
-                                    <p class="text-gray-600 leading-relaxed italic text-lg">
-                                        "${testimonial.text}"
-                                    </p>
-                                </div>
-                                <div class="flex justify-end items-center gap-3">
-                                    <div class="h-[2px] w-12 bg-brand/20"></div>
-                                    <span class="font-handwriting text-xl text-brand">
-                                        ${testimonial.initials}
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                    `).join('');
+  refreshBtn?.addEventListener('click', () => {
+    const shuffled = [...allTestimonials].sort(() => Math.random() - 0.5).slice(0, 3);
+    if (grid) {
+      grid.style.opacity = '0';
+      setTimeout(() => {
+        grid.innerHTML = renderCards(shuffled);
+        grid.style.opacity = '1';
+      }, 200);
+    }
+  });
 
-                    testimonialsGrid.innerHTML = fourTestimonialsHTML;
-                    viewMoreBtn.innerHTML = `
-                        <span>View More Testimonials</span>
-                        <svg class="w-5 h-5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-                        </svg>
-                    `;
-                    showingAll = false;
-                }
-            });
-        }
-    });
+  if (grid) {
+    grid.style.transition = 'opacity 0.2s ease';
+  }
 </script>

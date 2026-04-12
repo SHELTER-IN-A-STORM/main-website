@@ -48,7 +48,7 @@ export const siteConfig = {
     contact: {
         phone: "573-365-3366",
         emergency: "573-365-3366",
-        email: "compliance@shelterinastorm.org",
+        email: "compliance@donork.it",
         hours: "24/7 for emergency food assistance"
     },
     shelter: {
@@ -110,7 +110,7 @@ export const siteConfig = {
                 title: "Emergency Food Pantry",
                 description: "Open 7 days a week, 24 hours a day. Located under our portico. \"Take what you need, leave some for others.\"",
                 link: "/services/food-pantry",
-                image: "https://cdn.shelterinastorm.org/images/foodbank.jpeg",
+                image: "https://images.unsplash.com/photo-1615897570493-84cdd8a9853b?w=1200&q=80&auto=format&fit=crop",
                 icon: "food-bank"
 
             },
@@ -118,7 +118,7 @@ export const siteConfig = {
                 title: "Emergency Assistance",
                 description: "Please fill out the form if you need help you with a temporary crisis or to prevent homelessness.",
                 link: "/get-help",
-                image: "https://media.istockphoto.com/id/1199696901/photo/happy-interracial-couple-handshake-bank-manager-take-mortgage-loan.jpg?s=612x612&w=0&k=20&c=_ovUfKCtMnZ-cN4YE31W92p3cpDLuw5MFRzFRPj2oB0=",
+                image: "https://images.unsplash.com/photo-1758273240360-76b908e7582a?w=1200&q=80&auto=format&fit=crop",
                 icon: "food-bank"
             }
         ],

@@ -4,7 +4,7 @@
 >
     <button
         id="accessibility-toggle"
-        class="bg-gray-900 text-white p-3 rounded-full shadow-lg hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand"
+        class="bg-black text-white p-3 rounded-full shadow-sm hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black"
         aria-label="Accessibility Settings"
     >
         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -18,11 +18,8 @@
         role="dialog"
         aria-label="Accessibility Settings Panel"
     >
-        <div class="flex items-center gap-3 mb-4 sticky top-0 bg-white pb-2 border-b">
-            <svg class="w-6 h-6 text-brand" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
-            </svg>
-            <h2 class="text-lg font-semibold text-gray-900">Accessibility Settings</h2>
+        <div class="flex items-center justify-between mb-4 sticky top-0 bg-white pb-2 border-b border-gray-100">
+            <h2 class="text-sm font-semibold text-black">Accessibility</h2>
         </div>
         
         <div class="space-y-4 overflow-y-auto custom-scrollbar pr-2 flex-1">
@@ -33,7 +30,7 @@
                 </label>
                 <button
                     id="screen-reader"
-                    class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-brand focus:ring-offset-2 bg-gray-200"
+                    class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 bg-gray-200"
                     role="switch"
                     type="button"
                     aria-checked="false"
@@ -50,7 +47,7 @@
                 </label>
                 <button
                     id="reading-guide"
-                    class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-brand focus:ring-offset-2 bg-gray-200"
+                    class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 bg-gray-200"
                     role="switch"
                     type="button"
                     aria-checked="false"
@@ -67,7 +64,7 @@
                 </label>
                 <button
                     id="high-contrast"
-                    class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-brand focus:ring-offset-2 bg-gray-200"
+                    class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 bg-gray-200"
                     role="switch"
                     type="button"
                     aria-checked="false"
@@ -84,7 +81,7 @@
                 </label>
                 <button
                     id="reduce-motion"
-                    class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-brand focus:ring-offset-2 bg-gray-200"
+                    class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 bg-gray-200"
                     role="switch"
                     type="button"
                     aria-checked="false"
@@ -101,7 +98,7 @@
                 </label>
                 <button
                     id="hide-images"
-                    class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-brand focus:ring-offset-2 bg-gray-200"
+                    class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 bg-gray-200"
                     role="switch"
                     type="button"
                     aria-checked="false"
@@ -119,7 +116,7 @@
                 <div class="flex items-center gap-2">
                     <button
                         id="decrease-text"
-                        class="p-1 text-gray-500 hover:text-gray-700 focus:outline-none focus:ring-2 focus:ring-brand focus:ring-offset-2 rounded"
+                        class="p-1 text-gray-500 hover:text-gray-700 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 rounded"
                         aria-label="Decrease text size"
                     >
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -129,7 +126,7 @@
                     <span id="text-size-value" class="text-sm font-medium text-gray-700">100%</span>
                     <button
                         id="increase-text"
-                        class="p-1 text-gray-500 hover:text-gray-700 focus:outline-none focus:ring-2 focus:ring-brand focus:ring-offset-2 rounded"
+                        class="p-1 text-gray-500 hover:text-gray-700 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 rounded"
                         aria-label="Increase text size"
                     >
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -146,7 +143,7 @@
                 </label>
                 <button
                     id="dyslexia-support"
-                    class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-brand focus:ring-offset-2 bg-gray-200"
+                    class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 bg-gray-200"
                     role="switch"
                     type="button"
                     aria-checked="false"
@@ -163,7 +160,7 @@
                 </label>
                 <select
                     id="color-vision"
-                    class="text-sm rounded-lg border-gray-200 focus:border-brand focus:ring-brand"
+                    class="text-sm rounded-lg border-gray-200 focus:border-black focus:ring-black"
                 >
                     <option value="none">None</option>
                     <option value="protanopia">Protanopia</option>
@@ -179,7 +176,7 @@
                 </label>
                 <button
                     id="underline-links"
-                    class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-brand focus:ring-offset-2 bg-gray-200"
+                    class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 bg-gray-200"
                     role="switch"
                     type="button"
                     aria-checked="false"
@@ -196,7 +193,7 @@
                 </label>
                 <button
                     id="audio-navigation"
-                    class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-brand focus:ring-offset-2 bg-gray-200"
+                    class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 bg-gray-200"
                     role="switch"
                     type="button"
                     aria-checked="false"
@@ -213,7 +210,7 @@
                 </label>
                 <button
                     id="keyboard-navigation"
-                    class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-brand focus:ring-offset-2 bg-gray-200"
+                    class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 bg-gray-200"
                     role="switch"
                     type="button"
                     aria-checked="false"
@@ -230,7 +227,7 @@
                 </label>
                 <button
                     id="focus-indicator"
-                    class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-brand focus:ring-offset-2 bg-gray-200"
+                    class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 bg-gray-200"
                     role="switch"
                     type="button"
                     aria-checked="false"
@@ -247,7 +244,7 @@
                 </label>
                 <select
                     id="line-height"
-                    class="text-sm rounded-lg border-gray-200 focus:border-brand focus:ring-brand"
+                    class="text-sm rounded-lg border-gray-200 focus:border-black focus:ring-black"
                 >
                     <option value="normal">Normal</option>
                     <option value="relaxed">Relaxed</option>
@@ -256,18 +253,18 @@
             </div>
 
             <!-- Reset Button -->
-            <div class="mt-6 border-t pt-4">
+            <div class="mt-6 border-t border-gray-100 pt-4">
                 <button
                     id="reset-settings"
-                    class="w-full px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-lg hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
+                    class="w-full px-4 py-2 text-sm font-medium text-gray-500 border border-gray-200 rounded-lg hover:border-gray-300 hover:text-black transition-colors"
                 >
                     Reset All Settings
                 </button>
             </div>
         </div>
 
-        <div class="mt-4 pt-2 text-xs text-gray-500 border-t sticky bottom-0 bg-white">
-            Settings are saved automatically and will persist across visits.
+        <div class="mt-4 pt-2 text-xs text-gray-400 border-t border-gray-100 sticky bottom-0 bg-white">
+            Settings are saved automatically.
         </div>
     </div>
 </div>
@@ -323,12 +320,12 @@ function updateToggleState(id: string, isActive: boolean) {
         button.setAttribute('aria-checked', isActive.toString());
         const toggle = button.querySelector('span:not(.sr-only)');
         if (isActive) {
-            button.classList.add('bg-brand');
+            button.classList.add('bg-black');
             button.classList.remove('bg-gray-200');
             toggle?.classList.add('translate-x-6');
             toggle?.classList.remove('translate-x-1');
         } else {
-            button.classList.remove('bg-brand');
+            button.classList.remove('bg-black');
             button.classList.add('bg-gray-200');
             toggle?.classList.remove('translate-x-6');
             toggle?.classList.add('translate-x-1');
@@ -452,7 +449,7 @@ function initReadingGuide() {
     if (!document.getElementById('reading-guide-line')) {
         const guide = document.createElement('div');
         guide.id = 'reading-guide-line';
-        guide.className = 'fixed w-full h-8 bg-brand/10 pointer-events-none z-50 hidden';
+        guide.className = 'fixed w-full h-8 bg-black/5 pointer-events-none z-50 hidden';
         document.body.appendChild(guide);
 
         document.addEventListener('mousemove', updateReadingGuide);

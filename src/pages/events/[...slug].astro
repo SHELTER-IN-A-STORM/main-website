@@ -1,39 +1,17 @@
 ---
-import { getCollection } from 'astro:content';
+import { getCollection, render } from 'astro:content';
 import EventLayout from '../../layouts/EventLayout.astro';
-interface Event {
-  slug: string;
-  data: {
-    title: string;
-    date: Date;
-    description: string;
-    image: string;
-    gallery?: string[];
-    time?: string;
-    location?: string;
-    stats?: Array<{ value: string; label: string }>;
-  };
-  render: () => Promise<{ Content: any }>;
-}
 
 export async function getStaticPaths() {
-  console.log('Fetching events collection...');
   const events = await getCollection('events');
-  console.log(`Found ${events.length} events`);
-  return events.map((event: Event) => {
-    console.log(`Generating path for event: ${event.slug}`);
-    return {
-      params: { slug: event.slug },
-      props: { event },
-    };
-  });
+  return events.map((event) => ({
+    params: { slug: event.id },
+    props: { event },
+  }));
 }
 
-const { event } = Astro.props as { event: Event };
-console.log(`Rendering event: ${event.slug}`);
-console.log('Event data:', event.data);
-const { Content } = await event.render();
-console.log('Event content rendered successfully');
+const { event } = Astro.props;
+const { Content } = await render(event);
 ---
 
 <EventLayout frontmatter={event.data}>
