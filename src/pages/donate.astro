@@ -13,11 +13,11 @@ const neededItems = await getItemsNeeded();
 
       <!-- Header -->
       <div class="text-center mb-12">
-        <p class="text-sm text-gray-400 font-medium uppercase tracking-wide mb-4">Support our mission</p>
+        <p class="text-sm text-gray-500 font-medium uppercase tracking-wide mb-4">Support our mission</p>
         <h1 class="text-3xl lg:text-4xl font-bold text-black tracking-tight mb-4">
           Make a donation
         </h1>
-        <p class="text-gray-400 leading-relaxed">
+        <p class="text-gray-500 leading-relaxed">
           Your generosity helps us provide emergency food, utility assistance, and crisis support to families in need.
         </p>
       </div>
@@ -27,7 +27,7 @@ const neededItems = await getItemsNeeded();
 
       <!-- Other ways -->
       <div class="mt-12 pt-8 border-t border-gray-100">
-        <h3 class="text-xs text-gray-400 font-medium uppercase tracking-wide mb-6">Other ways to give</h3>
+        <h3 class="text-xs text-gray-500 font-medium uppercase tracking-wide mb-6">Other ways to give</h3>
         <div class="grid sm:grid-cols-3 gap-6">
           <div>
             <p class="text-sm font-semibold text-black mb-1">Mail a check</p>
@@ -47,7 +47,7 @@ const neededItems = await getItemsNeeded();
       <!-- Needed items -->
       {neededItems.length > 0 && (
         <div class="mt-8 pt-8 border-t border-gray-100">
-          <h3 class="text-xs text-gray-400 font-medium uppercase tracking-wide mb-4">Most needed items this month</h3>
+          <h3 class="text-xs text-gray-500 font-medium uppercase tracking-wide mb-4">Most needed items this month</h3>
           <div class="flex flex-wrap gap-2">
             {neededItems.map((item: string) => (
               <span class="inline-flex items-center gap-1.5 px-3 py-1.5 border border-gray-200 text-sm text-gray-600 rounded-full">
@@ -61,7 +61,7 @@ const neededItems = await getItemsNeeded();
 
       <!-- Tax info -->
       <div class="mt-8 pt-8 border-t border-gray-100 text-center">
-        <p class="text-xs text-gray-400">
+        <p class="text-xs text-gray-500">
           Shelter in a Storm is a 501(c)(3) organization. EIN: {siteConfig.shelter.ein}. All donations are tax-deductible.
         </p>
       </div>

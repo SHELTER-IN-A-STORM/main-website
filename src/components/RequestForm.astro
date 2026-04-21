@@ -12,14 +12,14 @@ const formId = `${id}-form`;
   {showHeader && (
     <div class="mb-8 pb-6 border-b border-gray-100">
       <h3 class="text-lg font-semibold text-black">Request Assistance</h3>
-      <p class="text-sm text-gray-400 mt-1">We'll walk you through a few quick questions.</p>
+      <p class="text-sm text-gray-500 mt-1">We'll walk you through a few quick questions.</p>
     </div>
   )}
 
   <!-- Progress -->
   <div class="mb-8">
     <div class="flex items-center justify-between mb-3">
-      <p class="step-label text-xs text-gray-400 font-medium uppercase tracking-wide">Step 1 of 4</p>
+      <p class="step-label text-xs text-gray-500 font-medium uppercase tracking-wide">Step 1 of 4</p>
     </div>
     <div class="flex gap-1.5">
       <div class="progress-segment h-1 rounded-full flex-1 bg-black" data-seg="1"></div>
@@ -39,10 +39,10 @@ const formId = `${id}-form`;
 
     <!-- Step 1 -->
     <div class="wizard-step border border-gray-200 rounded-xl p-6" data-step="1">
-      <h4 class="text-lg font-semibold text-black mb-1">What do you need help with?</h4>
-      <p class="text-sm text-gray-400 mb-6">Choose the option that best describes your situation.</p>
+      <h4 id="assistance-heading" class="text-lg font-semibold text-black mb-1">What do you need help with?</h4>
+      <p class="text-sm text-gray-500 mb-6">Choose the option that best describes your situation.</p>
 
-      <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-3" role="radiogroup" aria-labelledby="assistance-heading" aria-required="true">
         <label class="relative cursor-pointer">
           <input type="radio" name="assistance" value="foodbox" class="peer sr-only" required />
           <div class="px-4 py-3.5 border border-gray-200 bg-white text-center rounded-lg peer-checked:border-black peer-checked:bg-black peer-checked:text-white transition-all">
@@ -64,8 +64,8 @@ const formId = `${id}-form`;
       </div>
 
       <div id="foodOptions" class="hidden mt-5">
-        <label class="block text-sm font-medium text-black mb-3">Dietary restrictions (optional)</label>
-        <div class="flex flex-wrap gap-2">
+        <p id="dietary-legend" class="block text-sm font-medium text-black mb-3">Dietary restrictions (optional)</p>
+        <div class="flex flex-wrap gap-2" role="group" aria-labelledby="dietary-legend">
           <label class="cursor-pointer">
             <input type="checkbox" name="dietary[]" value="vegetarian" class="sr-only peer" />
             <span class="inline-flex items-center px-3 py-1.5 border border-gray-200 rounded-full text-sm peer-checked:border-black peer-checked:bg-black peer-checked:text-white transition-all">Vegetarian</span>
@@ -82,7 +82,7 @@ const formId = `${id}-form`;
       </div>
 
       <div id="otherSupportDetails" class="hidden mt-5">
-        <label class="block text-sm font-medium text-black mb-2">Please describe what you need *</label>
+        <label for="otherSupportDescription" class="block text-sm font-medium text-black mb-2">Please describe what you need *</label>
         <textarea
           id="otherSupportDescription"
           name="otherSupportDescription"
@@ -96,35 +96,35 @@ const formId = `${id}-form`;
     <!-- Step 2 -->
     <div class="wizard-step border border-gray-200 rounded-xl p-6 hidden" data-step="2">
       <h4 class="text-lg font-semibold text-black mb-1">Tell us about yourself</h4>
-      <p class="text-sm text-gray-400 mb-6">So we can get back to you.</p>
+      <p class="text-sm text-gray-500 mb-6">So we can get back to you.</p>
 
       <div class="space-y-5">
         <div class="grid grid-cols-2 gap-4">
           <div>
-            <label class="block text-sm font-medium text-black mb-2">First Name *</label>
-            <input type="text" name="firstName" required placeholder="John" class="form-field" />
+            <label for="firstName" class="block text-sm font-medium text-black mb-2">First Name *</label>
+            <input type="text" id="firstName" name="firstName" required aria-required="true" autocomplete="given-name" placeholder="John" class="form-field" />
           </div>
           <div>
-            <label class="block text-sm font-medium text-black mb-2">Last Name *</label>
-            <input type="text" name="lastName" required placeholder="Doe" class="form-field" />
+            <label for="lastName" class="block text-sm font-medium text-black mb-2">Last Name *</label>
+            <input type="text" id="lastName" name="lastName" required aria-required="true" autocomplete="family-name" placeholder="Doe" class="form-field" />
           </div>
         </div>
 
         <div>
-          <label class="block text-sm font-medium text-black mb-2">Phone Number *</label>
-          <input type="tel" id="phone" name="phone" required placeholder="(555) 123-4567" class="form-field" />
+          <label for="phone" class="block text-sm font-medium text-black mb-2">Phone Number *</label>
+          <input type="tel" id="phone" name="phone" required aria-required="true" autocomplete="tel" placeholder="(555) 123-4567" class="form-field" />
           <label class="inline-flex items-center gap-1.5 mt-2 cursor-pointer">
             <input type="checkbox" class="no-phone-check h-3.5 w-3.5 accent-black rounded border-gray-300 cursor-pointer" />
-            <span class="text-xs text-gray-400">I don't have a phone number</span>
+            <span class="text-xs text-gray-500">I don't have a phone number</span>
           </label>
         </div>
 
         <div>
-          <label class="block text-sm font-medium text-black mb-2">Email Address</label>
-          <input type="email" name="email" placeholder="you@example.com" class="form-field" />
+          <label for="email" class="block text-sm font-medium text-black mb-2">Email Address</label>
+          <input type="email" id="email" name="email" autocomplete="email" placeholder="you@example.com" class="form-field" />
           <label class="inline-flex items-center gap-1.5 mt-2 cursor-pointer">
             <input type="checkbox" class="no-email-check h-3.5 w-3.5 accent-black rounded border-gray-300 cursor-pointer" />
-            <span class="text-xs text-gray-400">I don't have an email</span>
+            <span class="text-xs text-gray-500">I don't have an email</span>
           </label>
         </div>
       </div>
@@ -133,13 +133,13 @@ const formId = `${id}-form`;
     <!-- Step 3 -->
     <div class="wizard-step border border-gray-200 rounded-xl p-6 hidden" data-step="3">
       <h4 class="text-lg font-semibold text-black mb-1">Where do you live?</h4>
-      <p class="text-sm text-gray-400 mb-6">We primarily serve Miller and Camden Counties.</p>
+      <p class="text-sm text-gray-500 mb-6">We primarily serve Miller and Camden Counties.</p>
 
       <div class="space-y-5">
         <div class="grid grid-cols-2 gap-4">
           <div>
-            <label class="block text-sm font-medium text-black mb-2">Household Size *</label>
-            <select name="householdSize" required class="form-field">
+            <label for="householdSize" class="block text-sm font-medium text-black mb-2">Household Size *</label>
+            <select id="householdSize" name="householdSize" required aria-required="true" class="form-field">
               <option value="">Select...</option>
               <option value="1">1 person</option>
               <option value="2">2 people</option>
@@ -152,8 +152,8 @@ const formId = `${id}-form`;
             </select>
           </div>
           <div>
-            <label class="block text-sm font-medium text-black mb-2">Children Under 18 *</label>
-            <select name="minorsCount" required class="form-field">
+            <label for="minorsCount" class="block text-sm font-medium text-black mb-2">Children Under 18 *</label>
+            <select id="minorsCount" name="minorsCount" required aria-required="true" class="form-field">
               <option value="">Select...</option>
               <option value="0">None</option>
               <option value="1">1 child</option>
@@ -167,34 +167,34 @@ const formId = `${id}-form`;
 
         <div class="address-block">
           <div class="mb-5">
-            <label class="block text-sm font-medium text-black mb-2">Street Address *</label>
-            <input type="text" name="street" required placeholder="123 Main Street" class="form-field address-field" />
+            <label for="street" class="block text-sm font-medium text-black mb-2">Street Address *</label>
+            <input type="text" id="street" name="street" required aria-required="true" autocomplete="street-address" placeholder="123 Main Street" class="form-field address-field" />
           </div>
 
           <div class="grid grid-cols-5 gap-3">
             <div class="col-span-2">
-              <label class="block text-sm font-medium text-black mb-2">City *</label>
-              <input type="text" name="city" required placeholder="Lake Ozark" class="form-field address-field" />
+              <label for="city" class="block text-sm font-medium text-black mb-2">City *</label>
+              <input type="text" id="city" name="city" required aria-required="true" autocomplete="address-level2" placeholder="Lake Ozark" class="form-field address-field" />
             </div>
             <div class="col-span-1">
-              <label class="block text-sm font-medium text-black mb-2">State *</label>
-              <input type="text" name="state" required value="MO" maxlength="2" class="form-field address-field" />
+              <label for="state" class="block text-sm font-medium text-black mb-2">State *</label>
+              <input type="text" id="state" name="state" required aria-required="true" autocomplete="address-level1" value="MO" maxlength="2" class="form-field address-field" />
             </div>
             <div class="col-span-2">
-              <label class="block text-sm font-medium text-black mb-2">ZIP Code *</label>
-              <input type="text" name="zipcode" required placeholder="65049" maxlength="10" class="form-field address-field" />
+              <label for="zipcode" class="block text-sm font-medium text-black mb-2">ZIP Code *</label>
+              <input type="text" id="zipcode" name="zipcode" required aria-required="true" autocomplete="postal-code" placeholder="65049" maxlength="10" class="form-field address-field" />
             </div>
           </div>
 
           <label class="inline-flex items-center gap-1.5 mt-2 cursor-pointer">
             <input type="checkbox" class="no-address-check h-3.5 w-3.5 accent-black rounded border-gray-300 cursor-pointer" />
-            <span class="text-xs text-gray-400">I don't have a permanent address</span>
+            <span class="text-xs text-gray-500">I don't have a permanent address</span>
           </label>
         </div>
 
         <div>
-          <label class="block text-sm font-medium text-black mb-2">Monthly Household Income *</label>
-          <select name="householdIncome" required class="form-field">
+          <label for="householdIncome" class="block text-sm font-medium text-black mb-2">Monthly Household Income *</label>
+          <select id="householdIncome" name="householdIncome" required aria-required="true" class="form-field">
             <option value="">Select range...</option>
             <option value="0-500">$0 - $500</option>
             <option value="500-1000">$500 - $1,000</option>
@@ -211,24 +211,27 @@ const formId = `${id}-form`;
     <!-- Step 4 -->
     <div class="wizard-step border border-gray-200 rounded-xl p-6 hidden" data-step="4">
       <h4 class="text-lg font-semibold text-black mb-1">Almost done</h4>
-      <p class="text-sm text-gray-400 mb-6">Help us understand your situation so we can best assist you.</p>
+      <p class="text-sm text-gray-500 mb-6">Help us understand your situation so we can best assist you.</p>
 
       <div class="space-y-5">
         <!-- Dynamic question based on assistance type -->
         <div class="situation-question" data-for="foodbox">
-          <label class="block text-sm font-medium text-black mb-2">Tell us about your food situation *</label>
+          <label for="situationFood" class="block text-sm font-medium text-black mb-2">Tell us about your food situation *</label>
           <textarea
+            id="situationFood"
             name="situationFood"
             rows="4"
             placeholder="How many people are you feeding? How long have you been without adequate food? Any other details that help us prepare your box..."
             class="form-field resize-none situation-field"
             required
+            aria-required="true"
           ></textarea>
         </div>
 
         <div class="situation-question hidden" data-for="homelessness">
-          <label class="block text-sm font-medium text-black mb-2">Tell us about your housing situation *</label>
+          <label for="situationHousing" class="block text-sm font-medium text-black mb-2">Tell us about your housing situation *</label>
           <textarea
+            id="situationHousing"
             name="situationHousing"
             rows="4"
             placeholder="What bills are you behind on? Are you facing eviction? When is your deadline? Any details that help us understand your situation..."
@@ -237,8 +240,9 @@ const formId = `${id}-form`;
         </div>
 
         <div class="situation-question hidden" data-for="other">
-          <label class="block text-sm font-medium text-black mb-2">Describe your situation *</label>
+          <label for="situationOther" class="block text-sm font-medium text-black mb-2">Describe your situation *</label>
           <textarea
+            id="situationOther"
             name="situationOther"
             rows="4"
             placeholder="What's going on? How can we help? The more detail you share, the better we can assist you..."
@@ -247,8 +251,9 @@ const formId = `${id}-form`;
         </div>
 
         <div>
-          <label class="block text-sm font-medium text-black mb-2">Anything else we should know?</label>
+          <label for="additionalInfo" class="block text-sm font-medium text-black mb-2">Anything else we should know?</label>
           <textarea
+            id="additionalInfo"
             name="additionalInfo"
             rows="2"
             placeholder="Optional — any extra details..."
@@ -261,23 +266,23 @@ const formId = `${id}-form`;
 
           <ul class="space-y-2.5 text-sm leading-relaxed text-gray-500">
             <li class="flex gap-2">
-              <span class="mt-0.5 shrink-0 text-gray-400">&bull;</span>
+              <span class="mt-0.5 shrink-0 text-gray-500">&bull;</span>
               <span>A valid <strong class="text-black">government-issued photo ID</strong> is required when picking up goods or receiving any services or assistance.</span>
             </li>
             <li class="flex gap-2">
-              <span class="mt-0.5 shrink-0 text-gray-400">&bull;</span>
+              <span class="mt-0.5 shrink-0 text-gray-500">&bull;</span>
               <span>You may be asked to provide <strong class="text-black">proof of residency</strong> in Miller or Camden County (e.g., a utility bill, lease agreement, or recent mail).</span>
             </li>
             <li class="flex gap-2">
-              <span class="mt-0.5 shrink-0 text-gray-400">&bull;</span>
+              <span class="mt-0.5 shrink-0 text-gray-500">&bull;</span>
               <span>All assistance is <strong class="text-black">subject to availability</strong> and current funding. Submitting a request does not guarantee services will be provided.</span>
             </li>
             <li class="flex gap-2">
-              <span class="mt-0.5 shrink-0 text-gray-400">&bull;</span>
+              <span class="mt-0.5 shrink-0 text-gray-500">&bull;</span>
               <span>SIAS reserves the right to <strong class="text-black">verify any information</strong> you provide. Submitting false or misleading information may result in denial of services.</span>
             </li>
             <li class="flex gap-2">
-              <span class="mt-0.5 shrink-0 text-gray-400">&bull;</span>
+              <span class="mt-0.5 shrink-0 text-gray-500">&bull;</span>
               <span>By submitting this form you <strong class="text-black">consent to be contacted</strong> by SIAS staff via phone, email, or mail regarding your request.</span>
             </li>
           </ul>
@@ -291,7 +296,7 @@ const formId = `${id}-form`;
             required
             class="terms-checkbox mt-0.5 h-4 w-4 rounded border-gray-300 accent-black cursor-pointer"
           />
-          <label for="termsAgreement" class="cursor-pointer text-sm text-gray-400 leading-relaxed">
+          <label for="termsAgreement" class="cursor-pointer text-sm text-gray-500 leading-relaxed">
             I certify that the information I have provided is true and accurate to the best of my knowledge.
             I agree to the <a href="/legal/terms" class="text-black hover:underline" target="_blank">Terms of Service</a>
             and <a href="/legal/privacy" class="text-black hover:underline" target="_blank">Privacy Policy</a>.
@@ -305,7 +310,7 @@ const formId = `${id}-form`;
         </div>
 
         <div class="rounded-lg bg-white border border-gray-100 px-4 py-3">
-          <p class="text-xs text-gray-400 leading-relaxed">
+          <p class="text-xs text-gray-500 leading-relaxed">
             <strong class="text-gray-500">Equal Opportunity:</strong> SIAS provides services without regard to race, color, religion, sex, national origin, age, disability, or any other protected status. If you need accommodations to access our services, please let us know in the form above.
           </p>
         </div>
@@ -314,7 +319,7 @@ const formId = `${id}-form`;
 
     <!-- Navigation -->
     <div class="flex items-center justify-between mt-6">
-      <button type="button" class="wizard-back text-sm text-gray-400 hover:text-black transition-colors hidden">
+      <button type="button" class="wizard-back text-sm text-gray-500 hover:text-black transition-colors hidden">
         &larr; Back
       </button>
       <div class="ml-auto">
@@ -327,9 +332,9 @@ const formId = `${id}-form`;
         </button>
       </div>
     </div>
-    <div class="form-error hidden text-sm text-red-500 text-center py-2"></div>
+    <div class="form-error hidden text-sm text-red-600 text-center py-2" role="alert" aria-live="polite"></div>
 
-    <p class="text-center text-xs text-gray-300 pt-6">
+    <p class="text-center text-xs text-gray-500 pt-6">
       We respond within 2&ndash;3 business days. For immediate food needs, visit our
       <a href="/services/food-pantry" class="text-black hover:underline">24/7 pantry</a>.
     </p>
@@ -348,7 +353,8 @@ const formId = `${id}-form`;
     transition: border-color 0.15s ease;
   }
   .form-field::placeholder {
-    color: #d1d5db;
+    color: #6b7280;
+    opacity: 1;
   }
   .form-field:focus {
     outline: none;
@@ -496,13 +502,16 @@ const formId = `${id}-form`;
           if (field.type === 'radio') return; // handled above
           if (field.type === 'checkbox' && !field.checked) {
             valid = false;
+            field.setAttribute('aria-invalid', 'true');
             if (!firstBad) firstBad = field;
           } else if (field.type !== 'checkbox' && field.type !== 'radio' && !field.value.trim()) {
             valid = false;
             field.classList.add('field-error');
+            field.setAttribute('aria-invalid', 'true');
             if (!firstBad) firstBad = field;
           } else {
             field.classList.remove('field-error');
+            field.removeAttribute('aria-invalid');
           }
         });
 
@@ -644,7 +653,10 @@ const formId = `${id}-form`;
 
       // Clear error on input
       form.querySelectorAll('input, select, textarea').forEach(field => {
-        field.addEventListener('input', () => { field.classList.remove('field-error'); });
+        field.addEventListener('input', () => {
+          field.classList.remove('field-error');
+          field.removeAttribute('aria-invalid');
+        });
       });
 
       // Form submission (step 4)

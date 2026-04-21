@@ -78,11 +78,11 @@ const pages = [
 
         <!-- Header -->
         <div class="text-center mb-10">
-          <p class="text-sm text-gray-400 font-medium uppercase tracking-wide mb-2">Navigation</p>
+          <p class="text-sm text-gray-500 font-medium uppercase tracking-wide mb-2">Navigation</p>
           <h1 class="text-2xl lg:text-3xl font-bold text-black tracking-tight mb-3">
             Sitemap
           </h1>
-          <p class="text-sm text-gray-400 leading-relaxed">
+          <p class="text-sm text-gray-500 leading-relaxed">
             All pages available on our website.
           </p>
         </div>
@@ -95,12 +95,12 @@ const pages = [
                 <a href={`/${page.path}`} class="group block">
                   <div class="flex items-center justify-between">
                     <p class="text-sm font-semibold text-black group-hover:underline">{page.title}</p>
-                    <svg class="h-4 w-4 text-gray-300 transition-transform group-hover:translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg class="h-4 w-4 text-gray-500 transition-transform group-hover:translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
                     </svg>
                   </div>
                   {page.description && (
-                    <p class="text-xs text-gray-400 mt-0.5">{page.description}</p>
+                    <p class="text-xs text-gray-500 mt-0.5">{page.description}</p>
                   )}
                 </a>
               ) : (
@@ -111,12 +111,12 @@ const pages = [
                       <a href={`/${child.path}`} class="group block">
                         <div class="flex items-center justify-between">
                           <p class="text-sm text-black group-hover:underline">{child.title}</p>
-                          <svg class="h-3.5 w-3.5 text-gray-300 transition-transform group-hover:translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <svg class="h-3.5 w-3.5 text-gray-500 transition-transform group-hover:translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
                           </svg>
                         </div>
                         {child.description && (
-                          <p class="text-xs text-gray-400 mt-0.5">{child.description}</p>
+                          <p class="text-xs text-gray-500 mt-0.5">{child.description}</p>
                         )}
                       </a>
                     ))}
@@ -128,7 +128,7 @@ const pages = [
         </div>
 
         <!-- XML sitemap link -->
-        <p class="text-center text-xs text-gray-300 mt-6">
+        <p class="text-center text-xs text-gray-500 mt-6">
           Looking for the XML sitemap?
           <a href="/sitemap.xml" class="text-black hover:underline" target="_blank" rel="noopener noreferrer">View XML Sitemap</a>
         </p>

@@ -4,7 +4,9 @@ import { siteConfig } from '../config/site';
 const logoUrl = "https://cdn.shelterinastorm.org/images/SHELTER_IN_A_STORM_LOGO.png";
 ---
 
-<footer class="border-t border-gray-200" role="contentinfo">
+<footer class="border-t border-gray-100" role="contentinfo">
+
+  <!-- Main columns -->
   <div class="max-w-6xl mx-auto px-6 py-16">
     <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-10 lg:gap-12">
 
@@ -13,21 +15,31 @@ const logoUrl = "https://cdn.shelterinastorm.org/images/SHELTER_IN_A_STORM_LOGO.
         <a href="/" class="inline-block mb-5">
           <img src={logoUrl} alt="Shelter in a Storm" class="h-10 w-auto rounded-md" loading="lazy" />
         </a>
-        <p class="text-sm text-gray-400 leading-relaxed max-w-xs mb-5">
+        <p class="text-sm text-gray-500 leading-relaxed max-w-xs mb-5">
           Providing emergency assistance and support to those in need in Miller and Camden Counties.
         </p>
-        <a href="mailto:info@shelterinastorm.org" class="text-sm text-gray-500 hover:text-black transition-colors">
-          info@shelterinastorm.org
-        </a>
-        <div class="mt-4">
+        <p class="text-xs text-gray-500 leading-relaxed max-w-xs mb-5">
+          A ministry of
+          <a href="https://lakeozarkdisciples.org" target="_blank" rel="noopener noreferrer" class="font-semibold text-black hover:underline">
+            Lake Ozark Christian Church
+          </a>.
+        </p>
+
+        <div class="flex items-center gap-4">
+          <a href="mailto:info@shelterinastorm.org" class="text-sm text-gray-500 hover:text-black transition-colors">
+            info@shelterinastorm.org
+          </a>
+        </div>
+
+        <div class="mt-4 flex items-center gap-2">
           <a
             href="https://facebook.com/ShelterInAStormLOCC"
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Facebook"
-            class="inline-flex items-center justify-center w-8 h-8 text-gray-400 hover:text-black transition-colors"
+            class="inline-flex items-center justify-center w-9 h-9 rounded-full border border-gray-200 text-gray-600 hover:text-black hover:border-gray-400 transition-colors"
           >
-            <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
               <path d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z"/>
             </svg>
           </a>
@@ -37,22 +49,19 @@ const logoUrl = "https://cdn.shelterinastorm.org/images/SHELTER_IN_A_STORM_LOGO.
       <!-- Location -->
       <div>
         <h3 class="text-xs font-semibold text-black uppercase tracking-wide mb-4">Location</h3>
-        <address class="not-italic text-sm text-gray-400 leading-relaxed space-y-1">
-          <p class="text-xs text-gray-300 uppercase tracking-wide mb-2">Food Pantry (24/7)</p>
+        <address class="not-italic text-sm text-gray-500 leading-relaxed space-y-1">
           <p>Lake Ozark Christian Church</p>
           <p>1560 Bagnell Dam Blvd.</p>
+          <p>P.O. Box 194</p>
           <p>Lake Ozark, MO 65049</p>
         </address>
         <a
           href="https://www.google.com/maps/dir//Lake+Ozark+Christian+Church"
           target="_blank"
           rel="noopener noreferrer"
-          class="inline-flex items-center gap-1 text-sm font-medium text-brand mt-3 hover:underline"
+          class="inline-flex items-center gap-1 text-sm font-semibold text-brand mt-3 hover:underline"
         >
-          Get directions
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
-          </svg>
+          Get directions &rarr;
         </a>
       </div>
 
@@ -60,10 +69,10 @@ const logoUrl = "https://cdn.shelterinastorm.org/images/SHELTER_IN_A_STORM_LOGO.
       <div>
         <h3 class="text-xs font-semibold text-black uppercase tracking-wide mb-4">Services</h3>
         <ul class="space-y-2.5">
-          <li><a href="/services/food-pantry" class="text-sm text-gray-400 hover:text-black transition-colors">Food Pantry</a></li>
-          <li><a href="/get-help" class="text-sm text-gray-400 hover:text-black transition-colors">Request Assistance</a></li>
-          <li><a href="/resources" class="text-sm text-gray-400 hover:text-black transition-colors">Community Resources</a></li>
-          <li><a href="/events" class="text-sm text-gray-400 hover:text-black transition-colors">Events</a></li>
+          <li><a href="/services/food-pantry" class="text-sm text-gray-500 hover:text-black transition-colors">Food Pantry</a></li>
+          <li><a href="/get-help" class="text-sm text-gray-500 hover:text-black transition-colors">Request Assistance</a></li>
+          <li><a href="/resources" class="text-sm text-gray-500 hover:text-black transition-colors">Community Resources</a></li>
+          <li><a href="/events" class="text-sm text-gray-500 hover:text-black transition-colors">Events</a></li>
         </ul>
       </div>
 
@@ -71,15 +80,11 @@ const logoUrl = "https://cdn.shelterinastorm.org/images/SHELTER_IN_A_STORM_LOGO.
       <div>
         <h3 class="text-xs font-semibold text-black uppercase tracking-wide mb-4">About</h3>
         <ul class="space-y-2.5">
-          <li><a href="/about" class="text-sm text-gray-400 hover:text-black transition-colors">Our Mission</a></li>
-          <li><a href="/volunteer" class="text-sm text-gray-400 hover:text-black transition-colors">Volunteer</a></li>
-          <li><a href="/donate" class="text-sm text-gray-400 hover:text-black transition-colors">Donate</a></li>
-          <li><a href="/report" class="text-sm text-gray-400 hover:text-black transition-colors">Report an Issue</a></li>
+          <li><a href="/about" class="text-sm text-gray-500 hover:text-black transition-colors">Our Mission</a></li>
+          <li><a href="/volunteer" class="text-sm text-gray-500 hover:text-black transition-colors">Volunteer</a></li>
+          <li><a href="/donate" class="text-sm text-gray-500 hover:text-black transition-colors">Donate</a></li>
+          <li><a href="/report" class="text-sm text-gray-500 hover:text-black transition-colors">Report an Issue</a></li>
         </ul>
-        <p class="text-xs text-gray-300 mt-5 leading-relaxed">
-          A ministry of<br />
-          <a href="https://lakeozarkdisciples.org" target="_blank" rel="noopener noreferrer" class="hover:text-black transition-colors">Lake Ozark Christian Church</a>
-        </p>
       </div>
 
     </div>
@@ -87,17 +92,16 @@ const logoUrl = "https://cdn.shelterinastorm.org/images/SHELTER_IN_A_STORM_LOGO.
 
   <!-- Bottom bar -->
   <div class="border-t border-gray-100">
-    <div class="max-w-6xl mx-auto px-6 py-4 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-gray-300">
-      <p>&copy; {new Date().getFullYear()} Lake Ozark Christian Church, Inc.</p>
-      <div class="flex items-center gap-4">
+    <div class="max-w-6xl mx-auto px-6 py-5 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-gray-500">
+      <p>&copy; {new Date().getFullYear()} Lake Ozark Christian Church, Inc. &middot; 501(c)(3) &middot; EIN 43-1193150</p>
+      <div class="flex flex-wrap items-center justify-center gap-x-4 gap-y-1">
         <a href="/legal/terms" class="hover:text-black transition-colors">Terms</a>
         <a href="/legal/privacy" class="hover:text-black transition-colors">Privacy</a>
         <a href="/legal/accessibility" class="hover:text-black transition-colors">Accessibility</a>
-        <button onclick="window.showCookieConsent && window.showCookieConsent()" class="hover:text-black transition-colors bg-transparent border-0 p-0 cursor-pointer font-inherit text-xs text-gray-300">
+        <button type="button" onclick="window.showCookieConsent && window.showCookieConsent()" class="hover:text-black transition-colors bg-transparent border-0 p-0 cursor-pointer font-inherit text-xs text-gray-500">
           Cookie Settings
         </button>
       </div>
-      <p>501(c)(3) &middot; EIN 43-1193150</p>
     </div>
   </div>
 </footer>

@@ -4,7 +4,7 @@ import Layout from '../layouts/Layout.astro';
 const categories = [
   { id: 'our-services', name: 'Our Services' },
   { id: 'partner', name: 'Partners' },
-  { id: 'local-emergency', name: 'Emergency Services' },
+  { id: 'local-emergency', name: 'Local Emergency Services' },
   { id: 'crisis', name: 'Crisis Support' },
   { id: 'mental-health', name: 'Mental Health' },
   { id: 'addiction', name: 'Addiction Recovery' },
@@ -13,17 +13,29 @@ const categories = [
   { id: 'domestic', name: 'Domestic Violence' },
 ] as const;
 
-const resources = [
+type CategoryId = typeof categories[number]['id'];
+
+interface Resource {
+  name: string;
+  description: string;
+  link: string;
+  phone?: string;
+  phoneLabel?: string;
+  categories: CategoryId[];
+  keywords: string;
+}
+
+const resources: Resource[] = [
   {
-    name: "Shelter in a Storm - 24/7 Food Pantry",
-    description: "Open 7 days a week, 24 hours a day. Located under our portico. \"Take what you need, leave some for others.\"",
+    name: "Shelter in a Storm — 24/7 Food Pantry",
+    description: "Open every day, around the clock. Located under our portico. \"Take what you need, leave some for others.\"",
     link: "/services/food-pantry#location",
     categories: ['our-services'],
     keywords: "food pantry, emergency food, 24/7, immediate help, hungry, need food, food bank, meals, food assistance, free food, food help, feeding, hunger, starving, groceries, food boxes"
   },
   {
-    name: "Shelter in a Storm - Emergency Assistance",
-    description: "We can help with temporary crisis situations or preventing homelessness. Fill out our assistance request form.",
+    name: "Shelter in a Storm — Emergency Assistance",
+    description: "Help with temporary crisis situations and homelessness prevention. Submit a confidential request and our team will respond within 2–3 business days.",
     link: "/get-help#request-form",
     categories: ['our-services'],
     keywords: "emergency assistance, crisis, homelessness prevention, financial help, rent help, utility help, bills, money help, financial assistance, emergency money, homeless, housing, eviction, utilities, electric bill, water bill, gas bill"
@@ -37,134 +49,156 @@ const resources = [
   },
   {
     name: "Lake Ozark Police Department",
-    description: "Local police services. For emergencies call 911. Non-emergency: (573) 365-5371.",
+    description: "Local police services. For emergencies, always call 911.",
     link: "https://cityoflakeozark.net/police-department/",
+    phone: "(573) 365-5371",
+    phoneLabel: "Non-emergency",
     categories: ['local-emergency'],
     keywords: "police, law enforcement, emergency, Lake Ozark, cops, 911, emergency help, police officer, sheriff, crime, safety, protection, police report, accident report"
   },
   {
     name: "Lake Ozark Fire Protection District",
-    description: "Fire and emergency response services serving the Lake Ozark community since 1952. For emergencies call 911. Non-emergency: (573) 365-3380.",
+    description: "Fire and emergency response serving the Lake Ozark community since 1952. For emergencies, always call 911.",
     link: "https://www.lofpd.com/",
+    phone: "(573) 365-3380",
+    phoneLabel: "Non-emergency",
     categories: ['local-emergency'],
     keywords: "fire department, emergency response, fire protection, Lake Ozark, fire, 911, firemen, firefighters, emergency, fire truck, smoke, burning, fire emergency"
   },
   {
     name: "Camden County Sheriff's Office",
-    description: "24-hour law enforcement services. For emergencies call 911. Non-emergency: (573) 346-2243.",
+    description: "24-hour law enforcement services. For emergencies, always call 911.",
     link: "https://fourseasonspoa.com/camden-county-sheriffs-office/",
+    phone: "(573) 346-2243",
+    phoneLabel: "Non-emergency",
     categories: ['local-emergency'],
     keywords: "sheriff, law enforcement, emergency, Camden County, police, cops, 911, emergency help, crime, safety, protection, sheriff office, camden county police"
   },
   {
     name: "Miller County Sheriff's Office",
-    description: "24-hour law enforcement services. For emergencies call 911. Non-emergency: (573) 369-2341.",
+    description: "24-hour law enforcement services. For emergencies, always call 911.",
     link: "https://www.millercountysheriff.org/",
+    phone: "(573) 369-2341",
+    phoneLabel: "Non-emergency",
     categories: ['local-emergency'],
     keywords: "sheriff, law enforcement, emergency, Miller County, police, cops, 911, emergency help, crime, safety, protection, sheriff office, miller county police, tuscumbia"
   },
   {
     name: "988 Suicide & Crisis Lifeline",
-    description: "Call or text 988 for 24/7, free, and confidential support for people in distress.",
+    description: "Free, confidential support for people in distress, 24/7. Call or text 988.",
     link: "https://988lifeline.org/",
+    phone: "988",
     categories: ['crisis', 'mental-health'],
     keywords: "crisis, suicide, mental health, emergency, suicidal thoughts, want to die, need help, depression, anxiety, mental crisis, emotional help, suicide prevention, feeling suicidal, crisis help, mental breakdown"
   },
   {
     name: "National Domestic Violence Hotline",
-    description: "Call 1-800-799-7233 for confidential support and resources.",
+    description: "Confidential support and resources, available 24/7.",
     link: "https://www.thehotline.org/",
+    phone: "1-800-799-7233",
     categories: ['domestic'],
     keywords: "domestic violence, abuse, support, help, domestic abuse, family violence, spousal abuse, partner abuse, relationship abuse, violence at home, abuse help, escape abuse, abusive relationship"
   },
   {
     name: "SAMHSA's National Helpline",
-    description: "Call 1-800-662-HELP (4357) for free and confidential information on mental and substance use disorders.",
+    description: "Free, confidential information on mental and substance use disorders.",
     link: "https://www.samhsa.gov/find-help/national-helpline",
+    phone: "1-800-662-4357",
     categories: ['mental-health', 'addiction'],
     keywords: "substance use, mental health, addiction, recovery"
   },
   {
     name: "Crisis Text Line",
-    description: "Text HOME to 741741 for free, 24/7 crisis counseling.",
+    description: "Free, 24/7 crisis counseling. Text HOME to 741741.",
     link: "https://www.crisistextline.org/",
     categories: ['crisis'],
     keywords: "text, crisis, counseling, support"
   },
   {
     name: "National Eating Disorders Association",
-    description: "Call 1-800-931-2237 for support, resources, and treatment options for eating disorders.",
+    description: "Support, resources, and treatment options for eating disorders.",
     link: "https://www.nationaleatingdisorders.org/",
+    phone: "1-800-931-2237",
     categories: ['mental-health'],
     keywords: "eating disorders, support, treatment, help"
   },
   {
     name: "Veterans Crisis Line",
-    description: "Call 1-800-273-8255 and press 1, or text 838255 for confidential support for veterans.",
+    description: "Confidential support for veterans. Press 1 after dialing, or text 838255.",
     link: "https://www.veteranscrisisline.net/",
+    phone: "1-800-273-8255",
     categories: ['crisis'],
     keywords: "veterans, crisis, support, military"
   },
   {
-    name: "Trevor Project",
-    description: "Call 1-866-488-7386 or text START to 678678 for LGBTQ youth support.",
+    name: "The Trevor Project",
+    description: "LGBTQ youth support. Also reachable by texting START to 678678.",
     link: "https://www.thetrevorproject.org/",
+    phone: "1-866-488-7386",
     categories: ['lgbtq'],
     keywords: "LGBTQ, youth, support, crisis"
   },
   {
     name: "National Sexual Assault Hotline",
-    description: "Call 800.656.HOPE (4673) to be connected with a trained staff member from a sexual assault service provider in your area.",
+    description: "Connects you with a trained staff member from a sexual assault service provider in your area.",
     link: "https://www.rainn.org/",
+    phone: "1-800-656-4673",
     categories: ['crisis'],
     keywords: "sexual assault, rape, abuse, trauma"
   },
   {
     name: "National Alliance on Mental Illness (NAMI)",
-    description: "Call 1-800-950-NAMI (6264) for mental health support, resources and education.",
+    description: "Mental health support, resources, and education.",
     link: "https://www.nami.org/",
+    phone: "1-800-950-6264",
     categories: ['mental-health'],
     keywords: "mental health, support, education, resources"
   },
   {
     name: "National Runaway Safeline",
-    description: "Call 1-800-RUNAWAY (786-2929) for 24/7 crisis intervention and resources for runaway, homeless, and at-risk youth.",
+    description: "24/7 crisis intervention and resources for runaway, homeless, and at-risk youth.",
     link: "https://www.1800runaway.org/",
+    phone: "1-800-786-2929",
     categories: ['youth'],
     keywords: "youth, runaway, homeless, crisis"
   },
   {
     name: "National Parent Helpline",
-    description: "Call 1-855-427-2736 for emotional support and resources for parents.",
+    description: "Emotional support and resources for parents.",
     link: "https://www.nationalparenthelpline.org/",
+    phone: "1-855-427-2736",
     categories: ['crisis'],
     keywords: "parenting, support, family, resources"
   },
   {
     name: "National Child Abuse Hotline",
-    description: "Call or text 1-800-422-4453 for 24/7 support and resources related to child abuse.",
+    description: "24/7 support and resources related to child abuse. Call or text.",
     link: "https://childhelphotline.org/",
+    phone: "1-800-422-4453",
     categories: ['crisis'],
     keywords: "child abuse, trauma, support, crisis"
   },
   {
     name: "National Human Trafficking Hotline",
-    description: "Call 1-888-373-7888 or text 233733 for support and resources related to human trafficking.",
+    description: "Support and resources related to human trafficking. Also reachable by texting 233733.",
     link: "https://humantraffickinghotline.org/",
+    phone: "1-888-373-7888",
     categories: ['crisis'],
     keywords: "trafficking, exploitation, crisis, support"
   },
   {
     name: "SAGE LGBT Elder Hotline",
-    description: "Call 877-360-LGBT (5428) for support and resources for LGBT older adults.",
+    description: "Support and resources for LGBT older adults.",
     link: "https://www.sageusa.org/",
+    phone: "1-877-360-5428",
     categories: ['lgbtq'],
     keywords: "LGBT, elderly, seniors, support"
   },
   {
     name: "Trans Lifeline",
-    description: "Call 877-565-8860 for peer support for trans and questioning individuals.",
+    description: "Peer support for trans and questioning individuals.",
     link: "https://translifeline.org/",
+    phone: "1-877-565-8860",
     categories: ['lgbtq'],
     keywords: "transgender, trans, LGBTQ, support"
   },
@@ -198,99 +232,162 @@ const resources = [
   }
 ];
 
-const sortedResources = [...resources].sort((a, b) => {
-  if (a.categories.includes('our-services')) return -1;
-  if (b.categories.includes('our-services')) return 1;
-  if (a.categories.includes('partner')) return -1;
-  if (b.categories.includes('partner')) return 1;
-  return Math.random() - 0.5;
-});
+const groupedByCategory = categories
+  .map(cat => ({
+    ...cat,
+    resources: resources.filter(r => r.categories[0] === cat.id),
+  }))
+  .filter(g => g.resources.length > 0);
+
+const categoryCount = (id: string) => resources.filter(r => r.categories.includes(id as CategoryId)).length;
+
+const phoneHref = (phone: string) => 'tel:' + phone.replace(/[^\d+]/g, '');
 ---
 
 <Layout title="Resources">
   <main>
 
     <!-- Header -->
-    <section class="pt-40 pb-16 lg:pt-48 lg:pb-20">
+    <section class="pt-40 pb-12 lg:pt-48 lg:pb-16">
       <div class="max-w-3xl mx-auto px-6 text-center">
-        <p class="text-sm text-gray-400 font-medium uppercase tracking-wide mb-4">Resources</p>
+        <p class="text-sm text-gray-500 font-medium uppercase tracking-wide mb-4">Resources</p>
         <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-black leading-[1.1] tracking-tight mb-6" style="text-wrap: balance;">
           Find the help you need.
         </h1>
-        <p class="text-gray-400 text-lg max-w-xl mx-auto leading-relaxed">
-          A directory of trusted organizations and hotlines for specialized support.
+        <p class="text-gray-500 text-lg max-w-xl mx-auto leading-relaxed">
+          A directory of trusted organizations, hotlines, and local support — searchable and grouped by the kind of help you're looking for.
         </p>
       </div>
     </section>
 
-    <!-- Search + Resources -->
-    <section class="pb-24 lg:pb-32">
+    <!-- Emergency banner -->
+    <section class="pb-12">
       <div class="max-w-3xl mx-auto px-6">
-
-        <!-- Search -->
-        <div class="mb-8">
-          <input
-            id="search-input"
-            type="text"
-            placeholder="Search resources..."
-            class="w-full px-4 py-3 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-black focus:ring-1 focus:ring-black transition-colors"
-          />
+        <div class="rounded-xl border border-gray-200 bg-gray-50 p-5 sm:p-6 flex flex-col sm:flex-row sm:items-center gap-5">
+          <div class="flex items-start gap-3 flex-1 min-w-0">
+            <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-red-50 text-red-600">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-5 w-5">
+                <path fill-rule="evenodd" d="M9.401 3.003c1.155-2 4.043-2 5.197 0l7.355 12.748c1.154 2-.29 4.5-2.599 4.5H4.645c-2.309 0-3.752-2.5-2.598-4.5L9.4 3.003ZM12 8.25a.75.75 0 0 1 .75.75v3.75a.75.75 0 0 1-1.5 0V9a.75.75 0 0 1 .75-.75Zm0 8.25a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Z" clip-rule="evenodd" />
+              </svg>
+            </span>
+            <div class="min-w-0">
+              <p class="text-base font-semibold text-black">In an emergency?</p>
+              <p class="text-sm text-gray-500 leading-relaxed mt-1">If your life or someone else's is in danger, call 911 right away. For crisis support, call or text 988.</p>
+            </div>
+          </div>
+          <div class="flex gap-2 sm:shrink-0">
+            <a href="tel:911" class="inline-flex items-center justify-center px-4 py-2.5 bg-black text-white font-semibold text-sm rounded-lg hover:bg-gray-900 transition-colors">Call 911</a>
+            <a href="tel:988" class="inline-flex items-center justify-center px-4 py-2.5 border border-gray-200 bg-white text-black font-semibold text-sm rounded-lg hover:border-gray-400 transition-colors">Call 988</a>
+          </div>
         </div>
+      </div>
+    </section>
 
-        <!-- Category filters -->
-        <div class="flex flex-wrap gap-2 mb-8">
-          {categories.map(cat => (
-            <button
-              class="category-filter px-3 py-1.5 text-xs font-medium border border-gray-200 rounded-full text-gray-500 hover:border-gray-400 transition-colors"
-              data-category={cat.id}
-            >
-              {cat.name}
-            </button>
-          ))}
-        </div>
+    <!-- Search + filters -->
+    <section class="pb-16 lg:pb-20">
+      <div class="max-w-5xl mx-auto px-6">
 
-        <!-- Status -->
-        <div id="search-status" class="text-xs text-gray-400 mb-6 hidden">
-          <span id="results-count"></span>
+        <div class="max-w-2xl mx-auto">
+          <!-- Search -->
+          <div class="relative mb-4">
+            <svg class="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+            </svg>
+            <input
+              id="search-input"
+              type="text"
+              placeholder="Search by name, keyword, or need..."
+              aria-label="Search resources"
+              class="w-full pl-11 pr-4 py-3.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-black focus:ring-1 focus:ring-black transition-colors"
+            />
+          </div>
+
+          <!-- Category filters -->
+          <div class="flex flex-wrap gap-2">
+            {categories.map(cat => (
+              <button
+                type="button"
+                class="category-filter inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium border border-gray-200 rounded-full text-gray-600 hover:border-gray-400 transition-colors"
+                data-category={cat.id}
+              >
+                <span>{cat.name}</span>
+                <span class="category-count text-gray-500">{categoryCount(cat.id)}</span>
+              </button>
+            ))}
+          </div>
+
+          <!-- Status -->
+          <div id="search-status" class="mt-5 flex items-center justify-between hidden">
+            <span id="results-count" class="text-xs text-gray-500"></span>
+            <button type="button" onclick="clearSearch()" class="text-xs font-semibold text-black hover:underline">Clear all</button>
+          </div>
         </div>
+      </div>
+    </section>
+
+    <!-- Resource groups -->
+    <section class="pb-24 lg:pb-32">
+      <div class="max-w-5xl mx-auto px-6">
 
         <!-- No results -->
         <div id="no-results" class="hidden py-16 text-center border border-gray-100 rounded-xl">
-          <p class="text-gray-400 mb-1">No matches found.</p>
-          <button onclick="clearSearch()" class="text-sm font-semibold text-black hover:underline">Clear search</button>
+          <p class="text-gray-500 mb-2">No matches found.</p>
+          <button type="button" onclick="clearSearch()" class="text-sm font-semibold text-brand hover:underline">Clear search</button>
         </div>
 
-        <!-- Resource list -->
-        <div id="resources-container" class="divide-y divide-gray-100">
-          {sortedResources.map(resource => (
-            <div
-              class="resource-item py-5 first:pt-0"
-              data-name={resource.name.toLowerCase()}
-              data-description={resource.description.toLowerCase()}
-              data-keywords={resource.keywords.toLowerCase()}
-              data-categories={resource.categories.join(',')}
-            >
-              <div class="flex items-start justify-between gap-4">
-                <div class="min-w-0">
-                  <div class="flex items-center gap-2 mb-1 flex-wrap">
-                    <h3 class="text-sm font-semibold text-black">{resource.name}</h3>
-                    {resource.categories.includes('our-services') && (
-                      <span class="text-[10px] font-medium uppercase tracking-wide text-gray-400 border border-gray-200 px-1.5 py-0.5 rounded">Ours</span>
-                    )}
-                    {resource.categories.includes('partner') && (
-                      <span class="text-[10px] font-medium uppercase tracking-wide text-gray-400 border border-gray-200 px-1.5 py-0.5 rounded">Partner</span>
-                    )}
+        <div id="resources-container" class="space-y-16">
+          {groupedByCategory.map((group, groupIdx) => (
+            <div class="category-group" data-category={group.id}>
+              <div class="flex items-baseline justify-between gap-4 mb-6">
+                <h2 class="text-2xl lg:text-3xl font-bold text-black tracking-tight">
+                  {group.name}
+                </h2>
+                <span class="text-xs text-gray-500 font-medium uppercase tracking-wide shrink-0">
+                  <span class="group-visible-count">{group.resources.length}</span> {group.resources.length === 1 ? 'resource' : 'resources'}
+                </span>
+              </div>
+
+              <div class="grid md:grid-cols-2 gap-4">
+                {group.resources.map(r => (
+                  <div
+                    class="resource-item group flex flex-col p-5 lg:p-6 border border-gray-100 rounded-xl hover:border-gray-300 hover:shadow-soft transition-all"
+                    data-name={r.name.toLowerCase()}
+                    data-description={r.description.toLowerCase()}
+                    data-keywords={r.keywords.toLowerCase()}
+                    data-categories={r.categories.join(',')}
+                  >
+                    <div class="flex items-start justify-between gap-3 mb-2">
+                      <h3 class="text-base font-semibold text-black leading-snug">{r.name}</h3>
+                      {r.categories.includes('our-services') && (
+                        <span class="shrink-0 text-[10px] font-semibold uppercase tracking-wide text-brand border border-brand/30 bg-brand/5 px-2 py-0.5 rounded">Ours</span>
+                      )}
+                      {r.categories.includes('partner') && (
+                        <span class="shrink-0 text-[10px] font-semibold uppercase tracking-wide text-gray-700 border border-gray-300 bg-white px-2 py-0.5 rounded">Partner</span>
+                      )}
+                    </div>
+
+                    <p class="text-sm text-gray-500 leading-relaxed mb-5 flex-1">{r.description}</p>
+
+                    <div class="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm font-semibold mt-auto">
+                      {r.phone && (
+                        <a href={phoneHref(r.phone)} class="inline-flex items-center gap-1.5 text-brand hover:underline">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-3.5 w-3.5" aria-hidden="true">
+                            <path fill-rule="evenodd" d="M1.5 4.5a3 3 0 0 1 3-3h1.372c.86 0 1.61.586 1.819 1.42l1.105 4.423a1.875 1.875 0 0 1-.694 1.955l-1.293.97c-.135.101-.164.249-.126.352a11.285 11.285 0 0 0 6.697 6.697c.103.038.25.009.352-.126l.97-1.293a1.875 1.875 0 0 1 1.955-.694l4.423 1.105c.834.209 1.42.959 1.42 1.82V19.5a3 3 0 0 1-3 3h-2.25C8.552 22.5 1.5 15.448 1.5 6.75V4.5Z" clip-rule="evenodd" />
+                          </svg>
+                          <span>{r.phoneLabel ? `${r.phoneLabel}: ${r.phone}` : `Call ${r.phone}`}</span>
+                        </a>
+                      )}
+                      <a
+                        href={r.link}
+                        target={r.link.startsWith('/') ? '_self' : '_blank'}
+                        rel={r.link.startsWith('/') ? undefined : 'noopener noreferrer'}
+                        class={r.phone ? 'text-gray-500 hover:text-black transition-colors' : 'text-brand hover:underline'}
+                      >
+                        Visit website &rarr;
+                      </a>
+                    </div>
                   </div>
-                  <p class="text-sm text-gray-500 leading-relaxed">{resource.description}</p>
-                </div>
-                <a
-                  href={resource.link}
-                  target={resource.link.startsWith('/') ? '_self' : '_blank'}
-                  rel={resource.link.startsWith('/') ? undefined : 'noopener noreferrer'}
-                  class="shrink-0 text-sm font-semibold text-brand hover:underline whitespace-nowrap"
-                >
-                  Visit &rarr;
-                </a>
+                ))}
               </div>
             </div>
           ))}
@@ -301,11 +398,12 @@ const sortedResources = [...resources].sort((a, b) => {
     <!-- CTA -->
     <section class="py-24 lg:py-32 border-t border-gray-100">
       <div class="max-w-2xl mx-auto px-6 text-center">
+        <p class="text-sm text-gray-500 font-medium uppercase tracking-wide mb-4">Not finding what you need?</p>
         <h2 class="text-3xl lg:text-4xl font-bold text-black tracking-tight mb-5">
-          Need immediate help?
+          We're here to help.
         </h2>
-        <p class="text-gray-400 leading-relaxed mb-10">
-          If you're in an emergency, call 911. For non-emergency assistance, submit a request and our team will respond within 2&ndash;3 business days.
+        <p class="text-gray-500 leading-relaxed mb-10">
+          Submit a confidential assistance request and our team will respond within 2&ndash;3 business days.
         </p>
         <a href="/get-help" class="inline-block px-7 py-3.5 bg-black text-white font-semibold text-sm rounded-lg hover:bg-gray-900 transition-colors">
           Request assistance
@@ -323,6 +421,9 @@ const sortedResources = [...resources].sort((a, b) => {
     window.selectedCategories.clear();
     document.querySelectorAll('.category-filter').forEach(function(f) {
       f.classList.remove('bg-black', 'text-white', 'border-black');
+      var count = f.querySelector('.category-count');
+      if (count) count.classList.remove('text-white/85');
+      if (count) count.classList.add('text-gray-500');
     });
     window.filterResources();
   };
@@ -342,9 +443,11 @@ const sortedResources = [...resources].sort((a, b) => {
   const searchInput = document.getElementById('search-input') as HTMLInputElement;
   const categoryFilters = document.querySelectorAll('.category-filter');
   const resourceItems = document.querySelectorAll('.resource-item');
+  const categoryGroups = document.querySelectorAll('.category-group');
   const noResults = document.getElementById('no-results');
   const searchStatus = document.getElementById('search-status');
   const resultsCount = document.getElementById('results-count');
+  const resourcesContainer = document.getElementById('resources-container');
 
   window.filterResources = function() {
     const terms = (searchInput?.value || '').toLowerCase().trim().split(/\s+/).filter(Boolean);
@@ -355,7 +458,7 @@ const sortedResources = [...resources].sort((a, b) => {
       const text = `${el.dataset.name} ${el.dataset.description} ${el.dataset.keywords}`;
       const cats = (el.dataset.categories || '').split(',');
 
-      const matchesSearch = !terms.length || terms.some(t => text.includes(t));
+      const matchesSearch = !terms.length || terms.every(t => text.includes(t));
       const matchesCats = window.selectedCategories.size === 0 || cats.some(c => window.selectedCategories.has(c));
 
       if (matchesSearch && matchesCats) {
@@ -366,23 +469,35 @@ const sortedResources = [...resources].sort((a, b) => {
       }
     });
 
+    categoryGroups.forEach(g => {
+      const el = g as HTMLElement;
+      const items = Array.from(el.querySelectorAll('.resource-item')) as HTMLElement[];
+      const visibleItems = items.filter(i => i.style.display !== 'none');
+      const countEl = el.querySelector('.group-visible-count');
+      if (countEl) countEl.textContent = String(visibleItems.length);
+      el.style.display = visibleItems.length === 0 ? 'none' : '';
+    });
+
+    const isFiltering = terms.length > 0 || window.selectedCategories.size > 0;
+
     if (searchStatus && resultsCount) {
-      if (terms.length || window.selectedCategories.size) {
+      if (isFiltering) {
         searchStatus.classList.remove('hidden');
-        resultsCount.textContent = `${visible} result${visible !== 1 ? 's' : ''} found`;
+        searchStatus.classList.add('flex');
+        resultsCount.textContent = `${visible} result${visible !== 1 ? 's' : ''}`;
       } else {
         searchStatus.classList.add('hidden');
+        searchStatus.classList.remove('flex');
       }
     }
 
-    if (noResults) {
-      const container = document.getElementById('resources-container');
-      if (visible === 0) {
+    if (noResults && resourcesContainer) {
+      if (visible === 0 && isFiltering) {
         noResults.classList.remove('hidden');
-        container?.classList.add('hidden');
+        resourcesContainer.classList.add('hidden');
       } else {
         noResults.classList.add('hidden');
-        container?.classList.remove('hidden');
+        resourcesContainer.classList.remove('hidden');
       }
     }
   };
@@ -392,18 +507,23 @@ const sortedResources = [...resources].sort((a, b) => {
     return (...args: any[]) => { clearTimeout(t); t = setTimeout(() => fn(...args), ms) as unknown as number; };
   }
 
-  searchInput?.addEventListener('input', debounce(window.filterResources, 200));
+  searchInput?.addEventListener('input', debounce(window.filterResources, 150));
 
   categoryFilters.forEach(btn => {
     btn.addEventListener('click', () => {
       const cat = (btn as HTMLElement).dataset.category;
       if (!cat) return;
+      const count = btn.querySelector('.category-count');
       if (window.selectedCategories.has(cat)) {
         window.selectedCategories.delete(cat);
         btn.classList.remove('bg-black', 'text-white', 'border-black');
+        count?.classList.remove('text-white/85');
+        count?.classList.add('text-gray-500');
       } else {
         window.selectedCategories.add(cat);
         btn.classList.add('bg-black', 'text-white', 'border-black');
+        count?.classList.add('text-white/85');
+        count?.classList.remove('text-gray-500');
       }
       window.filterResources();
     });

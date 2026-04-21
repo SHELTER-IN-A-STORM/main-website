@@ -1,5 +1,6 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import { siteConfig } from '../../config/site';
 import { getCollection } from 'astro:content';
 import { format } from 'date-fns';
 
@@ -8,80 +9,182 @@ const upcomingEvents = allEvents.filter((event) => event.data.status === 'upcomi
   .sort((a, b) => a.data.date.getTime() - b.data.date.getTime());
 const pastEvents = allEvents.filter((event) => event.data.status === 'past')
   .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+
+const featuredEvent = upcomingEvents[0];
+const restUpcoming = upcomingEvents.slice(1);
+
+const heroImage = featuredEvent?.data.image ?? siteConfig.metadata.openGraph.image;
 ---
 
 <Layout title="Events">
   <main>
 
-    <!-- Header -->
-    <section class="pt-40 pb-20 lg:pt-48 lg:pb-24">
-      <div class="max-w-3xl mx-auto px-6 text-center">
-        <p class="text-sm text-gray-400 font-medium uppercase tracking-wide mb-4">Events</p>
-        <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-black leading-[1.1] tracking-tight mb-6" style="text-wrap: balance;">
+    <!-- Hero -->
+    <section class="relative flex items-center justify-center overflow-hidden hero-events">
+      <div class="absolute inset-0">
+        <img
+          src={heroImage}
+          alt=""
+          class="w-full h-full object-cover"
+          fetchpriority="high"
+          loading="eager"
+          decoding="async"
+        />
+        <div class="absolute inset-0 bg-black/60"></div>
+      </div>
+      <div class="relative w-full max-w-3xl mx-auto px-6 text-center">
+        <p class="text-sm text-white/80 font-medium uppercase tracking-wide mb-4">Events</p>
+        <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-[1.1] tracking-tight mb-6">
           Community events &amp; fundraisers.
         </h1>
-        <p class="text-gray-400 text-lg max-w-xl mx-auto leading-relaxed">
+        <p class="text-white/85 text-lg max-w-xl mx-auto mb-10 leading-relaxed">
           Bringing people together to support our mission and celebrate our community.
         </p>
+        <div class="flex flex-wrap gap-3 justify-center">
+          {upcomingEvents.length > 0 && (
+            <a href="#upcoming" class="px-7 py-3.5 bg-white text-black font-semibold text-sm rounded-lg hover:bg-gray-100 transition-colors">
+              See upcoming
+            </a>
+          )}
+          <a href="/donate" class="px-7 py-3.5 border border-white/25 text-white font-semibold text-sm rounded-lg hover:bg-white/10 transition-colors">
+            Donate
+          </a>
+        </div>
       </div>
     </section>
 
-    <!-- Upcoming Events -->
-    <section class="pb-24 lg:pb-32">
-      <div class="max-w-6xl mx-auto px-6">
-        <p class="text-sm text-gray-400 font-medium uppercase tracking-wide mb-2">What's next</p>
-        <h2 class="text-2xl font-bold text-black tracking-tight mb-10">Upcoming events</h2>
+    <style>
+      .hero-events {
+        min-height: 80vh;
+      }
+      @media (min-width: 1024px) {
+        .hero-events {
+          min-height: 90vh;
+        }
+      }
+    </style>
 
-        {upcomingEvents.length > 0 ? (
-          <div class="space-y-6">
-            {upcomingEvents.map((event) => (
-              <a href={`/events/${event.id}`} class="group flex flex-col md:flex-row gap-6 p-5 -mx-5 rounded-xl hover:bg-gray-50 transition-colors">
-                <div class="md:w-80 shrink-0 aspect-[16/10] rounded-xl overflow-hidden">
-                  <img
-                    src={event.data.image}
-                    alt={event.data.title}
-                    class="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-500"
-                  />
-                </div>
-                <div class="flex-1 flex flex-col justify-center py-1">
-                  <div class="flex items-center gap-3 mb-2">
-                    <span class="text-sm font-semibold text-black">{format(event.data.date, 'MMM d, yyyy')}</span>
-                    {event.data.time && <span class="text-sm text-gray-300">&middot;</span>}
-                    {event.data.time && <span class="text-sm text-gray-400">{event.data.time}</span>}
-                  </div>
-                  <h3 class="text-xl font-semibold text-black mb-2 group-hover:text-brand transition-colors">{event.data.title}</h3>
-                  <p class="text-gray-500 text-sm leading-relaxed mb-3">{event.data.description}</p>
-                  {event.data.location && (
-                    <p class="text-xs text-gray-400 flex items-center gap-1">
-                      <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
-                      </svg>
-                      {event.data.location}
-                    </p>
+    {upcomingEvents.length > 0 ? (
+      <>
+        <section id="upcoming" class="py-24 lg:py-32">
+          <div class="max-w-6xl mx-auto px-6">
+            <p class="text-sm text-gray-500 font-medium uppercase tracking-wide mb-4">What's next</p>
+            <h2 class="text-3xl lg:text-4xl font-bold text-black tracking-tight mb-12 max-w-lg">
+              Our next community gathering.
+            </h2>
+
+            <a href={`/events/${featuredEvent.id}`} class="group grid md:grid-cols-5 gap-8 lg:gap-12 items-center">
+              <div class="md:col-span-3 aspect-[16/10] rounded-xl overflow-hidden bg-gray-100">
+                <img
+                  src={featuredEvent.data.image}
+                  alt={featuredEvent.data.title}
+                  class="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-500"
+                />
+              </div>
+              <div class="md:col-span-2">
+                <div class="flex flex-wrap items-center gap-x-3 gap-y-1 mb-3">
+                  <span class="text-sm font-semibold text-black">{format(featuredEvent.data.date, 'MMMM d, yyyy')}</span>
+                  {featuredEvent.data.time && (
+                    <>
+                      <span class="text-gray-500">&middot;</span>
+                      <span class="text-sm text-gray-500">{featuredEvent.data.time}</span>
+                    </>
                   )}
                 </div>
-                <div class="hidden md:flex items-center shrink-0">
-                  <span class="text-sm font-semibold text-gray-300 group-hover:text-black transition-colors">View &rarr;</span>
-                </div>
-              </a>
-            ))}
+                <h3 class="text-2xl lg:text-3xl font-bold text-black tracking-tight mb-4 group-hover:text-brand transition-colors">
+                  {featuredEvent.data.title}
+                </h3>
+                <p class="text-gray-500 leading-relaxed mb-6">{featuredEvent.data.description}</p>
+                {featuredEvent.data.location && (
+                  <p class="text-sm text-gray-500 flex items-center gap-1.5 mb-8">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                    </svg>
+                    {featuredEvent.data.location}
+                  </p>
+                )}
+                <span class="text-sm font-semibold text-brand">Learn more &rarr;</span>
+              </div>
+            </a>
           </div>
-        ) : (
-          <div class="py-20 text-center border border-gray-100 rounded-xl">
-            <p class="text-gray-400 mb-1">No upcoming events scheduled right now.</p>
-            <p class="text-sm text-gray-300">Check back soon or follow us on social media.</p>
-          </div>
+        </section>
+
+        {restUpcoming.length > 0 && (
+          <section class="pb-24 lg:pb-32">
+            <div class="max-w-6xl mx-auto px-6">
+              <p class="text-sm text-gray-500 font-medium uppercase tracking-wide mb-4">Also upcoming</p>
+              <h2 class="text-3xl lg:text-4xl font-bold text-black tracking-tight mb-12 max-w-lg">
+                More ways to join in.
+              </h2>
+
+              <div class="grid md:grid-cols-2 gap-8">
+                {restUpcoming.map((event) => (
+                  <a href={`/events/${event.id}`} class="group block">
+                    <div class="aspect-[16/10] rounded-xl overflow-hidden mb-5 bg-gray-100">
+                      <img
+                        src={event.data.image}
+                        alt={event.data.title}
+                        class="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-500"
+                      />
+                    </div>
+                    <div class="flex items-center gap-2 mb-2">
+                      <span class="text-sm font-semibold text-black">{format(event.data.date, 'MMM d, yyyy')}</span>
+                      {event.data.time && (
+                        <>
+                          <span class="text-gray-500">&middot;</span>
+                          <span class="text-sm text-gray-500">{event.data.time}</span>
+                        </>
+                      )}
+                    </div>
+                    <h3 class="text-xl font-semibold text-black mb-2 group-hover:text-brand transition-colors">{event.data.title}</h3>
+                    <p class="text-gray-500 leading-relaxed mb-3">{event.data.description}</p>
+                    {event.data.location && (
+                      <p class="text-xs text-gray-500 flex items-center gap-1">
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                        </svg>
+                        {event.data.location}
+                      </p>
+                    )}
+                  </a>
+                ))}
+              </div>
+            </div>
+          </section>
         )}
-      </div>
-    </section>
+      </>
+    ) : (
+      <section class="py-24 lg:py-32">
+        <div class="max-w-2xl mx-auto px-6 text-center">
+          <p class="text-sm text-gray-500 font-medium uppercase tracking-wide mb-4">What's next</p>
+          <h2 class="text-3xl lg:text-4xl font-bold text-black tracking-tight mb-5">
+            No events scheduled right now.
+          </h2>
+          <p class="text-gray-500 leading-relaxed mb-10">
+            We're planning what's next. In the meantime, you can still support our mission by volunteering or donating.
+          </p>
+          <div class="flex flex-wrap gap-3 justify-center">
+            <a href="/donate" class="px-7 py-3.5 bg-black text-white font-semibold text-sm rounded-lg hover:bg-gray-900 transition-colors">
+              Donate
+            </a>
+            <a href="/volunteer" class="px-7 py-3.5 border border-gray-200 text-black font-semibold text-sm rounded-lg hover:border-gray-300 transition-colors">
+              Volunteer
+            </a>
+          </div>
+        </div>
+      </section>
+    )}
 
     <!-- Past Events -->
     {pastEvents.length > 0 && (
       <section class="py-24 lg:py-32 border-t border-gray-100">
         <div class="max-w-6xl mx-auto px-6">
-          <p class="text-sm text-gray-400 font-medium uppercase tracking-wide mb-2">Looking back</p>
-          <h2 class="text-2xl font-bold text-black tracking-tight mb-10">Past events</h2>
+          <p class="text-sm text-gray-500 font-medium uppercase tracking-wide mb-4">Looking back</p>
+          <h2 class="text-3xl lg:text-4xl font-bold text-black tracking-tight mb-12 max-w-lg">
+            A look at what we've done together.
+          </h2>
 
           <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-12">
             {pastEvents.map((event) => (
@@ -90,20 +193,20 @@ const pastEvents = allEvents.filter((event) => event.data.status === 'past')
                   <img
                     src={event.data.image}
                     alt={event.data.title}
-                    class="w-full h-full object-cover grayscale group-hover:grayscale-0 opacity-70 group-hover:opacity-100 group-hover:scale-[1.03] transition-all duration-500"
+                    class="w-full h-full object-cover grayscale group-hover:grayscale-0 opacity-75 group-hover:opacity-100 group-hover:scale-[1.03] transition-all duration-500"
                   />
                 </div>
                 <div class="flex items-center gap-2 mb-2">
-                  <span class="text-xs font-medium text-gray-400">{format(event.data.date, 'MMM yyyy')}</span>
+                  <span class="text-xs font-medium text-gray-500">{format(event.data.date, 'MMM yyyy')}</span>
                   {event.data.location && (
                     <>
                       <span class="text-gray-200">&middot;</span>
-                      <span class="text-xs text-gray-300">{event.data.location}</span>
+                      <span class="text-xs text-gray-500">{event.data.location}</span>
                     </>
                   )}
                 </div>
                 <h3 class="text-base font-semibold text-black mb-1 group-hover:text-brand transition-colors">{event.data.title}</h3>
-                <p class="text-sm text-gray-400 leading-relaxed line-clamp-2">{event.data.description}</p>
+                <p class="text-sm text-gray-500 leading-relaxed line-clamp-2">{event.data.description}</p>
               </a>
             ))}
           </div>
@@ -114,11 +217,11 @@ const pastEvents = allEvents.filter((event) => event.data.status === 'past')
     <!-- CTA -->
     <section class="py-24 lg:py-32 border-t border-gray-100">
       <div class="max-w-2xl mx-auto px-6 text-center">
-        <p class="text-sm text-gray-400 font-medium uppercase tracking-wide mb-4">Get involved</p>
+        <p class="text-sm text-gray-500 font-medium uppercase tracking-wide mb-4">Get involved</p>
         <h2 class="text-3xl lg:text-4xl font-bold text-black tracking-tight mb-5">
           Want to help make these events happen?
         </h2>
-        <p class="text-gray-400 leading-relaxed mb-10">
+        <p class="text-gray-500 leading-relaxed mb-10">
           Volunteer your time or donate to support our community programs.
         </p>
         <div class="flex flex-wrap gap-3 justify-center">

@@ -8,11 +8,11 @@ import Layout from '../../layouts/Layout.astro';
     <!-- Header -->
     <section class="pt-40 pb-16 lg:pt-48 lg:pb-20">
       <div class="max-w-3xl mx-auto px-6">
-        <p class="text-sm text-gray-400 font-medium uppercase tracking-wide mb-4">Legal</p>
+        <p class="text-sm text-gray-500 font-medium uppercase tracking-wide mb-4">Legal</p>
         <h1 class="text-4xl md:text-5xl font-bold text-black leading-[1.1] tracking-tight mb-6" style="text-wrap: balance;">
           Accessibility Statement
         </h1>
-        <p class="text-gray-400 text-lg leading-relaxed">
+        <p class="text-gray-500 text-lg leading-relaxed">
           Making our services accessible to everyone in our community.
         </p>
       </div>
@@ -30,15 +30,32 @@ import Layout from '../../layouts/Layout.astro';
 
           <h2>Website Accessibility</h2>
           <p>
-            Our website is designed to work seamlessly with popular assistive technologies and follows WCAG 2.1 Level AA standards through:
+            We design and maintain our website with <a href="https://www.w3.org/TR/WCAG21/" target="_blank" rel="noopener noreferrer">WCAG 2.1 Level AA</a> as our target. Specific measures in place today include:
           </p>
           <ul>
-            <li>Screen reader compatibility (e.g., JAWS, NVDA)</li>
-            <li>Keyboard navigation support</li>
-            <li>High-contrast design</li>
-            <li>Text resizing capabilities</li>
-            <li>Alternative text for images</li>
-            <li>Mobile and tablet device optimization</li>
+            <li>Semantic HTML structure with clear landmark regions and heading hierarchy</li>
+            <li>A "Skip to main content" link for keyboard users</li>
+            <li>Visible keyboard focus indicators on all interactive elements</li>
+            <li>Respect for the operating system's reduced-motion preference</li>
+            <li>Color-contrast ratios that meet or exceed AA (4.5:1 for normal text, 3:1 for large text)</li>
+            <li>Accessible name, role, and state on form controls, including explicit labels and inline error messages</li>
+            <li>Alternative text for meaningful images; decorative images are marked as such</li>
+            <li>Compatibility with current versions of JAWS, NVDA, and VoiceOver</li>
+            <li>Mobile and tablet layouts that scale with user font-size preferences and browser zoom up to 200%</li>
+          </ul>
+
+          <p>
+            Browser and operating-system accessibility features &mdash; including zoom, dictation, contrast themes, and reading modes &mdash; work on this site without additional tooling from us. If you use assistive technology, we encourage you to use the tools you already rely on.
+          </p>
+
+          <h3>Known Limitations</h3>
+          <p>
+            We are actively working to improve the following areas. If any of these affect your ability to use the site, please contact us using the information below and we will respond promptly:
+          </p>
+          <ul>
+            <li>Some third-party embeds (payment processing, maps, and analytics) may not fully meet our accessibility standards.</li>
+            <li>Older announcement images and user-uploaded photos may not yet have descriptive alternative text.</li>
+            <li>The desktop "Resources" dropdown menu in our main navigation currently opens on mouse hover; keyboard users can reach its destinations via the mobile menu or the Resources page directly while we complete a fix.</li>
           </ul>
 
           <h2>Feedback &amp; Support</h2>
@@ -60,7 +77,7 @@ import Layout from '../../layouts/Layout.astro';
         </div>
 
         <div class="mt-14 pt-6 border-t border-gray-100">
-          <p class="text-xs text-gray-300">
+          <p class="text-xs text-gray-500">
             Last updated {new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}.
           </p>
         </div>

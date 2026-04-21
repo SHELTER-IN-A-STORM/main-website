@@ -21,7 +21,7 @@ const { id } = Astro.props;
           class="p-2 hover:bg-gray-50 rounded-lg transition-colors"
           aria-label="Close modal"
         >
-          <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
           </svg>
         </button>
@@ -40,7 +40,7 @@ const { id } = Astro.props;
         </div>
 
         <div>
-          <p id={`${id}-role`} class="text-sm text-gray-400 font-medium uppercase tracking-wide mb-1"></p>
+          <p id={`${id}-role`} class="text-sm text-gray-500 font-medium uppercase tracking-wide mb-1"></p>
           <h2 id={`${id}-title`} class="text-2xl md:text-3xl font-bold text-black mb-6"></h2>
           <p id={`${id}-bio`} class="text-gray-500 leading-relaxed"></p>
         </div>
@@ -79,14 +79,14 @@ const { id } = Astro.props;
 
   document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape') {
-      document.querySelectorAll('[role="dialog"]').forEach(function(modal) {
-        closeTeamModal(modal.id);
+      document.querySelectorAll('[role="dialog"][aria-modal="true"]').forEach(function(modal) {
+        if (!modal.classList.contains('hidden')) closeTeamModal(modal.id);
       });
     }
   });
 
   document.addEventListener('click', function(e) {
-    var modals = document.querySelectorAll('[role="dialog"]:not(.hidden)');
+    var modals = document.querySelectorAll('[role="dialog"][aria-modal="true"]:not(.hidden)');
     modals.forEach(function(modal) {
       var content = modal.querySelector('.modal-content');
       if (modal === e.target && content && !content.contains(e.target)) {

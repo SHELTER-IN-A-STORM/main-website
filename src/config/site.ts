@@ -146,7 +146,7 @@ export const siteConfig = {
             },
             { 
                 name: "HyVee", 
-                logo: "https://upload.wikimedia.org/wikipedia/en/thumb/a/ae/Hy-Vee.svg/1200px-Hy-Vee.svg.png",
+                logo: "https://logos-world.net/wp-content/uploads/2023/12/Hy-Vee-Logo.jpg",
                 url: "https://www.hy-vee.com/stores/detail.aspx?s=230"
             },
             { 
