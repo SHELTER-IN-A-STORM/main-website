@@ -2,7 +2,7 @@
 import Layout from '../layouts/Layout.astro';
 import { eventConfig } from '../config/event';
 
-const { tickets, sponsors, raffle, auction, schedule, highlights, extras, documents } = eventConfig;
+const { tickets, sponsors, raffle, dipOff, donation, auction, schedule, highlights, extras, documents } = eventConfig;
 
 let auctionItems: any[] = [];
 if (auction) {
@@ -23,14 +23,21 @@ const clientConfig = JSON.stringify({
   date: eventConfig.date,
   stripeApiUrl: eventConfig.stripeApiUrl,
   tickets: tickets ? { price: tickets.price, maxPerOrder: tickets.maxPerOrder } : null,
-  sponsors: sponsors ? { tiers: sponsors.tiers.map(t => ({ id: t.id, name: t.name, price: t.price, seats: t.seats })) } : null,
-  raffle: raffle ? { singlePrice: raffle.singlePrice, bundleSize: raffle.bundleSize, bundlePrice: raffle.bundlePrice, maxPerPerson: raffle.maxPerPerson } : null,
+  sponsors: sponsors ? { tiers: sponsors.tiers.map(t => ({ id: t.id, name: t.name, price: t.price, seats: t.seats, raffleTickets: t.raffleTickets })) } : null,
+  raffle: raffle ? { packages: raffle.packages, maxPerPackage: raffle.maxPerPackage } : null,
+  dipOff: dipOff ? { categories: dipOff.categories } : null,
+  donation: donation && donation.enabled ? true : false,
   extras: extras.map(e => e.id),
 });
 ---
 
 <Layout title={`${eventConfig.name} - Tickets & Checkout`}>
   <main>
+
+    <!-- Demo mode banner (shown only when ?demo is in the URL) -->
+    <div id="demoBanner" class="hidden fixed top-0 inset-x-0 z-50 bg-black text-white text-center text-xs font-semibold py-2 px-4">
+      DEMO MODE — your order will be charged a flat $1.00 test amount, not the real total.
+    </div>
 
     <!-- Header -->
     <section class="pt-32 pb-12 lg:pt-40 lg:pb-16">
@@ -146,10 +153,13 @@ const clientConfig = JSON.stringify({
             </div>
           )}
 
-          <div class="text-center mt-6">
+          <div class="text-center mt-6 space-y-3">
             <a href={auction.siteUrl} target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center px-6 py-3 bg-black text-white font-semibold text-sm rounded-lg hover:bg-gray-900 transition-colors">
               Start Bidding
             </a>
+            <p class="text-xs text-gray-500">
+              Want to donate an item to the Silent Auction? Email <a href={`mailto:${auction.donateEmail}`} class="text-black font-medium underline">{auction.donateEmail}</a>
+            </p>
           </div>
         </div>
       </section>
@@ -159,7 +169,7 @@ const clientConfig = JSON.stringify({
     <section id="tickets" class="border-t border-gray-100">
       <div class="max-w-2xl mx-auto px-6 py-12 lg:py-16">
         <div class="text-center mb-8">
-          <p class="text-xs text-gray-500 font-medium uppercase tracking-wide mb-2">Checkout</p>
+          <p class="text-xs text-gray-500 font-medium uppercase tracking-wide mb-2">Register</p>
           <p class="text-sm text-gray-500">Select how you'd like to support this event.</p>
         </div>
 
@@ -171,16 +181,16 @@ const clientConfig = JSON.stringify({
               <div class={`grid gap-3 mb-6 ${tickets && sponsors ? 'sm:grid-cols-2' : ''}`}>
                 {tickets && (
                   <button type="button" class="intent-btn rounded-xl border border-gray-200 p-5 text-left hover:border-black transition-colors" data-intent="tickets">
-                    <p class="text-sm font-semibold text-black">{tickets.label}</p>
-                    <p class="text-xs text-gray-500 mt-1">{tickets.description}</p>
-                    <p class="text-lg font-bold text-black mt-3">${tickets.price}<span class="text-xs font-normal text-gray-500"> / person</span></p>
+                    <p class="text-sm font-semibold text-black">Register / Buy Tickets</p>
+                    <p class="text-xs text-gray-500 mt-1">Admission, raffle tickets, Dip-Off entry &amp; donations</p>
+                    <p class="text-lg font-bold text-black mt-3">${tickets.price}<span class="text-xs font-normal text-gray-500"> / admission</span></p>
                   </button>
                 )}
                 {sponsors && (
                   <button type="button" class="intent-btn rounded-xl border border-gray-200 p-5 text-left hover:border-black transition-colors" data-intent="sponsor">
                     <p class="text-sm font-semibold text-black">Become a Sponsor</p>
                     <p class="text-xs text-gray-500 mt-1">Support the event with a sponsor package</p>
-                    <p class="text-lg font-bold text-black mt-3">${sponsors.tiers[0].price.toLocaleString()}&ndash;${sponsors.tiers[sponsors.tiers.length - 1].price.toLocaleString()}</p>
+                    <p class="text-lg font-bold text-black mt-3">${sponsors.tiers[sponsors.tiers.length - 1].price.toLocaleString()}&ndash;${sponsors.tiers[0].price.toLocaleString()}</p>
                   </button>
                 )}
               </div>
@@ -198,15 +208,21 @@ const clientConfig = JSON.stringify({
 
               <!-- Contact -->
               <div class="rounded-xl border border-gray-200 p-5 mb-4">
-                <p class="text-xs text-gray-500 font-medium uppercase tracking-wide mb-4">Contact Information</p>
-                <div class="grid sm:grid-cols-2 gap-3">
+                <p class="text-xs text-gray-500 font-medium uppercase tracking-wide mb-4">Your Information</p>
+                <div class="space-y-3">
                   <div>
-                    <label class="block text-sm font-medium text-black mb-1.5">Email *</label>
-                    <input type="email" name="email" required placeholder="you@example.com" class="checkout-field" />
+                    <label class="block text-sm font-medium text-black mb-1.5">Full Name *</label>
+                    <input type="text" name="name" required placeholder="Jane Doe" class="checkout-field" />
                   </div>
-                  <div>
-                    <label class="block text-sm font-medium text-black mb-1.5">Phone</label>
-                    <input type="tel" name="phone" placeholder="(555) 123-4567" class="checkout-field" />
+                  <div class="grid sm:grid-cols-2 gap-3">
+                    <div>
+                      <label class="block text-sm font-medium text-black mb-1.5">Email *</label>
+                      <input type="email" name="email" required placeholder="you@example.com" class="checkout-field" />
+                    </div>
+                    <div>
+                      <label class="block text-sm font-medium text-black mb-1.5">Phone</label>
+                      <input type="tel" name="phone" placeholder="(555) 123-4567" class="checkout-field" />
+                    </div>
                   </div>
                 </div>
               </div>
@@ -227,20 +243,57 @@ const clientConfig = JSON.stringify({
                 </div>
               </div>
 
-              <!-- Raffle (ticket flow) -->
+              <!-- Raffle packages (ticket flow) -->
               {raffle && (
                 <div class="rounded-xl border border-gray-200 p-5 mb-4">
-                  <p class="text-sm font-semibold text-black mb-1">Drawing Entries</p>
-                  <p class="text-xs text-gray-500 mb-4">${raffle.singlePrice} each &middot; Buy {raffle.bundleSize}+ and save with a bundle deal</p>
-                  <div class="flex items-center justify-between">
-                    <div class="text-sm text-gray-500">Entries</div>
-                    <div class="flex items-center gap-3">
-                      <button type="button" class="qty-btn h-9 w-9 rounded-full border border-gray-200 flex items-center justify-center text-lg hover:bg-gray-50 transition-colors" data-action="decrease" data-type="raffle">&minus;</button>
-                      <span class="qty-display w-8 text-center font-semibold" data-type="raffle">0</span>
-                      <button type="button" class="qty-btn h-9 w-9 rounded-full border border-gray-200 flex items-center justify-center text-lg hover:bg-gray-50 transition-colors" data-action="increase" data-type="raffle">&plus;</button>
-                    </div>
+                  <p class="text-sm font-semibold text-black mb-1">Raffle Tickets</p>
+                  <p class="text-xs text-gray-500 mb-4">Choose a package (or more than one).</p>
+                  <div class="space-y-3">
+                    {raffle.packages.map(pkg => (
+                      <div class="flex items-center justify-between">
+                        <div class="text-sm text-gray-500"><span class="font-medium text-black">{pkg.tickets} tickets</span> &middot; ${pkg.price}</div>
+                        <div class="flex items-center gap-3">
+                          <button type="button" class="qty-btn h-9 w-9 rounded-full border border-gray-200 flex items-center justify-center text-lg hover:bg-gray-50 transition-colors" data-action="decrease" data-type={`raffle-${pkg.id}`}>&minus;</button>
+                          <span class="qty-display w-8 text-center font-semibold" data-type={`raffle-${pkg.id}`}>0</span>
+                          <button type="button" class="qty-btn h-9 w-9 rounded-full border border-gray-200 flex items-center justify-center text-lg hover:bg-gray-50 transition-colors" data-action="increase" data-type={`raffle-${pkg.id}`}>&plus;</button>
+                        </div>
+                      </div>
+                    ))}
                   </div>
-                  <div id="raffle-savings" class="hidden mt-3 rounded-lg bg-gray-50 border border-gray-200 px-3 py-2 text-xs text-gray-500"></div>
+                </div>
+              )}
+
+              <!-- Dip-Off Competition -->
+              {dipOff && (
+                <div class="rounded-xl border border-gray-200 p-5 mb-4">
+                  <label class="flex items-start gap-3 cursor-pointer">
+                    <input type="checkbox" id="dipOffToggle" name="dipOffEntry" class="mt-0.5 h-4 w-4 accent-black rounded" />
+                    <div>
+                      <p class="text-sm font-medium text-black">{dipOff.label}</p>
+                      <p class="text-xs text-gray-500">{dipOff.description}</p>
+                    </div>
+                  </label>
+                  <div id="dipOffCategories" class="hidden mt-4 pl-7 space-y-2">
+                    {dipOff.categories.map(cat => (
+                      <label class="flex items-center gap-2.5 cursor-pointer">
+                        <input type="checkbox" name="dipOffCategory" value={cat.id} class="dipoff-cat h-4 w-4 accent-black rounded" />
+                        <span class="text-sm text-gray-500">{cat.label}</span>
+                      </label>
+                    ))}
+                    <p class="text-xs text-gray-500 pt-1">{dipOff.note}</p>
+                  </div>
+                </div>
+              )}
+
+              <!-- Donation -->
+              {donation && donation.enabled && (
+                <div class="rounded-xl border border-gray-200 p-5 mb-4">
+                  <p class="text-sm font-semibold text-black mb-1">{donation.label}</p>
+                  <p class="text-xs text-gray-500 mb-3">{donation.description}</p>
+                  <div class="relative">
+                    <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 text-sm">$</span>
+                    <input type="number" name="donation" min="0" step="1" placeholder="0" class="checkout-field pl-7" />
+                  </div>
                 </div>
               )}
 
@@ -272,15 +325,21 @@ const clientConfig = JSON.stringify({
 
               <!-- Contact -->
               <div class="rounded-xl border border-gray-200 p-5 mb-4">
-                <p class="text-xs text-gray-500 font-medium uppercase tracking-wide mb-4">Contact Information</p>
-                <div class="grid sm:grid-cols-2 gap-3">
+                <p class="text-xs text-gray-500 font-medium uppercase tracking-wide mb-4">Your Information</p>
+                <div class="space-y-3">
                   <div>
-                    <label class="block text-sm font-medium text-black mb-1.5">Email *</label>
-                    <input type="email" name="sponsor-email" required placeholder="you@example.com" class="checkout-field" />
+                    <label class="block text-sm font-medium text-black mb-1.5">Name / Business Name *</label>
+                    <input type="text" name="sponsor-name" required placeholder="Acme Co. / Jane Doe" class="checkout-field" />
                   </div>
-                  <div>
-                    <label class="block text-sm font-medium text-black mb-1.5">Phone</label>
-                    <input type="tel" name="sponsor-phone" placeholder="(555) 123-4567" class="checkout-field" />
+                  <div class="grid sm:grid-cols-2 gap-3">
+                    <div>
+                      <label class="block text-sm font-medium text-black mb-1.5">Email *</label>
+                      <input type="email" name="sponsor-email" required placeholder="you@example.com" class="checkout-field" />
+                    </div>
+                    <div>
+                      <label class="block text-sm font-medium text-black mb-1.5">Phone</label>
+                      <input type="tel" name="sponsor-phone" placeholder="(555) 123-4567" class="checkout-field" />
+                    </div>
                   </div>
                 </div>
               </div>
@@ -289,12 +348,16 @@ const clientConfig = JSON.stringify({
               <div class="space-y-3 mb-4">
                 {sponsors.tiers.map(tier => (
                   <label class="sponsor-tier flex items-center justify-between rounded-xl border border-gray-200 p-5 cursor-pointer hover:border-black transition-colors">
-                    <div>
+                    <div class="pr-4">
                       <input type="radio" name="sponsor-tier" value={tier.id} class="sr-only peer" />
                       <p class="text-sm font-semibold text-black">{tier.name}</p>
-                      <p class="text-xs text-gray-500 mt-0.5">{tier.seats} people &middot; {tier.perks}</p>
+                      <p class="text-xs text-gray-500 mt-0.5">{tier.perks}</p>
+                      <p class="text-xs text-gray-500 mt-1">
+                        Includes {tier.seats > 0 ? `${tier.seats} admission ${tier.seats === 1 ? 'ticket' : 'tickets'}` : 'recognition'}
+                        {tier.raffleTickets > 0 ? ` + ${tier.raffleTickets} raffle tickets` : ''}
+                      </p>
                     </div>
-                    <p class="text-lg font-bold text-black">${tier.price.toLocaleString()}</p>
+                    <p class="text-lg font-bold text-black whitespace-nowrap">${tier.price.toLocaleString()}</p>
                   </label>
                 ))}
               </div>
@@ -315,20 +378,15 @@ const clientConfig = JSON.stringify({
                 </div>
               )}
 
-              <!-- Raffle for sponsors -->
-              {raffle && (
+              <!-- Donation for sponsors -->
+              {donation && donation.enabled && (
                 <div class="rounded-xl border border-gray-200 p-5 mb-4">
-                  <p class="text-sm font-semibold text-black mb-1">Drawing Entries</p>
-                  <p class="text-xs text-gray-500 mb-4">${raffle.singlePrice} each &middot; Buy {raffle.bundleSize}+ and save</p>
-                  <div class="flex items-center justify-between">
-                    <div class="text-sm text-gray-500">Entries</div>
-                    <div class="flex items-center gap-3">
-                      <button type="button" class="qty-btn h-9 w-9 rounded-full border border-gray-200 flex items-center justify-center text-lg hover:bg-gray-50 transition-colors" data-action="decrease" data-type="sponsor-raffle">&minus;</button>
-                      <span class="qty-display w-8 text-center font-semibold" data-type="sponsor-raffle">0</span>
-                      <button type="button" class="qty-btn h-9 w-9 rounded-full border border-gray-200 flex items-center justify-center text-lg hover:bg-gray-50 transition-colors" data-action="increase" data-type="sponsor-raffle">&plus;</button>
-                    </div>
+                  <p class="text-sm font-semibold text-black mb-1">{donation.label}</p>
+                  <p class="text-xs text-gray-500 mb-3">{donation.description}</p>
+                  <div class="relative">
+                    <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 text-sm">$</span>
+                    <input type="number" name="sponsor-donation" min="0" step="1" placeholder="0" class="checkout-field pl-7" />
                   </div>
-                  <div id="sponsor-raffle-savings" class="hidden mt-3 rounded-lg bg-gray-50 border border-gray-200 px-3 py-2 text-xs text-gray-500"></div>
                 </div>
               )}
 
@@ -385,7 +443,7 @@ const clientConfig = JSON.stringify({
                 <svg class="h-5 w-5 text-gray-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 1 0-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H6.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z"/></svg>
                 <div>
                   <p class="text-sm font-medium text-black">Secure Payment</p>
-                  <p class="text-xs text-gray-500">You'll be redirected to our secure payment processor. Tax-deductible contribution.</p>
+                  <p class="text-xs text-gray-500">You'll be redirected to our secure payment processor and emailed a receipt. Tax-deductible contribution.</p>
                 </div>
               </div>
             </div>
@@ -424,6 +482,7 @@ const clientConfig = JSON.stringify({
     box-shadow: 0 0 0 1px #111;
   }
   .checkout-step.hidden { display: none; }
+  #dipOffCategories.hidden { display: none; }
   .intent-btn.selected { border-color: #111; background: #fafafa; }
   .sponsor-tier:has(input:checked) { border-color: #111; background: #fafafa; }
   .line-clamp-1 { display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; }
@@ -433,16 +492,26 @@ const clientConfig = JSON.stringify({
 <script is:inline define:vars={{ clientConfig }}>
 (function() {
   const CFG = JSON.parse(clientConfig);
+  // Demo mode (?demo in the URL): collapse the whole order to a flat $1.00 test
+  // charge so the full Stripe → /thanks → receipt flow can be exercised for real
+  // without real amounts. Applied identically to the summary, charge, and receipt.
+  const DEMO = new URLSearchParams(location.search).has('demo');
+  const DEMO_ITEM = { name: 'Demo registration — $1 test charge', cost: 1 };
+  if (DEMO) {
+    const b = document.getElementById('demoBanner');
+    if (b) b.classList.remove('hidden');
+  }
 
   let flow = null;
-  let prevStep = 1;
   const state = {
-    email: '', phone: '',
+    name: '', email: '', phone: '',
     regularTickets: 0,
     sponsorTier: null,
     sponsorExtraTickets: 0,
-    raffleTickets: 0,
-    sponsorRaffleTickets: 0,
+    rafflePkgs: {},          // { pkgId: qty }
+    dipOffEntry: false,
+    dipOffCategories: [],
+    donation: 0,
     extras: {},
   };
 
@@ -450,6 +519,8 @@ const clientConfig = JSON.stringify({
   const $$ = (s, ctx) => (ctx || document).querySelectorAll(s);
   const form = $('#checkoutForm');
   if (!form) return;
+
+  const rafflePkg = (id) => CFG.raffle ? CFG.raffle.packages.find(p => p.id === id) : null;
 
   // ── Step Navigation ──────────────────────────────────────
   function showStep(n, targetFlow) {
@@ -470,7 +541,6 @@ const clientConfig = JSON.stringify({
       $$('.intent-btn', form).forEach(b => b.classList.remove('selected'));
       btn.classList.add('selected');
       flow = btn.dataset.intent;
-      prevStep = 1;
       showStep(2, flow);
     });
   });
@@ -496,7 +566,6 @@ const clientConfig = JSON.stringify({
       if (!validateForm()) return;
       syncState();
       updateSummary();
-      prevStep = 2;
       showStep(3);
     });
   });
@@ -512,6 +581,16 @@ const clientConfig = JSON.stringify({
     });
   });
 
+  // ── Dip-Off toggle ───────────────────────────────────────
+  const dipToggle = $('#dipOffToggle', form);
+  const dipCats = $('#dipOffCategories', form);
+  if (dipToggle && dipCats) {
+    dipToggle.addEventListener('change', () => {
+      dipCats.classList.toggle('hidden', !dipToggle.checked);
+      if (!dipToggle.checked) $$('.dipoff-cat', form).forEach(c => { c.checked = false; });
+    });
+  }
+
   // ── Quantity Buttons ─────────────────────────────────────
   $$('.qty-btn', form).forEach(btn => {
     btn.addEventListener('click', () => {
@@ -523,10 +602,8 @@ const clientConfig = JSON.stringify({
       let val = parseInt(display.textContent) || 0;
 
       if (action === 'increase') {
-        if ((type === 'raffle' || type === 'sponsor-raffle') && CFG.raffle) {
-          if (val >= CFG.raffle.maxPerPerson) return;
-        }
-        if (type === 'regular' && CFG.tickets && val >= CFG.tickets.maxPerOrder) return;
+        if (type.startsWith('raffle-') && CFG.raffle && val >= CFG.raffle.maxPerPackage) return;
+        if ((type === 'regular' || type === 'sponsor-extra') && CFG.tickets && val >= CFG.tickets.maxPerOrder) return;
         val++;
       } else if (action === 'decrease' && val > 0) {
         val--;
@@ -536,63 +613,52 @@ const clientConfig = JSON.stringify({
 
       if (type === 'regular') state.regularTickets = val;
       else if (type === 'sponsor-extra') state.sponsorExtraTickets = val;
-      else if (type === 'raffle') { state.raffleTickets = val; showRaffleSavings('raffle-savings', val); }
-      else if (type === 'sponsor-raffle') { state.sponsorRaffleTickets = val; showRaffleSavings('sponsor-raffle-savings', val); }
+      else if (type.startsWith('raffle-')) state.rafflePkgs[type.slice('raffle-'.length)] = val;
     });
   });
 
-  // ── Raffle Savings Display ───────────────────────────────
-  function calcRaffle(total) {
-    if (!CFG.raffle || total === 0) return { bundles: 0, singles: 0, cost: 0, savings: 0 };
-    const bundles = Math.floor(total / CFG.raffle.bundleSize);
-    const singles = total % CFG.raffle.bundleSize;
-    const cost = bundles * CFG.raffle.bundlePrice + singles * CFG.raffle.singlePrice;
-    const full = total * CFG.raffle.singlePrice;
-    return { bundles, singles, cost, savings: full - cost };
-  }
-
-  function showRaffleSavings(elId, total) {
-    const el = document.getElementById(elId);
-    if (!el) return;
-    const r = calcRaffle(total);
-    if (r.savings > 0) {
-      el.textContent = `${r.bundles} bundle${r.bundles > 1 ? 's' : ''} of ${CFG.raffle.bundleSize}${r.singles > 0 ? ` + ${r.singles} single` : ''} — you save $${r.savings}!`;
-      el.classList.remove('hidden');
-    } else {
-      el.classList.add('hidden');
-    }
-  }
-
   // ── Sync State from DOM ──────────────────────────────────
   function syncState() {
-    const emailEl = $('input[name="email"]', form) || $('input[name="sponsor-email"]', form);
-    const phoneEl = $('input[name="phone"]', form) || $('input[name="sponsor-phone"]', form);
     if (flow === 'sponsor') {
+      state.name = ($('input[name="sponsor-name"]', form) || {}).value || '';
       state.email = ($('input[name="sponsor-email"]', form) || {}).value || '';
       state.phone = ($('input[name="sponsor-phone"]', form) || {}).value || '';
       const checked = $('input[name="sponsor-tier"]:checked', form);
       state.sponsorTier = checked ? checked.value : null;
+      state.donation = parseFloat(($('input[name="sponsor-donation"]', form) || {}).value) || 0;
     } else {
+      state.name = ($('input[name="name"]', form) || {}).value || '';
       state.email = ($('input[name="email"]', form) || {}).value || '';
       state.phone = ($('input[name="phone"]', form) || {}).value || '';
+      state.donation = parseFloat(($('input[name="donation"]', form) || {}).value) || 0;
+      state.dipOffEntry = !!(dipToggle && dipToggle.checked);
+      state.dipOffCategories = Array.from($$('.dipoff-cat:checked', form)).map(c => c.value);
     }
+    if (state.donation < 0) state.donation = 0;
+
     state.extras = {};
     $$('.extra-check', form).forEach(cb => {
-      if (cb.checked) {
-        const key = cb.name.replace('sponsor-', '');
-        state.extras[key] = true;
-      }
+      if (cb.checked) state.extras[cb.name.replace('sponsor-', '')] = true;
     });
   }
 
   // ── Validation ───────────────────────────────────────────
   function validateForm() {
     syncState();
+    if (!state.name.trim()) {
+      showError('Please enter your name.'); return false;
+    }
     if (!state.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(state.email)) {
       showError('Please enter a valid email address.'); return false;
     }
-    if (flow === 'tickets' && state.regularTickets === 0 && state.raffleTickets === 0) {
-      showError('Please select at least one item.'); return false;
+    if (flow === 'tickets') {
+      const raffleCount = Object.values(state.rafflePkgs).reduce((a, b) => a + b, 0);
+      if (state.regularTickets === 0 && raffleCount === 0 && state.donation === 0 && !state.dipOffEntry) {
+        showError('Please select at least one item.'); return false;
+      }
+      if (state.dipOffEntry && state.dipOffCategories.length === 0) {
+        showError('Please choose at least one Dip-Off category, or uncheck the competition entry.'); return false;
+      }
     }
     if (flow === 'sponsor' && !state.sponsorTier) {
       showError('Please select a sponsor package.'); return false;
@@ -602,7 +668,7 @@ const clientConfig = JSON.stringify({
   }
 
   // ── Order Summary ────────────────────────────────────────
-  function updateSummary() {
+  function buildItems() {
     const items = [];
     let total = 0;
 
@@ -614,7 +680,13 @@ const clientConfig = JSON.stringify({
 
     if (state.sponsorTier && CFG.sponsors) {
       const tier = CFG.sponsors.tiers.find(t => t.id === state.sponsorTier);
-      if (tier) { items.push({ name: tier.name, cost: tier.price }); total += tier.price; }
+      if (tier) {
+        const incl = [];
+        if (tier.seats > 0) incl.push(`${tier.seats} seats`);
+        if (tier.raffleTickets > 0) incl.push(`${tier.raffleTickets} raffle tickets`);
+        items.push({ name: `${tier.name}${incl.length ? ` (incl. ${incl.join(' + ')})` : ''}`, cost: tier.price });
+        total += tier.price;
+      }
     }
 
     if (state.sponsorExtraTickets > 0 && CFG.tickets) {
@@ -623,18 +695,20 @@ const clientConfig = JSON.stringify({
       total += c;
     }
 
-    if (state.raffleTickets > 0) {
-      const r = calcRaffle(state.raffleTickets);
-      const label = r.savings > 0 ? `Drawing Entries x${state.raffleTickets} (save $${r.savings})` : `Drawing Entries x${state.raffleTickets}`;
-      items.push({ name: label, cost: r.cost });
-      total += r.cost;
-    }
+    Object.entries(state.rafflePkgs).forEach(([id, qty]) => {
+      if (qty > 0) {
+        const pkg = rafflePkg(id);
+        if (pkg) {
+          const c = pkg.price * qty;
+          items.push({ name: `Raffle: ${pkg.tickets} tickets x${qty}`, cost: c });
+          total += c;
+        }
+      }
+    });
 
-    if (state.sponsorRaffleTickets > 0) {
-      const r = calcRaffle(state.sponsorRaffleTickets);
-      const label = r.savings > 0 ? `Drawing Entries x${state.sponsorRaffleTickets} (save $${r.savings})` : `Drawing Entries x${state.sponsorRaffleTickets}`;
-      items.push({ name: label, cost: r.cost });
-      total += r.cost;
+    if (state.donation > 0) {
+      items.push({ name: 'Donation', cost: state.donation });
+      total += state.donation;
     }
 
     if (state.extras.coverFees && total > 0) {
@@ -643,12 +717,30 @@ const clientConfig = JSON.stringify({
       total += fee;
     }
 
+    if (DEMO && items.length > 0) return { items: [{ ...DEMO_ITEM }], total: DEMO_ITEM.cost };
+
+    return { items, total };
+  }
+
+  function updateSummary() {
+    const { items, total } = buildItems();
+    const extraNotes = [];
+    if (state.dipOffEntry && state.dipOffCategories.length > 0) {
+      const labels = state.dipOffCategories.map(id => {
+        const c = CFG.dipOff.categories.find(x => x.id === id);
+        return c ? c.label : id;
+      });
+      extraNotes.push(`Dip-Off entry: ${labels.join(', ')}`);
+    }
+
     const summaryEl = document.getElementById('orderSummary');
     const totalEl = document.getElementById('totalAmount');
     if (summaryEl) {
-      summaryEl.innerHTML = items.length > 0
+      let html = items.length > 0
         ? items.map(i => `<div class="flex justify-between"><span class="text-gray-500">${i.name}</span><span class="text-black font-medium">$${i.cost.toFixed(2)}</span></div>`).join('')
         : '<p class="text-gray-500 text-center py-2">No items selected</p>';
+      html += extraNotes.map(n => `<div class="text-xs text-gray-500 pt-1">${n}</div>`).join('');
+      summaryEl.innerHTML = html;
     }
     if (totalEl) totalEl.textContent = `$${total.toFixed(2)}`;
   }
@@ -676,14 +768,14 @@ const clientConfig = JSON.stringify({
       let amt = 0;
 
       if (state.regularTickets > 0 && CFG.tickets) {
-        products.push({ name: 'Regular Admission', description: `Admission for ${state.regularTickets}`, price: CFG.tickets.price, quantity: state.regularTickets, type: 'admission' });
+        products.push({ name: 'Admission Ticket', description: `Admission for ${state.regularTickets}`, price: CFG.tickets.price, quantity: state.regularTickets, type: 'admission' });
         amt += state.regularTickets * CFG.tickets.price;
       }
 
       if (state.sponsorTier && CFG.sponsors) {
         const tier = CFG.sponsors.tiers.find(t => t.id === state.sponsorTier);
         if (tier) {
-          products.push({ name: tier.name, description: `${tier.seats} people`, price: tier.price, quantity: 1, type: 'sponsor' });
+          products.push({ name: tier.name, description: `${tier.seats} seats, ${tier.raffleTickets} raffle tickets`, price: tier.price, quantity: 1, type: 'sponsor' });
           amt += tier.price;
         }
       }
@@ -693,11 +785,19 @@ const clientConfig = JSON.stringify({
         amt += state.sponsorExtraTickets * CFG.tickets.price;
       }
 
-      const allRaffle = state.raffleTickets + state.sponsorRaffleTickets;
-      if (allRaffle > 0) {
-        const r = calcRaffle(allRaffle);
-        products.push({ name: `${allRaffle} Drawing Entries`, description: `Drawing entries`, price: r.cost, quantity: 1, type: 'prize_entry' });
-        amt += r.cost;
+      Object.entries(state.rafflePkgs).forEach(([id, qty]) => {
+        if (qty > 0) {
+          const pkg = rafflePkg(id);
+          if (pkg) {
+            products.push({ name: `Raffle Tickets (${pkg.tickets})`, description: `${pkg.tickets} raffle tickets`, price: pkg.price, quantity: qty, type: 'prize_entry' });
+            amt += pkg.price * qty;
+          }
+        }
+      });
+
+      if (state.donation > 0) {
+        products.push({ name: 'Donation', description: 'Additional donation', price: state.donation, quantity: 1, type: 'donation' });
+        amt += state.donation;
       }
 
       if (state.extras.coverFees && amt > 0) {
@@ -706,12 +806,45 @@ const clientConfig = JSON.stringify({
         amt += fee;
       }
 
+      // Demo mode: replace everything with a single $1 test charge.
+      if (DEMO && products.length > 0) {
+        products.length = 0;
+        products.push({ name: DEMO_ITEM.name, description: '$1.00 test transaction', price: 1, quantity: 1, type: 'demo' });
+        amt = 1;
+      }
+
+      // Save the order in a cookie ONLY. The email system is NOT contacted here.
+      // After Stripe redirects back to /thanks, that page reads this cookie and
+      // (only once payment is verified) triggers the receipt.
+      const dipLabels = (state.dipOffCategories || []).map(id => {
+        const c = CFG.dipOff && CFG.dipOff.categories.find(x => x.id === id);
+        return c ? c.label : id;
+      });
+      const { items: emailItems, total: emailTotal } = buildItems();
+      const order = {
+        to: state.email,
+        name: state.name,
+        eventName: CFG.name,
+        eventDate: CFG.date,
+        items: emailItems.map(i => ({ name: i.name, amount: i.cost })),
+        total: emailTotal,
+        donation: state.donation,
+        dipOffCategories: dipLabels,
+      };
+      try {
+        document.cookie = `sias_order=${encodeURIComponent(JSON.stringify(order))}; path=/; max-age=3600; SameSite=Lax`;
+      } catch { /* ignore */ }
+
       const body = {
+        name: state.name,
         email: state.email,
+        phone: state.phone,
         eventName: CFG.name,
         eventDate: CFG.date,
         products,
-        bakeOffEntry: !!state.extras.bakeOff,
+        donation: state.donation,
+        dipOffEntry: !!state.dipOffEntry,
+        dipOffCategories: state.dipOffCategories,
         coverFees: !!state.extras.coverFees,
       };
 

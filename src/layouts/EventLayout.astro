@@ -85,12 +85,12 @@ const fullDate = format(eventDate, 'EEEE, MMMM d, yyyy');
             {frontmatter.location}
           </div>
         )}
-        {frontmatter.ticketLink && !isPast && (
+        {frontmatter.registrationUrl && !isPast && (
           <a
-            href={frontmatter.ticketLink}
+            href={frontmatter.registrationUrl}
             class="ml-auto px-5 py-2 bg-black text-white text-sm font-semibold rounded-lg hover:bg-gray-900 transition-colors"
           >
-            {frontmatter.ticketPrice > 0 ? `Get Tickets · $${frontmatter.ticketPrice}` : 'Register Free'}
+            Register &amp; Buy Tickets
           </a>
         )}
       </div>

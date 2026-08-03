@@ -18,3 +18,7 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+
+# secrets — payment endpoint & receipt-mailer worker (hold API keys/tokens)
+ticket.js
+worker/

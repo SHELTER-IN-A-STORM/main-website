@@ -1,0 +1,92 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="Thank You">
+  <main>
+    <section class="pt-32 pb-16 lg:pt-40 lg:pb-20">
+      <div class="max-w-xl mx-auto px-6 text-center">
+
+        <div class="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full border border-gray-200">
+          <svg class="h-5 w-5 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+          </svg>
+        </div>
+
+        <p class="text-sm text-gray-500 font-medium uppercase tracking-wide mb-2">Registration complete</p>
+        <h1 class="text-2xl lg:text-3xl font-bold text-black tracking-tight mb-3">Thank you for your support!</h1>
+        <p class="text-sm text-gray-500 leading-relaxed mb-8">
+          Your registration for the <strong class="text-black">3rd Annual Fall Fundraiser</strong> is confirmed.
+          We look forward to seeing you on Saturday, November 14, 2026.
+        </p>
+
+        <!-- Receipt status (updated by script) -->
+        <div id="receiptStatus" class="rounded-xl border border-gray-200 bg-gray-50 p-5 mb-8 text-sm text-gray-500">
+          Sending your email receipt&hellip;
+        </div>
+
+        <div class="flex flex-col sm:flex-row gap-3">
+          <a href="/" class="flex-1 inline-flex items-center justify-center px-6 py-3 bg-black text-white font-semibold text-sm rounded-lg hover:bg-gray-900 transition-colors">
+            Return home
+          </a>
+          <a href="/events" class="flex-1 inline-flex items-center justify-center px-6 py-3 border border-gray-200 text-black font-semibold text-sm rounded-lg hover:bg-gray-50 transition-colors">
+            View all events
+          </a>
+        </div>
+
+      </div>
+    </section>
+  </main>
+</Layout>
+
+<script is:inline>
+(function () {
+  // Same endpoint that creates the Stripe session (ticket.js). We POST the order
+  // (read from the cookie set at checkout) plus the session_id; ticket.js
+  // verifies payment with Stripe and only then sends the receipt.
+  // Keep in sync with `stripeApiUrl` in src/config/event.ts.
+  const PAYMENT_API = 'https://api.shelterinastorm.org/api/v2/OtherProduct';
+  const el = document.getElementById('receiptStatus');
+
+  function readCookie(name) {
+    const m = document.cookie.match(new RegExp('(?:^|; )' + name + '=([^;]*)'));
+    return m ? decodeURIComponent(m[1]) : null;
+  }
+  function clearOrderCookie() {
+    document.cookie = 'sias_order=; path=/; max-age=0; SameSite=Lax';
+  }
+
+  const sessionId = new URLSearchParams(location.search).get('session_id');
+  const raw = readCookie('sias_order');
+  let order = null;
+  try { order = raw ? JSON.parse(raw) : null; } catch { order = null; }
+
+  // No session id (didn't come from Stripe) or no order (already handled) → do nothing.
+  if (!sessionId || !order) {
+    if (el) el.textContent = "Thank you! Your registration is confirmed. A receipt is emailed once your payment is processed.";
+    return;
+  }
+
+  fetch(PAYMENT_API, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ session_id: sessionId, order }),
+  })
+    .then((r) => r.json())
+    .then((data) => {
+      if (data && data.paid && data.emailed) {
+        clearOrderCookie(); // sent — prevent any resend on refresh
+        if (el) el.innerHTML = '&#10003; Payment confirmed &mdash; a receipt has been emailed to you. Check your inbox (and spam folder just in case).';
+      } else if (data && data.paid) {
+        clearOrderCookie();
+        if (el) el.textContent = "Payment confirmed. We had trouble emailing your receipt — contact audrey@shelterinastorm.org and we'll resend it.";
+      } else {
+        // Not paid yet: keep the cookie so a later valid load can still send.
+        if (el) el.textContent = "We haven't confirmed your payment yet. If you completed checkout, your receipt will follow shortly. Questions? audrey@shelterinastorm.org";
+      }
+    })
+    .catch(() => {
+      if (el) el.textContent = "Your registration is being processed. If you don't receive an email receipt, contact audrey@shelterinastorm.org";
+    });
+})();
+</script>
