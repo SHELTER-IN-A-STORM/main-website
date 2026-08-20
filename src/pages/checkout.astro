@@ -775,7 +775,7 @@ const clientConfig = JSON.stringify({
       if (state.sponsorTier && CFG.sponsors) {
         const tier = CFG.sponsors.tiers.find(t => t.id === state.sponsorTier);
         if (tier) {
-          products.push({ name: tier.name, description: `${tier.seats} seats, ${tier.raffleTickets} raffle tickets`, price: tier.price, quantity: 1, type: 'sponsor' });
+          products.push({ name: tier.name, description: tier.seats > 0 ? `${tier.seats} seats` : 'Sponsor recognition', price: tier.price, quantity: 1, type: 'sponsor' });
           amt += tier.price;
         }
       }

@@ -50,11 +50,11 @@ export interface EventConfigType {
 export const eventConfig: EventConfigType = {
   // ── Basic Info ──────────────────────────────────────────────
   name: "3rd Annual Fall Fundraiser",
-  tagline: "Join us for a full meal, the Dip-Off Competition, live music, silent auction, and more!",
+  tagline: "Join us for the Dip-Off Competition, a full meal, live music, silent auction, and more!",
   date: "Saturday, November 14, 2026",
   time: "5:00 PM - 8:00 PM",
   location: "Memory Lane Events, 78 Walnut Grove Road, Eldon, MO",
-  image: "https://cdn.shelterinastorm.org/images/2025-FallFundraiser-Front-1.png",
+  image: "/2026-Fundraiser-Flier.png",
 
   // ── Stripe / Payment API ───────────────────────────────────
   stripeApiUrl: "https://api.shelterinastorm.org/api/v2/OtherProduct",
@@ -73,10 +73,10 @@ export const eventConfig: EventConfigType = {
   // `seats` = admission tickets included, `raffleTickets` = raffle entries included
   sponsors: {
     tiers: [
-      { id: "diamond", name: "Diamond Sponsor", price: 4000, seats: 8, raffleTickets: 50, perks: "Logo promoted on social media & at event · 1 reserved table (8 seats)" },
-      { id: "gold",    name: "Gold Sponsor",    price: 2000, seats: 4, raffleTickets: 40, perks: "Logo promoted on social media & at event" },
-      { id: "silver",  name: "Silver Sponsor",  price: 1000, seats: 2, raffleTickets: 30, perks: "Logo promoted on social media & at event" },
-      { id: "bronze",  name: "Bronze Sponsor",  price: 500,  seats: 0, raffleTickets: 20, perks: "Logo or last name promoted on social media & at event" },
+      { id: "diamond", name: "Diamond Sponsor", price: 4000, seats: 8, raffleTickets: 0, perks: "Logo promoted on social media & at event · 1 reserved table (8 seats)" },
+      { id: "gold",    name: "Gold Sponsor",    price: 2000, seats: 4, raffleTickets: 0, perks: "Logo promoted on social media & at event" },
+      { id: "silver",  name: "Silver Sponsor",  price: 1000, seats: 2, raffleTickets: 0, perks: "Logo promoted on social media & at event" },
+      { id: "bronze",  name: "Bronze Sponsor",  price: 500,  seats: 0, raffleTickets: 0, perks: "Logo or last name promoted on social media & at event" },
     ],
   },
 
@@ -114,12 +114,8 @@ export const eventConfig: EventConfigType = {
 
   // ── Silent Auction ─────────────────────────────────────────
   // Set to null to hide the auction preview section
-  auction: {
-    apiUrl: "http://auction.shelterinastorm.org/api/items",
-    siteUrl: "http://auction.shelterinastorm.org",
-    previewCount: 6,
-    donateEmail: "audrey@shelterinastorm.org",
-  },
+  // No pre-bidding this year — auction happens in person at the event.
+  auction: null,
 
   // ── Extra Checkboxes ───────────────────────────────────────
   // Add or remove as needed; empty array = none shown
@@ -132,7 +128,7 @@ export const eventConfig: EventConfigType = {
   schedule: [
     { time: "5:00 PM", title: "Doors & Cash Bar Open",   description: "Refreshments available" },
     { time: "6:00 PM", title: "Full Meal & Dip Tasting",  description: "Enjoy dinner and sample the Dip-Off entries" },
-    { time: "7:15 PM", title: "Dip-Off Winner Announced", description: "Winner crowned" },
+    { time: "7:15 PM", title: "Trophy Presentation", description: "Winner crowned" },
   ],
 
   // ── Event Highlights ───────────────────────────────────────
@@ -140,7 +136,6 @@ export const eventConfig: EventConfigType = {
   highlights: [
     { title: "Dip-Off Competition", description: "Register to compete with your favorite dip recipe" },
     { title: "Full Meal",           description: "Enjoy a delicious dinner" },
-    { title: "Chocolate Fountain",  description: "A sweet treat for everyone" },
     { title: "Cash Bar",            description: "Refreshments available all evening" },
     { title: "Silent Auction",      description: "Bid on unique items and experiences" },
     { title: "Raffles",             description: "Win great prizes" },
