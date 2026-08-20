@@ -1,5 +1,6 @@
 ---
 import { siteConfig } from '../config/site';
+import { eventConfig } from '../config/event';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import CookieConsent from '../components/CookieConsent.astro';
@@ -148,20 +149,29 @@ try {
 			.then(response => response.json())
 			// .then(health => console.log('Client-side API Health Status:', health))
 			.catch(error => console.error('Client-side health check failed:', error));
+		});
+		</script>
 
-				if (import.meta.env.DEV) {
-				setTimeout(() => {
-					window.showEventAlert({
-						title: 'Development Mode Test Alert',
-						description: 'This notification only appears in development mode to test the alert system.',
-						image: 'https://cdn-locc-org.vercel.app/media/8F240771-48E1-4868-9BC6-6AB8256F433F.jpeg',
-						badge: '[DEV MODE ONLY]',
-						actionText: 'Learn More',
-						actionUrl: 'https://www.lakeozarkdisciples.org/',
-						isExternalLink: true
-					});
-				}, 1000);
+		<script define:vars={{
+			eventAlert: {
+				title: eventConfig.name,
+				description: `${eventConfig.date} · ${eventConfig.location}`,
+				image: eventConfig.image,
+				badge: 'Upcoming Event',
+				actionText: 'Get Tickets',
+				actionUrl: '/checkout',
+				isExternalLink: false
 			}
+		}}>
+		document.addEventListener('DOMContentLoaded', () => {
+			if (window.location.pathname.startsWith('/checkout')) return;
+			if (sessionStorage.getItem('event-alert-dismissed')) return;
+
+			document.querySelectorAll('[aria-label="Dismiss event alert"]').forEach((button) => {
+				button.addEventListener('click', () => sessionStorage.setItem('event-alert-dismissed', '1'));
+			});
+
+			setTimeout(() => window.showEventAlert(eventAlert), 1000);
 		});
 		</script>
 	</body>
